@@ -6,7 +6,7 @@
 #include <strsafe.h>
 #pragma warning( default : 4996 )
 
-#include "Shader.h"
+#include "Camera.h"
 
 
 #define HAUTEUR 800
@@ -17,15 +17,19 @@
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 LPDIRECT3DVERTEXBUFFER9 g_pVB        = NULL;
+CFirstPersonCamera 	    g_pCamera;
+float					g_fTimeElapsed = 0;
+float					g_fFrameTime = 0;
+float					g_fTime = 0;
 
-struct CUSTOMVERTEX
+
+
+struct DEFAULT_VERTEX
 {
-    D3DXVECTOR3 position; 
-    D3DXVECTOR3 normal;   
+	FLOAT x,y,z;
+	DWORD COLOR;
 };
-
-
-#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ|D3DFVF_NORMAL)
+#define DEFAULT_FVF (D3DFVF_XYZ|D3DFVF_DIFFUSE)
 
 
 
@@ -42,6 +46,7 @@ HRESULT InitD3D( HWND hWnd )
     d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
     d3dpp.EnableAutoDepthStencil = TRUE;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
     if( FAILED( g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
                                       D3DCREATE_SOFTWARE_VERTEXPROCESSING,
@@ -60,25 +65,50 @@ HRESULT InitD3D( HWND hWnd )
 
 HRESULT InitGeometry()
 {
-    if( FAILED( g_pd3dDevice->CreateVertexBuffer( 50*2*sizeof(CUSTOMVERTEX),
-                                                  0, D3DFVF_CUSTOMVERTEX,
-                                                  D3DPOOL_DEFAULT, &g_pVB, NULL ) ) )
-    {
-        return E_FAIL;
-    }
+    DEFAULT_VERTEX sommets[]=
+	{
+	{-20.f, 0.f, 20.f, 0x00000000}, 
+	{20.f, 0.f, 20.f, 0x00000000},
+	{-20.f, 0.f, 10.f, 0x00000000}, 
+	{20.f, 0.f, 10.f, 0x00000000}, 
+	{-20.f, 0.f, 0.f, 0x00000000}, 
+	{20.f, 0.f, 0.f, 0x00000000}, 
+	{-20.f, 0.f, -10.f, 0x00000000}, 
+	{20.f, 0.f, -10.f, 0x00000000}, 
+	{-20.f, 0.f, -20.f, 0x00000000}, 
+	{20.f, 0.f, -20.f, 0x00000000}, 
 
-    CUSTOMVERTEX* pVertices;
-    if( FAILED( g_pVB->Lock( 0, 0, (void**)&pVertices, 0 ) ) )
-        return E_FAIL;
-    for( DWORD i=0; i<50; i++ )
-    {
-        FLOAT theta = (2*D3DX_PI*i)/(50-1);
-        pVertices[2*i+0].position = D3DXVECTOR3( sinf(theta),-1.0f, cosf(theta) );
-        pVertices[2*i+0].normal   = D3DXVECTOR3( sinf(theta), 0.0f, cosf(theta) );
-        pVertices[2*i+1].position = D3DXVECTOR3( sinf(theta), 1.0f, cosf(theta) );
-        pVertices[2*i+1].normal   = D3DXVECTOR3( sinf(theta), 0.0f, cosf(theta) );
-    }
-    g_pVB->Unlock();
+	{20.f, 0.f, -20.f, 0x00000000}, 
+	{20.f, 0.f, 20.f, 0x00000000},
+	{10.f, 0.f, -20.f, 0x00000000}, 
+	{10.f, 0.f, 20.f, 0x00000000}, 
+	{0.0f, 0.f, -20.f, 0x00000000}, 
+	{0.0f, 0.0f, 20.f, 0x00000000}, 
+	{-10.f, 0.f, -20.f, 0x00000000}, 
+	{-10.f, 0.f, 20.f, 0x00000000}, 
+	{-20.f, 0.f, -20.f, 0x00000000}, 
+	{-20.f, 0.f, 20.f, 0x00000000}, 
+	
+	};
+
+	if(FAILED(g_pd3dDevice->CreateVertexBuffer(
+		sizeof(sommets),
+		D3DUSAGE_WRITEONLY,
+		DEFAULT_FVF,
+		D3DPOOL_DEFAULT,
+		&g_pVB,
+		NULL))
+	)
+		return E_FAIL;
+
+	void * psommets;
+
+	if(FAILED(g_pVB->Lock(0, sizeof(sommets), (void **)&psommets, 0)))
+		return E_FAIL;
+
+	memcpy(psommets,sommets,sizeof(sommets));
+
+	g_pVB->Unlock();
 
     return S_OK;
 }
@@ -100,23 +130,25 @@ VOID SetupMatrices()
     D3DXMATRIXA16 matWorld;
     D3DXMatrixIdentity( &matWorld );
     g_pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
+	g_pd3dDevice->SetTransform(D3DTS_VIEW, g_pCamera.GetViewMatrix());
 
-    D3DXVECTOR3 vEyePt( 0.0f, 3.0f,-5.0f );
-    D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
-    D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
-    D3DXMATRIXA16 matView;
-    D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
-    g_pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
 
-    D3DXMATRIXA16 matProj;
-    D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI/4, HAUTEUR/LARGEUR, 1.0f, 100.0f );
-    g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+	g_pCamera.SetProjParams(D3DX_PI/4, (float)HAUTEUR/LARGEUR, 2.0f, 4000.f);
+    g_pd3dDevice->SetTransform( D3DTS_PROJECTION, g_pCamera.GetProjMatrix() );
 }
 
 
 
 VOID Render()
 {
+	float time=(timeGetTime()/1000.f);
+	g_fTimeElapsed = time-g_fFrameTime;
+	g_fTime+=g_fTimeElapsed;
+	g_fFrameTime=time;
+
+
+	g_pCamera.FrameMove(g_fTimeElapsed);
+
     g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
                          D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
 
@@ -125,9 +157,11 @@ VOID Render()
 
         SetupMatrices();
 
-        g_pd3dDevice->SetStreamSource( 0, g_pVB, 0, sizeof(CUSTOMVERTEX) );
-        g_pd3dDevice->SetFVF( D3DFVF_CUSTOMVERTEX );
-        g_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2*50-2 );
+		g_pd3dDevice->SetFVF(DEFAULT_FVF);
+
+		g_pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(DEFAULT_VERTEX));
+
+		g_pd3dDevice->DrawPrimitive(D3DPT_LINELIST, 0, 20);
 
         g_pd3dDevice->EndScene();
     }
@@ -150,10 +184,34 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             GetCursorPos( &ptCursor );
 			g_pd3dDevice->SetCursorPosition( ptCursor.x, ptCursor.y, 0 );
 			break;
+
+		 case WM_SETCURSOR:
+			SetCursor(NULL);
+            g_pd3dDevice->ShowCursor( true );
+            break;
+
+		 case WM_KEYDOWN:
+         {
+            switch( wParam )
+            {
+                case VK_ESCAPE:
+                {
+					Cleanup();
+					PostQuitMessage( 0 );
+					return 0;
+				}
+			}
+		 }
+		    
+
     }
 
+	g_pCamera.HandleMessages(hWnd, msg, wParam, lParam);
+
     return DefWindowProc( hWnd, msg, wParam, lParam );
-}
+} 
+
+
 
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
@@ -165,6 +223,10 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
     HWND hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
                               WS_OVERLAPPEDWINDOW, 100, 100, HAUTEUR, LARGEUR,
                               NULL, NULL, wc.hInstance, NULL );
+
+	//Initialisation du temps :
+
+	g_fFrameTime = timeGetTime()/1000.f;
 
     if( SUCCEEDED( InitD3D( hWnd ) ) )
     {
