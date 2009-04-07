@@ -188,6 +188,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Types"
+			>
+			<File
+				RelativePath=".\Include\Types.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

@@ -38,7 +38,7 @@ CBaseCamera::CBaseCamera()
     m_bMouseMButtonDown = false;
     m_bMouseRButtonDown = false;
     m_nCurrentButtonMask = 0;
-    m_nMouseWheelDelta = 100.f;
+    m_nMouseWheelDelta = 100;
 
     m_fCameraYawAngle = 0.0f;
     m_fCameraPitchAngle = 0.0f;
