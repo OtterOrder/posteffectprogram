@@ -4,7 +4,9 @@
 #include <d3dx9.h>
 #pragma warning( disable : 4996 )
 #include <strsafe.h>
-#pragma warning( default : 4996 ) 
+#pragma warning( default : 4996 )
+
+#include "Shader.h"
 
 
 #define HAUTEUR 800

@@ -39,6 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories=".\Include"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -162,6 +163,18 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="Shader"
+			>
+			<File
+				RelativePath=".\Src\Shader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Shader.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>
