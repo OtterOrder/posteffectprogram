@@ -22,7 +22,10 @@ float					g_fTimeElapsed = 0;
 float					g_fFrameTime = 0;
 float					g_fTime = 0;
 
-
+////. Test
+#include "GraphicEntity.h"
+GraphicEntity g_GraphicEntity;
+////.
 
 struct DEFAULT_VERTEX
 {
@@ -110,6 +113,11 @@ HRESULT InitGeometry()
 
 	g_pVB->Unlock();
 
+	////. Test ////////////////////////////////////////////////
+	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
+	g_GraphicEntity.SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.fs", "PSMainGreen");
+	////. /////////////////////////////////////////////////////
+
     return S_OK;
 }
 
@@ -152,6 +160,9 @@ VOID Render()
     g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
                          D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
 
+	g_pd3dDevice->SetVertexShader(NULL);
+	g_pd3dDevice->SetPixelShader (NULL);
+
     if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
     {
 
@@ -162,6 +173,10 @@ VOID Render()
 		g_pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(DEFAULT_VERTEX));
 
 		g_pd3dDevice->DrawPrimitive(D3DPT_LINELIST, 0, 20);
+
+		////. Test ////////////////////////////////////////////////
+		g_GraphicEntity.Draw(g_pd3dDevice);
+		////.//////////////////////////////////////////////////////
 
         g_pd3dDevice->EndScene();
     }

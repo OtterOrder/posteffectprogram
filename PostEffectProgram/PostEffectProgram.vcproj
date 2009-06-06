@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="PostEffectProgram"
 	ProjectGUID="{07686976-9A77-49B7-A2BD-FC0F554CF3A9}"
 	RootNamespace="PostEffectProgram"
@@ -193,6 +193,26 @@
 			>
 			<File
 				RelativePath=".\Include\Types.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Objects"
+			>
+			<File
+				RelativePath=".\Src\GraphicEntity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\GraphicEntity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Src\Mesh.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Mesh.h"
 				>
 			</File>
 		</Filter>
