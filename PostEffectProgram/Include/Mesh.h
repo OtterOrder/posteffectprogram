@@ -1,11 +1,11 @@
 #pragma once
-#include "Types.h"
+
 #include <d3dx9.h>
+
+#include "Types.h"
 
 class Mesh
 {
-private:
-
 public:
 
 	u32		m_NbVertices;

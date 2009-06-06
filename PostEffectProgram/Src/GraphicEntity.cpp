@@ -4,6 +4,8 @@
 GraphicEntity::GraphicEntity(void)
 {
 	m_pMesh = NULL;
+	m_pShader = NULL;
+	m_pTexture = NULL;
 }
 
 //******************************************************************************************************************************
@@ -17,6 +19,8 @@ void GraphicEntity::Release ()
 {
 	SAFE_DELETE(m_pMesh);
 	SAFE_DELETE(m_pShader);
+
+	SAFE_DELETE(m_pTexture);
 }
 
 //******************************************************************************************************************************
@@ -49,7 +53,11 @@ void GraphicEntity::Draw (PDevice _pDevice)
 		return;
 
 	if (m_pShader)
+	{
 		m_pShader->Activate(_pDevice);
+
+		_pDevice->SetTexture(0, m_pTexture->m_pTexture);	////.
+	}
 
 	_pDevice->SetFVF(m_pMesh->m_FVF);
 
@@ -75,4 +83,13 @@ HRESULT GraphicEntity::SetPixelShader	(PDevice _pDevice, cStr _fileName, cStr _e
 		m_pShader = new Shader();
 
 	return m_pShader->LoadPixelShader(_pDevice, _fileName, _entryPoint);
+}
+
+//******************************************************************************************************************************
+HRESULT GraphicEntity::SetTexture	(PDevice _pDevice, cStr _fileName)
+{
+	if(!m_pTexture)
+		m_pTexture = new Texture();
+
+	return m_pTexture->LoadFromDdsFile(_pDevice, _fileName);
 }

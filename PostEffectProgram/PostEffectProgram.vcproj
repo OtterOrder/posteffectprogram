@@ -215,6 +215,14 @@
 				RelativePath=".\Include\Mesh.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Src\Texture.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Texture.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\main.cpp"

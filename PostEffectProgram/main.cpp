@@ -115,7 +115,8 @@ HRESULT InitGeometry()
 
 	////. Test ////////////////////////////////////////////////
 	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
-	g_GraphicEntity.SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.fs", "PSMainGreen");
+	g_GraphicEntity.SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds");
+	g_GraphicEntity.SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.fs", "PSAlbedoDisplay");
 	////. /////////////////////////////////////////////////////
 
     return S_OK;
