@@ -37,3 +37,6 @@ typedef const char*		cStr;
 
 #define	PVertexShader	LPDIRECT3DVERTEXSHADER9
 #define PPixelShader	LPDIRECT3DPIXELSHADER9
+
+#define PTexture		LPDIRECT3DTEXTURE9
+#define ImageInfo		D3DXIMAGE_INFO

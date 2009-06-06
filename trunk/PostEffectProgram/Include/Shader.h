@@ -11,7 +11,7 @@ public:
 	Shader(void);
 	virtual ~Shader(void);
 
-protected:
+//protected:
 	PVertexShader		m_pVertexShader;
 	PPixelShader		m_pPixelShader;
 

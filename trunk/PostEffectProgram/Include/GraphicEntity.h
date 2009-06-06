@@ -4,12 +4,15 @@
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 
 class GraphicEntity
 {
-	Mesh*	m_pMesh;
-	Shader*	m_pShader;
-	// ToDo : Use textures
+	Mesh*		m_pMesh;
+	Shader*		m_pShader;
+	Texture*	m_pTexture;
+
+	// ToDo : Use material containing all textures
 
 public:
 	GraphicEntity(void);
@@ -22,4 +25,6 @@ public:
 
 	HRESULT SetVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
 	HRESULT SetPixelShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
+
+	HRESULT SetTexture	(PDevice _pDevice, cStr _fileName);
 };
