@@ -2,32 +2,29 @@
 
 #include <d3d9.h>
 #include <d3dx9.h>
-#include <string>
 
 #include "Types.h"
-
-using namespace std;
 
 class Shader
 {
 public:
-	typedef enum {
-		VertexShader,
-		PixelShader
-	} ShaderType;
-
 	Shader(void);
 	virtual ~Shader(void);
 
 protected:
-	LPDIRECT3DVERTEXSHADER9		m_pVertexShader;
-	LPDIRECT3DPIXELSHADER9		m_pPixelShader;
+	PVertexShader		m_pVertexShader;
+	PPixelShader		m_pPixelShader;
 
 	LPD3DXCONSTANTTABLE			m_pVertexConstantTable;
 	LPD3DXCONSTANTTABLE			m_pPixelConstantTable;
 
 public:
-	HRESULT SetShaderFile (ShaderType _type, IDirect3DDevice9* pDevice, string _fileName, string _entryPoint);
+	HRESULT Load				(PDevice _pDevice,
+								 cStr _vertexShaderFileName = NULL, cStr _vertexEntryPoint = NULL,
+								 cStr _pixelShaderFileName  = NULL, cStr _pixelEntryPoint  = NULL);
 
-	void Activate (IDirect3DDevice9* pDevice);
+	HRESULT LoadVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
+	HRESULT LoadPixelShader		(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
+
+	void Activate (PDevice _pDevice);
 };
