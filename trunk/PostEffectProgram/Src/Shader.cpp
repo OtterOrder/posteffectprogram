@@ -95,10 +95,40 @@ HRESULT Shader::LoadPixelShader (PDevice _pDevice, cStr _fileName, cStr _entryPo
 }
 
 //******************************************************************************************************************************
-void  Shader::Activate (PDevice _pDevice)
+void Shader::Activate (PDevice _pDevice)
 {
 	if (m_pVertexShader)
         _pDevice->SetVertexShader(m_pVertexShader);
 	if (m_pPixelShader)
 		_pDevice->SetPixelShader (m_pPixelShader );
+}
+
+//******************************************************************************************************************************
+void Shader::SetVSSampler (PDevice _pDevice, cStr _samplerName, PTexture _texture)
+{
+	if (!(_pDevice && m_pVertexConstantTable && _texture))
+		return;
+
+	D3DXHANDLE textureHdl = m_pVertexConstantTable->GetConstantByName(0, _samplerName);
+
+	D3DXCONSTANT_DESC textureDesc;
+	u32 count;
+
+	m_pVertexConstantTable->GetConstantDesc(textureHdl, &textureDesc, &count);
+	_pDevice->SetTexture(textureDesc.RegisterIndex, _texture);
+}
+
+//******************************************************************************************************************************
+void Shader::SetPSSampler (PDevice _pDevice, cStr _samplerName, PTexture _texture)
+{
+	if (!(_pDevice && m_pPixelConstantTable && _texture))
+		return;
+
+	D3DXHANDLE textureHdl = m_pPixelConstantTable->GetConstantByName(0, _samplerName);
+
+	D3DXCONSTANT_DESC textureDesc;
+	u32 count;
+
+	m_pPixelConstantTable->GetConstantDesc(textureHdl, &textureDesc, &count);
+	_pDevice->SetTexture(textureDesc.RegisterIndex, _texture);
 }
