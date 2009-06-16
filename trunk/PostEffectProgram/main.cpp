@@ -7,6 +7,7 @@
 #pragma warning( default : 4996 )
 
 #include "Camera.h"
+#include "Time.h"
 
 
 #define HAUTEUR 800
@@ -18,9 +19,7 @@ LPDIRECT3D9             g_pD3D       = NULL;
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 LPDIRECT3DVERTEXBUFFER9 g_pVB        = NULL;
 CFirstPersonCamera 	    g_pCamera;
-float					g_fTimeElapsed = 0;
-float					g_fFrameTime = 0;
-float					g_fTime = 0;
+Time					g_Timer;
 
 ////. Test
 #include "GraphicEntity.h"
@@ -61,6 +60,7 @@ HRESULT InitD3D( HWND hWnd )
     g_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 
     g_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+
 
     return S_OK;
 }
@@ -150,16 +150,11 @@ VOID SetupMatrices()
 
 VOID Render()
 {
-	float time=(timeGetTime()/1000.f);
-	g_fTimeElapsed = time-g_fFrameTime;
-	g_fTime+=g_fTimeElapsed;
-	g_fFrameTime=time;
 
-
-	g_pCamera.FrameMove(g_fTimeElapsed);
+	g_pCamera.FrameMove(g_Timer.GetDeltaTimeF());
 
     g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
-                         D3DCOLOR_XRGB(0,0,255), 1.0f, 0 );
+                         D3DCOLOR_XRGB(0,0,125), 1.0f, 0 );
 
 	g_pd3dDevice->SetVertexShader(NULL);
 	g_pd3dDevice->SetPixelShader (NULL);
@@ -173,9 +168,10 @@ VOID Render()
 
 		g_pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(DEFAULT_VERTEX));
 
-		g_pd3dDevice->DrawPrimitive(D3DPT_LINELIST, 0, 20);
+		g_pd3dDevice->DrawPrimitive(D3DPT_LINELIST, 0, 10);
 
 		////. Test ////////////////////////////////////////////////
+		
 		g_GraphicEntity.Draw(g_pd3dDevice);
 		////.//////////////////////////////////////////////////////
 
@@ -240,10 +236,6 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                               WS_OVERLAPPEDWINDOW, 100, 100, HAUTEUR, LARGEUR,
                               NULL, NULL, wc.hInstance, NULL );
 
-	//Initialisation du temps :
-
-	g_fFrameTime = timeGetTime()/1000.f;
-
     if( SUCCEEDED( InitD3D( hWnd ) ) )
     {
         if( SUCCEEDED( InitGeometry() ) )
@@ -262,6 +254,9 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                 }
                 else
                     Render();
+
+				g_Timer.EndF();
+				g_Timer.EndE();
             }
         }
     }
