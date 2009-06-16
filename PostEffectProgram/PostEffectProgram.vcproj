@@ -208,6 +208,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Src\Material.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Material.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Src\Mesh.cpp"
 				>
 			</File>

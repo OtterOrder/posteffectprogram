@@ -1,23 +1,6 @@
-
-//******************************************************************************************************************************
-float4 PSMainGreen() : COLOR0
-{
-    return float4( 0.0f, 1.0f, 0.0f, 1.0f );
-}
-
-//******************************************************************************************************************************
-float4 PSMainRed() : COLOR0
-{
-    return float4( 1.0f, 0.0f, 0.0f, 1.0f );
-}
-
-//******************************************************************************************************************************
-texture g_MeshTexture : TEX2;
-
-sampler MeshSampler = 
+sampler DiffuseSampler = 
 sampler_state
 {
-    Texture = <g_MeshTexture>;
     AddressU  = WRAP;        
 	AddressV  = WRAP;
     MipFilter = LINEAR;
@@ -25,9 +8,33 @@ sampler_state
     MagFilter = LINEAR;
 };
 
-float4 PSAlbedoDisplay (float2 _uv : TEXCOORD0)	: COLOR0
+sampler NormalSampler = 
+sampler_state
 {
-	return tex2D(MeshSampler, _uv);
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+float4 PSTextureDisplay (float2 _uv : TEXCOORD0)	: COLOR0
+{
+	float4 diffuseColor = tex2D(DiffuseSampler, _uv);
+	float4 normalColor = tex2D(NormalSampler, _uv);
+
+	bool DisplayDiffuse = true;
+
+	if (DisplayDiffuse == true)
+	{
+		diffuseColor.a = normalColor.a;
+		return diffuseColor;
+	}
+	else
+	{
+		normalColor.a = diffuseColor.a;
+		return normalColor;
+	}
 }
 
 //******************************************************************************************************************************

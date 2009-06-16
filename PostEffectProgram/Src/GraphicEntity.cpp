@@ -3,9 +3,8 @@
 //******************************************************************************************************************************
 GraphicEntity::GraphicEntity(void)
 {
-	m_pMesh = NULL;
-	m_pShader = NULL;
-	m_pTexture = NULL;
+	m_pMesh		= NULL;
+	m_pMaterial	= NULL;
 }
 
 //******************************************************************************************************************************
@@ -18,16 +17,13 @@ GraphicEntity::~GraphicEntity(void)
 void GraphicEntity::Release ()
 {
 	SAFE_DELETE(m_pMesh);
-	SAFE_DELETE(m_pShader);
-
-	SAFE_DELETE(m_pTexture);
+	SAFE_DELETE(m_pMaterial);
 }
 
 //******************************************************************************************************************************
 HRESULT GraphicEntity::Initialize(PDevice _pDevice, cStr _meshFileName, cStr _vertexShaderFileName, cStr _vertexEntryPoint, cStr _pixelShaderFileName, cStr _pixelEntryPoint)
 {
-	if(!m_pMesh)
-		m_pMesh  = new Mesh();
+	SAFE_NEW(m_pMesh, Mesh);
 
 	if ( FAILED(m_pMesh->LoadFromXFile(_pDevice, _meshFileName)) )
 	{
@@ -37,10 +33,8 @@ HRESULT GraphicEntity::Initialize(PDevice _pDevice, cStr _meshFileName, cStr _ve
 
 	if (_vertexShaderFileName || _pixelShaderFileName)
 	{
-		if(!m_pShader)
-			m_pShader  = new Shader();
-
-		m_pShader->Load(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
+		SAFE_NEW(m_pMaterial, Material);
+		m_pMaterial->SetShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
 	}
 
 	return S_OK;
@@ -52,12 +46,8 @@ void GraphicEntity::Draw (PDevice _pDevice)
 	if (!m_pMesh)
 		return;
 
-	if (m_pShader)
-	{
-		m_pShader->Activate(_pDevice);
-
-		_pDevice->SetTexture(0, m_pTexture->m_pTexture);	////.
-	}
+	if (m_pMaterial)
+		m_pMaterial->Apply(_pDevice);
 
 	_pDevice->SetFVF(m_pMesh->m_FVF);
 
@@ -65,31 +55,4 @@ void GraphicEntity::Draw (PDevice _pDevice)
 	_pDevice->SetIndices(m_pMesh->m_pIB);
 
 	_pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, m_pMesh->m_NbVertices, 0, m_pMesh->m_NbFaces);
-}
-
-//******************************************************************************************************************************
-HRESULT GraphicEntity::SetVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint)
-{
-	if(!m_pShader)
-		m_pShader = new Shader();
-
-	return m_pShader->LoadVertexShader(_pDevice, _fileName, _entryPoint);
-}
-
-//******************************************************************************************************************************
-HRESULT GraphicEntity::SetPixelShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint)
-{
-	if(!m_pShader)
-		m_pShader = new Shader();
-
-	return m_pShader->LoadPixelShader(_pDevice, _fileName, _entryPoint);
-}
-
-//******************************************************************************************************************************
-HRESULT GraphicEntity::SetTexture	(PDevice _pDevice, cStr _fileName)
-{
-	if(!m_pTexture)
-		m_pTexture = new Texture();
-
-	return m_pTexture->LoadFromDdsFile(_pDevice, _fileName);
 }

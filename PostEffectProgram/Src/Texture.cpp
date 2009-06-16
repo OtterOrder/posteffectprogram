@@ -21,6 +21,8 @@ void Texture::Release ()
 //******************************************************************************************************************************
 HRESULT Texture::LoadFromDdsFile (PDevice _pDevice, cStr _pFileName)
 {
+	Release();
+
 	if( FAILED( D3DXCreateTextureFromFileEx(_pDevice,
 											_pFileName,
 											D3DX_DEFAULT,
@@ -39,5 +41,6 @@ HRESULT Texture::LoadFromDdsFile (PDevice _pDevice, cStr _pFileName)
 		m_pTexture = NULL;
 		return E_FAIL;
 	}
+
 	return S_OK;
 }

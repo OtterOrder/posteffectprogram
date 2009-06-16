@@ -12,11 +12,11 @@ public:
 	virtual ~Shader(void);
 
 //protected:
-	PVertexShader		m_pVertexShader;
-	PPixelShader		m_pPixelShader;
+	PVertexShader			m_pVertexShader;
+	PPixelShader			m_pPixelShader;
 
-	LPD3DXCONSTANTTABLE			m_pVertexConstantTable;
-	LPD3DXCONSTANTTABLE			m_pPixelConstantTable;
+	LPD3DXCONSTANTTABLE		m_pVertexConstantTable;
+	LPD3DXCONSTANTTABLE		m_pPixelConstantTable;
 
 public:
 	HRESULT Load				(PDevice _pDevice,
@@ -26,5 +26,8 @@ public:
 	HRESULT LoadVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
 	HRESULT LoadPixelShader		(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
 
-	void Activate (PDevice _pDevice);
+	void Activate				(PDevice _pDevice);
+
+	void SetVSSampler			(PDevice _pDevice, cStr _samplerName, PTexture _texture);
+	void SetPSSampler			(PDevice _pDevice, cStr _samplerName, PTexture _texture);
 };

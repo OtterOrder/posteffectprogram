@@ -115,8 +115,11 @@ HRESULT InitGeometry()
 
 	////. Test ////////////////////////////////////////////////
 	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
-	g_GraphicEntity.SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds");
-	g_GraphicEntity.SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.fs", "PSAlbedoDisplay");
+
+	g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
+	g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
+
+	g_GraphicEntity.GetMaterial()->SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.fs", "PSTextureDisplay");
 	////. /////////////////////////////////////////////////////
 
     return S_OK;
@@ -142,7 +145,7 @@ VOID SetupMatrices()
 	g_pd3dDevice->SetTransform(D3DTS_VIEW, g_pCamera.GetViewMatrix());
 
 
-	g_pCamera.SetProjParams(D3DX_PI/4, (float)HAUTEUR/LARGEUR, 2.0f, 4000.f);
+	g_pCamera.SetProjParams(D3DX_PI/4, (float)HAUTEUR/LARGEUR, 0.1f, 100.f);
     g_pd3dDevice->SetTransform( D3DTS_PROJECTION, g_pCamera.GetProjMatrix() );
 }
 
