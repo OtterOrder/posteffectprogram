@@ -13,6 +13,7 @@ public:
 private:
 	Mesh*		m_pMesh;
 	Material*	m_pMaterial;
+	D3DXMATRIX  m_WorldMatrix;
 
 public:
 	GraphicEntity(void);
@@ -24,4 +25,5 @@ public:
 	void Draw (PDevice _pDevice);
 
 	Material*	GetMaterial()	{ SAFE_NEW(m_pMaterial, Material); return m_pMaterial; };
+	D3DXMATRIX	GetWorldMatrix() { return m_WorldMatrix;}
 };

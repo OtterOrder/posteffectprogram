@@ -190,8 +190,12 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Types"
+			Name="Misc"
 			>
+			<File
+				RelativePath=".\Include\Singleton.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Include\Types.h"
 				>
