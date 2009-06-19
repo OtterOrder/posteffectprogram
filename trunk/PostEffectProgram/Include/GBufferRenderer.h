@@ -1,33 +1,39 @@
 #pragma once
 
-#include "GraphicEntity.h"
+#include "Singleton.h"
+#include "Types.h"
+#include "Camera.h"
 #include <list>
+#include <d3d9.h>
+
+class Scene;
 
 
-class GBufferRenderer
+class GBufferRenderer : public Singleton < GBufferRenderer >
 {
 public:
-	GBufferRenderer() {}
-	~GBufferRenderer() {}
+	GBufferRenderer();
+	~GBufferRenderer();
 
 	struct GBuffer
 	{
-		IDirect3DTexture9* m_pRTSceneNormalMap;
-		IDirect3DTexture9* m_pRTSceneDiffuseMap;
-		IDirect3DTexture9* m_pRTDepthMap;
+		PTexture m_pRTSceneNormalMap;
+		PTexture m_pRTSceneDiffuseMap;
+		PTexture m_pRTDepthMap;
 	};
 
 	
-	void RenderScene(){}
+	void RenderScene();
 
 
 protected:
 
-	void ComputeMatrices() {}
+	void RenderGBufferPass();
+	void ComputeMatrices();
+	void Render();
 
-	// Scene
-
-private:
+	Scene*					m_pScene;			 // Scene 3d
+	CFirstPersonCamera 	    m_Camera;			 // Camera FPS
 
 
 };
