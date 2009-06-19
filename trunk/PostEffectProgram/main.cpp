@@ -1,6 +1,5 @@
 
 #include <Windows.h>
-#include <mmsystem.h>
 #include <d3dx9.h>
 #pragma warning( disable : 4996 )
 #include <strsafe.h>
@@ -17,7 +16,6 @@
 
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
-LPDIRECT3DVERTEXBUFFER9 g_pVB        = NULL;
 CFirstPersonCamera 	    g_pCamera;
 Time					g_Timer;
 
@@ -32,7 +30,6 @@ struct DEFAULT_VERTEX
 	DWORD COLOR;
 };
 #define DEFAULT_FVF (D3DFVF_XYZ|D3DFVF_DIFFUSE)
-
 
 
 
@@ -68,51 +65,6 @@ HRESULT InitD3D( HWND hWnd )
 
 HRESULT InitGeometry()
 {
-    DEFAULT_VERTEX sommets[]=
-	{
-	{-20.f, 0.f, 20.f, 0x00000000}, 
-	{20.f, 0.f, 20.f, 0x00000000},
-	{-20.f, 0.f, 10.f, 0x00000000}, 
-	{20.f, 0.f, 10.f, 0x00000000}, 
-	{-20.f, 0.f, 0.f, 0x00000000}, 
-	{20.f, 0.f, 0.f, 0x00000000}, 
-	{-20.f, 0.f, -10.f, 0x00000000}, 
-	{20.f, 0.f, -10.f, 0x00000000}, 
-	{-20.f, 0.f, -20.f, 0x00000000}, 
-	{20.f, 0.f, -20.f, 0x00000000}, 
-
-	{20.f, 0.f, -20.f, 0x00000000}, 
-	{20.f, 0.f, 20.f, 0x00000000},
-	{10.f, 0.f, -20.f, 0x00000000}, 
-	{10.f, 0.f, 20.f, 0x00000000}, 
-	{0.0f, 0.f, -20.f, 0x00000000}, 
-	{0.0f, 0.0f, 20.f, 0x00000000}, 
-	{-10.f, 0.f, -20.f, 0x00000000}, 
-	{-10.f, 0.f, 20.f, 0x00000000}, 
-	{-20.f, 0.f, -20.f, 0x00000000}, 
-	{-20.f, 0.f, 20.f, 0x00000000}, 
-	
-	};
-
-	if(FAILED(g_pd3dDevice->CreateVertexBuffer(
-		sizeof(sommets),
-		D3DUSAGE_WRITEONLY,
-		DEFAULT_FVF,
-		D3DPOOL_DEFAULT,
-		&g_pVB,
-		NULL))
-	)
-		return E_FAIL;
-
-	void * psommets;
-
-	if(FAILED(g_pVB->Lock(0, sizeof(sommets), (void **)&psommets, 0)))
-		return E_FAIL;
-
-	memcpy(psommets,sommets,sizeof(sommets));
-
-	g_pVB->Unlock();
-
 	////. Test ////////////////////////////////////////////////
 	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
 
@@ -127,9 +79,6 @@ HRESULT InitGeometry()
 
 VOID Cleanup()
 {
-    if( g_pVB != NULL )
-        g_pVB->Release();
-
     if( g_pd3dDevice != NULL )
         g_pd3dDevice->Release();
 
@@ -166,12 +115,6 @@ VOID Render()
     {
 
         SetupMatrices();
-
-		g_pd3dDevice->SetFVF(DEFAULT_FVF);
-
-		g_pd3dDevice->SetStreamSource(0, g_pVB, 0, sizeof(DEFAULT_VERTEX));
-
-		g_pd3dDevice->DrawPrimitive(D3DPT_LINELIST, 0, 10);
 
 		////. Test ////////////////////////////////////////////////
 		

@@ -129,7 +129,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib Winmm.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -241,6 +241,18 @@
 			</File>
 			<File
 				RelativePath=".\Include\Time.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Deferred shading"
+			>
+			<File
+				RelativePath=".\Src\GBufferRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\GBufferRenderer.h"
 				>
 			</File>
 		</Filter>
