@@ -40,6 +40,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\Include"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -221,6 +222,14 @@
 			</File>
 			<File
 				RelativePath=".\Include\Mesh.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Src\Scene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Scene.h"
 				>
 			</File>
 			<File
