@@ -1,6 +1,7 @@
 
 #include <Windows.h>
 #include <d3dx9.h>
+#pragma warning( disable : 4995 )
 #pragma warning( disable : 4996 )
 #include <strsafe.h>
 #pragma warning( default : 4996 )
@@ -57,6 +58,8 @@ HRESULT InitD3D( HWND hWnd )
     g_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 
     g_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
+
+	g_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE);
 
 
     return S_OK;

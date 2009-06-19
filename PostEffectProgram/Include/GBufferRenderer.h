@@ -10,9 +10,24 @@ public:
 	GBufferRenderer() {}
 	~GBufferRenderer() {}
 
+	struct GBuffer
+	{
+		IDirect3DTexture9* m_pRTSceneNormalMap;
+		IDirect3DTexture9* m_pRTSceneDiffuseMap;
+		IDirect3DTexture9* m_pRTDepthMap;
+	};
+
+	
+	void RenderScene(){}
+
+
 protected:
 
-	std::list<GraphicEntity *> m_pEntityList;    // Liste des entités graphiques
+	void ComputeMatrices() {}
+
+	// Scene
+
+private:
 
 
 };
