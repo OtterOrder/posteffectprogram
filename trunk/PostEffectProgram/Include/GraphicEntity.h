@@ -7,10 +7,12 @@
 
 class GraphicEntity
 {
+public:
+	DefineVectorIterator(GraphicEntity, Iterator);
+
+private:
 	Mesh*		m_pMesh;
 	Material*	m_pMaterial;
-
-	// ToDo : Use material containing all textures
 
 public:
 	GraphicEntity(void);

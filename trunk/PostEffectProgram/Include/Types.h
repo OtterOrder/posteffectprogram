@@ -26,6 +26,11 @@
 							}						\
 
 //******************************************************************************************************************************
+#include <vector>
+
+#define DefineVectorIterator(type, name)	typedef std::vector< type* >::iterator name
+
+//******************************************************************************************************************************
 typedef unsigned char	u8;
 typedef signed char		s8;
 typedef unsigned short	u16;
