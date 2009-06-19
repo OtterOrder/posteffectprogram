@@ -23,7 +23,7 @@ float4 PSTextureDisplay (float2 _uv : TEXCOORD0)	: COLOR0
 	float4 diffuseColor = tex2D(DiffuseSampler, _uv);
 	float4 normalColor = tex2D(NormalSampler, _uv);
 
-	bool DisplayDiffuse = true;
+	bool DisplayDiffuse = false;
 
 	if (DisplayDiffuse == true)
 	{

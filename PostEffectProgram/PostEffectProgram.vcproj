@@ -245,6 +245,18 @@
 			</File>
 		</Filter>
 		<Filter
+			Name="PostProcesses"
+			>
+			<File
+				RelativePath=".\Src\RenderTarget.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\RenderTarget.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="Deferred shading"
 			>
 			<File

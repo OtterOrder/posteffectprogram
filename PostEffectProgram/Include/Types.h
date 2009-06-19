@@ -47,4 +47,5 @@ typedef const char*		cStr;
 #define PPixelShader	LPDIRECT3DPIXELSHADER9
 
 #define PTexture		LPDIRECT3DTEXTURE9
+#define PSurface		LPDIRECT3DSURFACE9
 #define ImageInfo		D3DXIMAGE_INFO
