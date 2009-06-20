@@ -15,8 +15,8 @@ public:
 		Normal
 	};
 
-	Texture* m_pDiffuseMap;
-	Texture* m_pNormalMap;
+	Texture*	m_pDiffuseMap;
+	Texture*	m_pNormalMap;
 
 	Shader*		m_pShader;
 

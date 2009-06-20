@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Singleton.h"
-#include "Types.h"
-#include "Camera.h"
+#include "Misc.h"
 #include "Time.h"
+
+#include "Camera.h"
+#include "RenderTarget.h"
+
 #include <vector>
 #include <d3d9.h>
 
@@ -11,20 +14,19 @@ class Scene;
 class GraphicEntity;
 
 
+struct GBuffer
+{
+	RenderTarget m_pRTSceneNormalMap;
+	RenderTarget m_pRTSceneDiffuseMap;
+	RenderTarget m_pRTDepthMap;
+};
+
 class GBufferRenderer : public Singleton < GBufferRenderer >
 {
 public:
 	GBufferRenderer();
 	~GBufferRenderer();
 
-	struct GBuffer
-	{
-		PTexture m_pRTSceneNormalMap;
-		PTexture m_pRTSceneDiffuseMap;
-		PTexture m_pRTDepthMap;
-	};
-
-	
 	CFirstPersonCamera  GetCamera() {return m_Camera;}
 	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames

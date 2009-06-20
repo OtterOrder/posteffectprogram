@@ -1,65 +1,40 @@
 
 //******************************************************************************************************************************
-#define SAFE_DELETE(p)		{						\
-								if (p)				\
-								{					\
-									delete p;		\
-									p = NULL;		\
-								}					\
-							}						\
+typedef 	unsigned char			u8;
+typedef 	signed char				s8;
+typedef 	unsigned short			u16;
+typedef 	signed short			s16;
+typedef 	unsigned int			u32;
+typedef 	signed int				s32;
+typedef 	unsigned long			u64;
+typedef 	signed long				s64;
+
+typedef 	const char*				cStr;
 
 //******************************************************************************************************************************
-#define SAFE_RELEASE(p)		{						\
-								if (p)				\
-								{					\
-									p->Release();	\
-									p = NULL;		\
-								}					\
-							}						\
+#define 	PDevice					LPDIRECT3DDEVICE9
 
-//******************************************************************************************************************************
-#define SAFE_NEW(p, type)	{						\
-								if (!p)				\
-								{					\
-									p = new type;	\
-								}					\
-							}						\
+//-------------------------------------------------------------
+#define 	PVertexBuffer			LPDIRECT3DVERTEXBUFFER9
+#define 	PIndexBuffer			LPDIRECT3DINDEXBUFFER9
 
-//******************************************************************************************************************************
-#define Warning(str)	{									\
-							OutputDebugStr("Warning : ");	\
-							OutputDebugStr(str);			\
-							OutputDebugStr("\n");			\
-						}									\
+//-------------------------------------------------------------
+#define		PVertexShader			LPDIRECT3DVERTEXSHADER9
+#define 	PPixelShader			LPDIRECT3DPIXELSHADER9
+#define 	PConstantTable			LPD3DXCONSTANTTABLE
+#define 	ConstantDesc			D3DXCONSTANT_DESC
+#define 	Handle					D3DXHANDLE
 
-//******************************************************************************************************************************
-#include <vector>
+//-------------------------------------------------------------
+#define 	PTexture				LPDIRECT3DTEXTURE9
+#define 	PSurface				LPDIRECT3DSURFACE9
+#define 	ImageInfo				D3DXIMAGE_INFO
 
-#define DefineVectorIterator(type, name)	typedef std::vector< type* >::iterator name
+//-------------------------------------------------------------
+#define		Matrix					D3DXMATRIX
+#define 	MatrixMultiply			D3DXMatrixMultiply
+#define 	MatrixIdentity			D3DXMatrixIdentity
 
-//******************************************************************************************************************************
-typedef unsigned char	u8;
-typedef signed char		s8;
-typedef unsigned short	u16;
-typedef signed short	s16;
-typedef unsigned int	u32;
-typedef signed int		s32;
-typedef unsigned long	u64;
-typedef signed long		s64;
-
-typedef const char*		cStr;
-
-//******************************************************************************************************************************
-#define PDevice			LPDIRECT3DDEVICE9
-
-#define PVertexBuffer	LPDIRECT3DVERTEXBUFFER9
-#define PIndexBuffer	LPDIRECT3DINDEXBUFFER9
-
-#define	PVertexShader	LPDIRECT3DVERTEXSHADER9
-#define PPixelShader	LPDIRECT3DPIXELSHADER9
-
-#define PTexture		LPDIRECT3DTEXTURE9
-#define PSurface		LPDIRECT3DSURFACE9
-#define ImageInfo		D3DXIMAGE_INFO
-
-#define	Matrix			D3DXMATRIX
+//-------------------------------------------------------------
+#define		Vector3f				D3DXVECTOR3
+#define		Vector4f				D3DXVECTOR4
