@@ -1,12 +1,12 @@
 
 //******************************************************************************************************************************
-#define SAFE_DELETE(p)		{					\
-								if (p)			\
-								{				\
-									delete p;	\
-									p = NULL;	\
-								}				\
-							}					\
+#define SAFE_DELETE(p)		{						\
+								if (p)				\
+								{					\
+									delete p;		\
+									p = NULL;		\
+								}					\
+							}						\
 
 //******************************************************************************************************************************
 #define SAFE_RELEASE(p)		{						\
@@ -24,6 +24,13 @@
 									p = new type;	\
 								}					\
 							}						\
+
+//******************************************************************************************************************************
+#define Warning(str)	{									\
+							OutputDebugStr("Warning : ");	\
+							OutputDebugStr(str);			\
+							OutputDebugStr("\n");			\
+						}									\
 
 //******************************************************************************************************************************
 #include <vector>
@@ -54,3 +61,5 @@ typedef const char*		cStr;
 #define PTexture		LPDIRECT3DTEXTURE9
 #define PSurface		LPDIRECT3DSURFACE9
 #define ImageInfo		D3DXIMAGE_INFO
+
+#define	Matrix			D3DXMATRIX
