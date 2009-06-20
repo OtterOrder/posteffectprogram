@@ -21,6 +21,9 @@ public:
 	GraphicEntity*	CreateGraphicEntity ();
 	//Light*			CreateLight ();
 
-	void			DeleteGraphicObject (GraphicEntity* _pGraphicEntity);
+	void			DeleteGraphicEntity (GraphicEntity* _pGraphicEntity);
 	//void			DeleteLight (Light* _pLight);
+
+	vector<GraphicEntity*>*		GetGraphicEntityList ()		{ return &m_pEntitiesList; };
+	//vector<Light*>*				GetLightList ()				{ return &m_pLightsList; };
 };
