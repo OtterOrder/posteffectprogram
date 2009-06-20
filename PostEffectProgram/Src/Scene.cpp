@@ -17,7 +17,7 @@ Light* Scene::CreateLight ()
 //*/
 
 //******************************************************************************************************************************
-void Scene::DeleteGraphicObject (GraphicEntity* _pGraphicEntity)
+void Scene::DeleteGraphicEntity (GraphicEntity* _pGraphicEntity)
 {
 	GraphicEntity::Iterator GEntityIt;
 
