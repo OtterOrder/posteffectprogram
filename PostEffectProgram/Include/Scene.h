@@ -5,6 +5,7 @@
 
 #include "Types.h"
 #include "GraphicEntity.h"
+#include "Light.h"
 
 #include <vector>
 using namespace std;
@@ -12,18 +13,18 @@ using namespace std;
 class Scene
 {
 	vector<GraphicEntity*>	m_pEntitiesList;
-	//vector<*Light>			m_pLightsList;
+	vector<Light*>			m_pLightsList;
 
 public:
 	Scene ()	{};
 	~Scene ()	{};
 
 	GraphicEntity*	CreateGraphicEntity ();
-	//Light*			CreateLight ();
+	Light*			CreateLight (Light::Type _type);
 
 	void			DeleteGraphicEntity (GraphicEntity* _pGraphicEntity);
-	//void			DeleteLight (Light* _pLight);
+	void			DeleteLight (Light* _pLight);
 
 	vector<GraphicEntity*>*		GetGraphicEntityList ()		{ return &m_pEntitiesList; };
-	//vector<Light*>*				GetLightList ()				{ return &m_pLightsList; };
+	vector<Light*>*				GetLightList ()				{ return &m_pLightsList; };
 };

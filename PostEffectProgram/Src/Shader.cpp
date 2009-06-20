@@ -124,13 +124,13 @@ void Shader::Activate (PDevice _pDevice)
 }
 
 //******************************************************************************************************************************
-void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _samplerName, const PTexture& _texture)
+void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture& _texture)
 {
 	if (!(_pDevice && _constTable && _texture))
 		return;
 
-	Handle textureHdl = _constTable->GetConstantByName(0, _samplerName);
-	//WarningReturn(textureHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	Handle textureHdl = _constTable->GetConstantByName(0, _name);
+	WarningReturn(textureHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
 	ConstantDesc textureDesc;
 	u32 count;
@@ -146,7 +146,7 @@ void Shader::SetInt (PDevice _pDevice, PConstantTable& _constTable, cStr _name, 
 		return;
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
 	_constTable->SetInt(_pDevice, varHdl, _value);
 }
@@ -158,7 +158,7 @@ void Shader::SetFloat (PDevice _pDevice, PConstantTable& _constTable, cStr _name
 		return;
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
 	_constTable->SetFloat(_pDevice, varHdl, _value);
 }
@@ -170,7 +170,7 @@ void Shader::SetMatrix (PDevice _pDevice, PConstantTable& _constTable, cStr _nam
 		return;
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
 	_constTable->SetMatrix(_pDevice, varHdl, &_matrix);
 }

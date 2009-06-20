@@ -1,3 +1,5 @@
+#include <d3d9.h>
+#include <d3dx9.h>
 
 //******************************************************************************************************************************
 typedef 	unsigned char			u8;
@@ -31,10 +33,14 @@ typedef 	const char*				cStr;
 #define 	ImageInfo				D3DXIMAGE_INFO
 
 //-------------------------------------------------------------
-#define		Matrix					D3DXMATRIX
+typedef		D3DXMATRIX				Matrix;
 #define 	MatrixMultiply			D3DXMatrixMultiply
 #define 	MatrixIdentity			D3DXMatrixIdentity
 
 //-------------------------------------------------------------
+/*
 #define		Vector3f				D3DXVECTOR3
 #define		Vector4f				D3DXVECTOR4
+*/
+typedef		D3DXVECTOR3				Vector3f;
+typedef		D3DXVECTOR4				Vector4f;

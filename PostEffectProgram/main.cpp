@@ -71,11 +71,10 @@ HRESULT InitGeometry()
 	////. Test ////////////////////////////////////////////////
 	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
 
-	g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
-	g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
+	//g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
+	//g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
 
-	//g_GraphicEntity.GetMaterial()->SetPixelShader(g_pd3dDevice, "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
-	g_GraphicEntity.GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
+	//g_GraphicEntity.GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
 	////. /////////////////////////////////////////////////////
 
     return S_OK;

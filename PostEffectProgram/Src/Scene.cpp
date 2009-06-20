@@ -8,13 +8,22 @@ GraphicEntity* Scene::CreateGraphicEntity ()
 }
 
 //******************************************************************************************************************************
-/*
-Light* Scene::CreateLight ()
+Light* Scene::CreateLight (Light::Type _type)
 {
-	m_pEntitiesList.push_back(new Light());
-	return m_pEntitiesList.back();
+	Light* newLight = NULL;
+	
+	if (_type == Light::Directional)
+		newLight = new DirectionalLight();
+	else
+	if (_type == Light::Point)
+		newLight = new PointLight();
+	else
+	if (_type == Light::Spot)
+		newLight = new SpotLight();
+
+	m_pLightsList.push_back(newLight);
+	return newLight;
 }
-//*/
 
 //******************************************************************************************************************************
 void Scene::DeleteGraphicEntity (GraphicEntity* _pGraphicEntity)
@@ -33,7 +42,6 @@ void Scene::DeleteGraphicEntity (GraphicEntity* _pGraphicEntity)
 }
 
 //******************************************************************************************************************************
-/*
 void Scene::DeleteLight (Light* _pLight)
 {
 	Light::Iterator LightIt;
@@ -48,4 +56,3 @@ void Scene::DeleteLight (Light* _pLight)
 		}
 	}
 }
-//*/
