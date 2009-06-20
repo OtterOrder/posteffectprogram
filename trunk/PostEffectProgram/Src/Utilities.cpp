@@ -2,12 +2,14 @@
 
 #include "windows.h"
 
-void Warning(bool _test, cStr _str)
+bool Warning(bool _test, cStr _str)
 {
 	if (_test)
-		return;
+		return false;
 
 	OutputDebugStr("Warning : ");
 	OutputDebugStr(_str);
 	OutputDebugStr("\n");
+
+	return true;
 }

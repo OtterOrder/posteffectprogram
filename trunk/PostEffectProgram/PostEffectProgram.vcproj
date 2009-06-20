@@ -214,6 +214,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Src\Light.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Light.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Src\Material.cpp"
 				>
 			</File>
