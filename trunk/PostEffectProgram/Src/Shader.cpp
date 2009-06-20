@@ -1,5 +1,11 @@
 #include	"Shader.h"
 
+#define		DEFAULT_VS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultVS.vsh"
+#define		DEFAULT_PS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultPS.psh"
+
+#define		DEFAULT_VS_ENTRY	"VSMain"
+#define		DEFAULT_PS_ENTRY	"PSMain"
+
 //******************************************************************************************************************************
 Shader::Shader(void)
 {
@@ -23,12 +29,26 @@ HRESULT Shader::Load (PDevice _pDevice,
 					  cStr _pixelShaderFileName , cStr _pixelEntryPoint )
 {
 	if(_vertexShaderFileName)
-		if(FAILED(LoadVertexShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint)))
+	{
+		if ( FAILED(LoadVertexShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint)) )
 			return E_FAIL;
+	}
+	else
+	{
+		if ( FAILED(LoadVertexShader(_pDevice, DEFAULT_VS_PATH, DEFAULT_VS_ENTRY)) )
+			return E_FAIL;
+	}
 
 	if(_pixelShaderFileName)
-		if(FAILED(LoadPixelShader(_pDevice, _pixelShaderFileName, _pixelEntryPoint)))
+	{
+		if ( FAILED(LoadPixelShader(_pDevice, _pixelShaderFileName, _pixelEntryPoint)) )
 			return E_FAIL;
+	}
+	else
+	{
+		if ( FAILED(LoadPixelShader(_pDevice, DEFAULT_PS_PATH, DEFAULT_PS_ENTRY)) )
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -104,31 +124,53 @@ void Shader::Activate (PDevice _pDevice)
 }
 
 //******************************************************************************************************************************
-void Shader::SetVSSampler (PDevice _pDevice, cStr _samplerName, PTexture _texture)
+void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _samplerName, const PTexture& _texture)
 {
-	if (!(_pDevice && m_pVertexConstantTable && _texture))
+	if (!(_pDevice && _constTable && _texture))
 		return;
 
-	D3DXHANDLE textureHdl = m_pVertexConstantTable->GetConstantByName(0, _samplerName);
+	Handle textureHdl = _constTable->GetConstantByName(0, _samplerName);
+	//WarningReturn(textureHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
-	D3DXCONSTANT_DESC textureDesc;
+	ConstantDesc textureDesc;
 	u32 count;
 
-	m_pVertexConstantTable->GetConstantDesc(textureHdl, &textureDesc, &count);
+	_constTable->GetConstantDesc(textureHdl, &textureDesc, &count);
 	_pDevice->SetTexture(textureDesc.RegisterIndex, _texture);
 }
 
 //******************************************************************************************************************************
-void Shader::SetPSSampler (PDevice _pDevice, cStr _samplerName, PTexture _texture)
+void Shader::SetInt (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const u32& _value)
 {
-	if (!(_pDevice && m_pPixelConstantTable && _texture))
+	if (!(_pDevice && _constTable ))
 		return;
 
-	D3DXHANDLE textureHdl = m_pPixelConstantTable->GetConstantByName(0, _samplerName);
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
-	D3DXCONSTANT_DESC textureDesc;
-	u32 count;
+	_constTable->SetInt(_pDevice, varHdl, _value);
+}
 
-	m_pPixelConstantTable->GetConstantDesc(textureHdl, &textureDesc, &count);
-	_pDevice->SetTexture(textureDesc.RegisterIndex, _texture);
+//******************************************************************************************************************************
+void Shader::SetFloat (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const float& _value)
+{
+	if (!(_pDevice && _constTable ))
+		return;
+
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+
+	_constTable->SetFloat(_pDevice, varHdl, _value);
+}
+
+//******************************************************************************************************************************
+void Shader::SetMatrix (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const Matrix& _matrix)
+{
+	if (!(_pDevice && _constTable ))
+		return;
+
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	//WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+
+	_constTable->SetMatrix(_pDevice, varHdl, &_matrix);
 }

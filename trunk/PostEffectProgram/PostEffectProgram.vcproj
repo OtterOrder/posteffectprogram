@@ -44,6 +44,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -178,20 +179,12 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Shader"
-			>
-			<File
-				RelativePath=".\Src\Shader.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Shader.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Misc"
 			>
+			<File
+				RelativePath=".\Include\Misc.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Include\Singleton.h"
 				>
@@ -200,9 +193,17 @@
 				RelativePath=".\Include\Types.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Src\Utilities.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Utilities.h"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="Objects"
+			Name="Entities"
 			>
 			<File
 				RelativePath=".\Src\GraphicEntity.cpp"
@@ -244,6 +245,42 @@
 				RelativePath=".\Include\Texture.h"
 				>
 			</File>
+			<Filter
+				Name="Shader"
+				>
+				<File
+					RelativePath=".\Src\Shader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Shader.h"
+					>
+				</File>
+				<Filter
+					Name="Files"
+					>
+					<File
+						RelativePath="..\Datas\Shaders\PSTest.psh"
+						>
+					</File>
+					<File
+						RelativePath="..\Datas\Shaders\VSTest.vsh"
+						>
+					</File>
+					<Filter
+						Name="Defaults"
+						>
+						<File
+							RelativePath="..\Datas\Shaders\Defaults\DefaultPS.psh"
+							>
+						</File>
+						<File
+							RelativePath="..\Datas\Shaders\Defaults\DefaultVS.vsh"
+							>
+						</File>
+					</Filter>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Time"

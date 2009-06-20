@@ -1,10 +1,15 @@
 #include "GraphicEntity.h"
 
+#include "Camera.h"
+extern CFirstPersonCamera g_pCamera;	////.
+
 //******************************************************************************************************************************
 GraphicEntity::GraphicEntity(void)
 {
 	m_pMesh		= NULL;
 	m_pMaterial	= NULL;
+
+	MatrixIdentity(&m_WorldMatrix);
 }
 
 //******************************************************************************************************************************
@@ -31,11 +36,8 @@ HRESULT GraphicEntity::Initialize(PDevice _pDevice, cStr _meshFileName, cStr _ve
 		return E_FAIL;
 	}
 
-	if (_vertexShaderFileName || _pixelShaderFileName)
-	{
-		SAFE_NEW(m_pMaterial, Material);
-		m_pMaterial->SetShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
-	}
+	SAFE_NEW(m_pMaterial, Material);
+	m_pMaterial->SetShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
 
 	return S_OK;
 }
@@ -47,7 +49,17 @@ void GraphicEntity::Draw (PDevice _pDevice)
 		return;
 
 	if (m_pMaterial)
+	{
 		m_pMaterial->Apply(_pDevice);
+
+		////. Test
+		Matrix WorldViewProj;
+		MatrixMultiply(&WorldViewProj, &m_WorldMatrix, g_pCamera.GetViewMatrix());
+		MatrixMultiply(&WorldViewProj, &WorldViewProj, g_pCamera.GetProjMatrix());
+
+		m_pMaterial->m_pShader->SetVSMatrix(_pDevice, "g_mWorldViewProjection", WorldViewProj);
+		////. ////
+	}
 
 	_pDevice->SetFVF(m_pMesh->m_FVF);
 

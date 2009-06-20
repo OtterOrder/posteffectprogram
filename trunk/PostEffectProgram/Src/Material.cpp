@@ -32,7 +32,7 @@ void Material::Apply (PDevice _pDevice)
 
 	if (m_pDiffuseMap)
 		m_pShader->SetPSSampler(_pDevice, "DiffuseSampler", m_pDiffuseMap->m_pTexture);
-	
+
 	if (m_pNormalMap)
 		m_pShader->SetPSSampler(_pDevice, "NormalSampler", m_pNormalMap->m_pTexture);
 }
