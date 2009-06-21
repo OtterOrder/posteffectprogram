@@ -1,6 +1,31 @@
 #include "Scene.h"
 
 //******************************************************************************************************************************
+Scene::~Scene ()
+{
+	Destroy();
+}
+
+//******************************************************************************************************************************
+void Scene::Destroy ()
+{
+	GraphicEntity::Iterator GEntityIt;
+
+	for (GEntityIt = m_pEntitiesList.begin(); GEntityIt != m_pEntitiesList.end(); GEntityIt++)
+		SAFE_DELETE((*GEntityIt));
+
+	m_pEntitiesList.clear();
+
+
+	Light::Iterator LightIt;
+
+	for (LightIt = m_pLightsList.begin(); LightIt != m_pLightsList.end(); LightIt++)
+		SAFE_DELETE((*LightIt));
+
+	m_pLightsList.clear();
+}
+
+//******************************************************************************************************************************
 GraphicEntity* Scene::CreateGraphicEntity ()
 {
 	m_pEntitiesList.push_back(new GraphicEntity());
@@ -55,4 +80,13 @@ void Scene::DeleteLight (Light* _pLight)
 			return;
 		}
 	}
+}
+
+//******************************************************************************************************************************
+void Scene::Draw (PDevice _pDevice)
+{
+	GraphicEntity::Iterator GEntityIt;
+
+	for (GEntityIt = m_pEntitiesList.begin(); GEntityIt != m_pEntitiesList.end(); GEntityIt++)
+		(*GEntityIt)->Draw (_pDevice);
 }

@@ -17,7 +17,9 @@ class Scene
 
 public:
 	Scene ()	{};
-	~Scene ()	{};
+	~Scene ();
+
+	void	Destroy ();
 
 	GraphicEntity*	CreateGraphicEntity ();
 	Light*			CreateLight (Light::Type _type);
@@ -27,4 +29,6 @@ public:
 
 	vector<GraphicEntity*>*		GetGraphicEntityList ()		{ return &m_pEntitiesList; };
 	vector<Light*>*				GetLightList ()				{ return &m_pLightsList; };
+
+	void	Draw (PDevice _pDevice);
 };

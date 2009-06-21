@@ -21,8 +21,8 @@ CFirstPersonCamera 	    g_pCamera;
 Time					g_Timer;
 
 ////. Test
-#include "GraphicEntity.h"
-GraphicEntity g_GraphicEntity;
+#include "Scene.h"
+Scene	g_Scene;
 ////.
 
 struct DEFAULT_VERTEX
@@ -69,12 +69,13 @@ HRESULT InitD3D( HWND hWnd )
 HRESULT InitGeometry()
 {
 	////. Test ////////////////////////////////////////////////
-	g_GraphicEntity.Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
+	GraphicEntity* pGE = g_Scene.CreateGraphicEntity();
+	pGE->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
 
-	//g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
-	//g_GraphicEntity.GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
+	pGE->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
+	pGE->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
 
-	//g_GraphicEntity.GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
+	pGE->GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
 	////. /////////////////////////////////////////////////////
 
     return S_OK;
@@ -120,8 +121,7 @@ VOID Render()
         SetupMatrices();
 
 		////. Test ////////////////////////////////////////////////
-		
-		g_GraphicEntity.Draw(g_pd3dDevice);
+		g_Scene.Draw(g_pd3dDevice);
 		////. /////////////////////////////////////////////////////
 
         g_pd3dDevice->EndScene();
