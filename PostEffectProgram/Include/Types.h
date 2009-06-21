@@ -38,9 +38,5 @@ typedef		D3DXMATRIX				Matrix;
 #define 	MatrixIdentity			D3DXMatrixIdentity
 
 //-------------------------------------------------------------
-/*
-#define		Vector3f				D3DXVECTOR3
-#define		Vector4f				D3DXVECTOR4
-*/
 typedef		D3DXVECTOR3				Vector3f;
 typedef		D3DXVECTOR4				Vector4f;
