@@ -171,7 +171,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 
     }
 
-	g_pCamera.HandleMessages(hWnd, msg, wParam, lParam);
+	g_GBRenderer->HandleMessage(hWnd, msg, wParam, lParam);
 
     return DefWindowProc( hWnd, msg, wParam, lParam );
 } 
@@ -180,6 +180,11 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
+	// Initialisation GBufferRenderer
+
+	g_GBRenderer=GBufferRenderer::GetSingleton();
+
+
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
                       "PostEffectProgram", NULL };
@@ -188,10 +193,6 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
     HWND hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
                               WS_OVERLAPPEDWINDOW, 100, 100, HAUTEUR, LARGEUR,
                               NULL, NULL, wc.hInstance, NULL );
-
-	// Initialisation GBufferRenderer
-
-	g_GBRenderer=GBufferRenderer::GetSingleton();
 
     if( SUCCEEDED( InitD3D( hWnd ) ) )
     {

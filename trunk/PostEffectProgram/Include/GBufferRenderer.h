@@ -32,6 +32,7 @@ public:
 	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
 	void				Init(PDevice _Device);
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames
+	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 private:

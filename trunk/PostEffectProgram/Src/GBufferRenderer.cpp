@@ -83,3 +83,8 @@ void GBufferRenderer::Render()
 	m_Timer.EndE();
 
 }
+
+void GBufferRenderer::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	m_Camera.HandleMessages(hWnd, msg, wParam, lParam);
+}
