@@ -18,8 +18,6 @@
 
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
-CFirstPersonCamera 	    g_pCamera;
-Time					g_Timer;
 
 ////. Test
 #include "Scene.h"
@@ -87,51 +85,16 @@ HRESULT InitGeometry()
 
 VOID Cleanup()
 {
+	g_Scene.Destroy();
+
     if( g_pd3dDevice != NULL )
         g_pd3dDevice->Release();
 
     if( g_pD3D != NULL )
         g_pD3D->Release();
-}
 
-VOID SetupMatrices()
-{
-    D3DXMATRIXA16 matWorld;
-    D3DXMatrixIdentity( &matWorld );
-    g_pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
-	g_pd3dDevice->SetTransform(D3DTS_VIEW, g_pCamera.GetViewMatrix());
+	
 
-
-	g_pCamera.SetProjParams(D3DX_PI/4, (float)HAUTEUR/LARGEUR, 0.1f, 100.f);
-    g_pd3dDevice->SetTransform( D3DTS_PROJECTION, g_pCamera.GetProjMatrix() );
-}
-
-
-
-VOID Render()
-{
-
-	g_pCamera.FrameMove(g_Timer.GetDeltaTimeF());
-
-    g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
-                         D3DCOLOR_XRGB(0,0,125), 1.0f, 0 );
-
-	g_pd3dDevice->SetVertexShader(NULL);
-	g_pd3dDevice->SetPixelShader (NULL);
-
-    if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
-    {
-
-       // SetupMatrices();
-
-		////. Test ////////////////////////////////////////////////
-		//g_Scene.Draw(g_pd3dDevice);
-		////. /////////////////////////////////////////////////////
-
-        g_pd3dDevice->EndScene();
-    }
-
-    g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
 }
 
 
@@ -214,8 +177,6 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                 else
                     g_GBRenderer->RenderScene();
 
-				g_Timer.EndF();
-				g_Timer.EndE();
             }
         }
     }

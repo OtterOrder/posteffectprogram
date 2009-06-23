@@ -58,7 +58,7 @@ void GBufferRenderer::RenderGBufferPass()
 void GBufferRenderer::Render()
 {
 
-	m_Camera.FrameMove(m_Timer.GetDeltaTimeF());
+	m_Camera.FrameMove(m_Timer.GetDeltaTime());
 
     m_pDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,D3DCOLOR_XRGB(0,0,125), 1.0f, 0 );
 

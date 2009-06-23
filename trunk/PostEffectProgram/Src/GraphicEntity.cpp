@@ -1,7 +1,6 @@
 #include "GraphicEntity.h"
 
 #include "Camera.h"
-extern CFirstPersonCamera g_pCamera;	////.
 
 //******************************************************************************************************************************
 GraphicEntity::GraphicEntity(void)
@@ -51,14 +50,6 @@ void GraphicEntity::Draw (PDevice _pDevice)
 	if (m_pMaterial)
 	{
 		m_pMaterial->Apply(_pDevice);
-
-		////. Test
-		Matrix WorldViewProj;
-		MatrixMultiply(&WorldViewProj, &m_WorldMatrix, g_pCamera.GetViewMatrix());
-		MatrixMultiply(&WorldViewProj, &WorldViewProj, g_pCamera.GetProjMatrix());
-
-		m_pMaterial->m_pShader->SetVSMatrix(_pDevice, "g_mWorldViewProjection", WorldViewProj);
-		////. ////
 	}
 
 	_pDevice->SetFVF(m_pMesh->m_FVF);
