@@ -68,3 +68,14 @@ void GraphicEntity::Draw (PDevice _pDevice)
 
 	_pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, m_pMesh->m_NbVertices, 0, m_pMesh->m_NbFaces);
 }
+
+//******************************************************************************************************************************
+void GraphicEntity::DrawWithoutMaterial (PDevice _pDevice)
+{
+	_pDevice->SetFVF(m_pMesh->m_FVF);
+
+	_pDevice->SetStreamSource(0, m_pMesh->m_pVB, 0, m_pMesh->m_VertexSize);
+	_pDevice->SetIndices(m_pMesh->m_pIB);
+
+	_pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, m_pMesh->m_NbVertices, 0, m_pMesh->m_NbFaces);
+}
