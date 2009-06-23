@@ -72,6 +72,8 @@ void GBufferRenderer::Render()
 		m_GRendererMaterial.Apply(m_pDevice);
 		ComputeMatrices((*GEntityIt)->GetWorldMatrix());
 		(*GEntityIt)->DrawWithoutMaterial(m_pDevice);
+		m_GRendererMaterial.m_pDiffuseMap=NULL;
+		m_GRendererMaterial.m_pNormalMap=NULL;
 		
 	}
 

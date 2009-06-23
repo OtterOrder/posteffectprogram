@@ -86,6 +86,7 @@ HRESULT InitGeometry()
 VOID Cleanup()
 {
 	g_Scene.Destroy();
+	GBufferRenderer::GetSingleton()->Destroy();
 
     if( g_pd3dDevice != NULL )
         g_pd3dDevice->Release();
@@ -100,6 +101,8 @@ VOID Cleanup()
 
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
+	GBufferRenderer::GetSingleton()->HandleMessage(hWnd, msg, wParam, lParam);
+
     switch( msg )
     {
         case WM_DESTROY:
@@ -133,8 +136,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		    
 
     }
-
-	g_GBRenderer->HandleMessage(hWnd, msg, wParam, lParam);
 
     return DefWindowProc( hWnd, msg, wParam, lParam );
 } 
