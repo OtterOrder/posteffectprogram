@@ -21,6 +21,8 @@ Shader::~Shader(void)
 {
     SAFE_RELEASE(m_pVertexShader);
     SAFE_RELEASE(m_pPixelShader );
+	SAFE_RELEASE(m_pVertexConstantTable);
+	SAFE_RELEASE(m_pPixelConstantTable);
 }
 
 //******************************************************************************************************************************
