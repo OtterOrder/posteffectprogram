@@ -29,6 +29,4 @@ public:
 
 	vector<GraphicEntity*>*		GetGraphicEntityList ()		{ return &m_pEntitiesList; };
 	vector<Light*>*				GetLightList ()				{ return &m_pLightsList; };
-
-	void	Draw (PDevice _pDevice);
 };

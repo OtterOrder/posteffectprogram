@@ -6,6 +6,7 @@
 
 #include "Camera.h"
 #include "RenderTarget.h"
+#include "Material.h"
 
 #include <vector>
 #include <d3d9.h>
@@ -29,20 +30,22 @@ public:
 
 	CFirstPersonCamera  GetCamera() {return m_Camera;}
 	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
+	void				Init(PDevice _Device);
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames
 
 
 private:
 
 	void RenderGBufferPass();
-	void ComputeMatrices();
+	void ComputeMatrices(Matrix _world);
 	void Render();
 
 	PDevice							m_pDevice;
 	Scene*							m_pScene;			 // Scene 3d courante
+	Material						m_GRendererMaterial; // Matériau de rendu pour le GBuffer
 	std::vector<GraphicEntity*>*	m_pEntityList;		 // Liste des objets de la scène courante
 	CFirstPersonCamera 				m_Camera;			 // Camera FPS
-	D3DXMATRIX						m_mProjection;		 // Matrice de projection	
+	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
 
 
