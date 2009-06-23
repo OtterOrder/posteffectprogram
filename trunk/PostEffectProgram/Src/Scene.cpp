@@ -81,12 +81,3 @@ void Scene::DeleteLight (Light* _pLight)
 		}
 	}
 }
-
-//******************************************************************************************************************************
-void Scene::Draw (PDevice _pDevice)
-{
-	GraphicEntity::Iterator GEntityIt;
-
-	for (GEntityIt = m_pEntitiesList.begin(); GEntityIt != m_pEntitiesList.end(); GEntityIt++)
-		(*GEntityIt)->Draw (_pDevice);
-}

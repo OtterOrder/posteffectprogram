@@ -8,6 +8,7 @@
 
 #include "Camera.h"
 #include "Time.h"
+#include "GBufferRenderer.h"
 
 
 #define HAUTEUR 800
@@ -23,6 +24,7 @@ Time					g_Timer;
 ////. Test
 #include "Scene.h"
 Scene	g_Scene;
+GBufferRenderer * g_GBRenderer;
 ////.
 
 struct DEFAULT_VERTEX
@@ -78,6 +80,8 @@ HRESULT InitGeometry()
 	pGE->GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
 	////. /////////////////////////////////////////////////////
 
+	g_GBRenderer->SetScene(&g_Scene);
+
     return S_OK;
 }
 
@@ -118,10 +122,10 @@ VOID Render()
     if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
     {
 
-        SetupMatrices();
+       // SetupMatrices();
 
 		////. Test ////////////////////////////////////////////////
-		g_Scene.Draw(g_pd3dDevice);
+		//g_Scene.Draw(g_pd3dDevice);
 		////. /////////////////////////////////////////////////////
 
         g_pd3dDevice->EndScene();
@@ -185,8 +189,13 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                               WS_OVERLAPPEDWINDOW, 100, 100, HAUTEUR, LARGEUR,
                               NULL, NULL, wc.hInstance, NULL );
 
+	// Initialisation GBufferRenderer
+
+	g_GBRenderer=GBufferRenderer::GetSingleton();
+
     if( SUCCEEDED( InitD3D( hWnd ) ) )
     {
+		g_GBRenderer->Init(g_pd3dDevice);
         if( SUCCEEDED( InitGeometry() ) )
         {
             ShowWindow( hWnd, SW_SHOWDEFAULT );
@@ -202,7 +211,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                     DispatchMessage( &msg );
                 }
                 else
-                    Render();
+                    g_GBRenderer->RenderScene();
 
 				g_Timer.EndF();
 				g_Timer.EndE();

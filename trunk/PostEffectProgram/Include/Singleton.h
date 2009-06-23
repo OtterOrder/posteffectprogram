@@ -2,11 +2,11 @@
 
 #include <stdlib.h>
 
+
 template< typename T >
 class Singleton
 {
 public:
-
 
 	static T* GetSingleton( void )
 	{
@@ -40,4 +40,5 @@ private:
 
 template< typename T >
 T* Singleton< T >::m_Instance = NULL;
+
 
