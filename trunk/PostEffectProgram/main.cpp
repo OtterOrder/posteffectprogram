@@ -9,7 +9,7 @@
 #include "Camera.h"
 #include "Time.h"
 #include "GBufferRenderer.h"
-
+#include "Scene.h"
 
 #define HAUTEUR 800
 #define LARGEUR 600
@@ -19,11 +19,9 @@
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 
-////. Test
-#include "Scene.h"
 Scene	g_Scene;
 GBufferRenderer * g_GBRenderer;
-////.
+
 
 struct DEFAULT_VERTEX
 {
@@ -68,7 +66,6 @@ HRESULT InitD3D( HWND hWnd )
 
 HRESULT InitGeometry()
 {
-	////. Test ////////////////////////////////////////////////
 	GraphicEntity* pGE = g_Scene.CreateGraphicEntity();
 	pGE->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
 
@@ -76,7 +73,6 @@ HRESULT InitGeometry()
 	pGE->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
 
 	pGE->GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
-	////. /////////////////////////////////////////////////////
 
 	g_GBRenderer->SetScene(&g_Scene);
 
@@ -94,15 +90,11 @@ VOID Cleanup()
     if( g_pD3D != NULL )
         g_pD3D->Release();
 
-	
-
 }
 
 
 LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	GBufferRenderer::GetSingleton()->HandleMessage(hWnd, msg, wParam, lParam);
-
     switch( msg )
     {
         case WM_DESTROY:
@@ -133,9 +125,9 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				}
 			}
 		 }
-		    
-
     }
+
+	GBufferRenderer::GetSingleton()->HandleMessage(hWnd, msg, wParam, lParam);
 
     return DefWindowProc( hWnd, msg, wParam, lParam );
 } 
@@ -145,7 +137,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
 	// Initialisation GBufferRenderer
-
 	g_GBRenderer=GBufferRenderer::GetSingleton();
 
 
@@ -168,6 +159,8 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 
             MSG msg;
             ZeroMemory( &msg, sizeof(msg) );
+
+			// Boucle principale
             while( msg.message!=WM_QUIT )
             {
                 if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
