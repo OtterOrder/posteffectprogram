@@ -46,10 +46,11 @@ typedef		D3DXVECTOR4				Vector4f;
 
 struct Vector2i
 {
-	u32 x;
-	u32 y;
+	s32 x;
+	s32 y;
 
 	Vector2i ()		{ x=0; y=0; };
+	Vector2i (s32 _x, s32 _y) {x=_x; y=_y;}
 
-	Vector2i	operator = (const Vector2i& _v)		{ x = _v.x; y = _v.y; }
+	void	 operator = (const Vector2i& _v)		{ x = _v.x; y = _v.y; }
 };

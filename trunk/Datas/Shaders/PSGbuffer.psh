@@ -1,0 +1,50 @@
+sampler DiffuseSampler = 
+sampler_state
+{
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+sampler NormalSampler = 
+sampler_state
+{
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+struct VS_OUTPUT
+{
+	float2 UV		: TEXCOORD0;
+	float3 WorldPos	: TEXCOORD1;
+};
+
+struct PS_OUTPUT_GBUFFER
+{
+	float4	vDiffuse		: COLOR0;
+	float4	vNormale		: COLOR1;
+	float4	vDepth 			: COLOR2;
+};
+
+
+PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
+{
+	PS_OUTPUT_GBUFFER Output;
+	
+	float4 diffuseColor = tex2D(DiffuseSampler, Input.UV);
+	float4 normalColor = tex2D(NormalSampler, Input.UV);
+	
+	Output.vDiffuse=diffuseColor;
+	Output.vNormale=normalColor;
+	Output.vDepth=Input.WorldPos.z;
+	
+	return Output;
+	
+}
+
+//******************************************************************************************************************************
