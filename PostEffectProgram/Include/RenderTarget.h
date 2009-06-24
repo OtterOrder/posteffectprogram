@@ -7,19 +7,17 @@
 
 class RenderTarget
 {
-	u32		m_width;
-	u32		m_height;
+	Vector2i m_Size;
 
 	PTexture	m_pTexture;
 	PSurface	m_pSurface;
 
 public:
 	RenderTarget(void);
-	RenderTarget(u32 _width, u32 _height);
 	virtual ~RenderTarget(void);
 
 	void Release ();
-	HRESULT Create (PDevice _pDevice);
+	HRESULT Create (PDevice _pDevice, Vector2i _size, Format _format = D3DFMT_A8R8G8B8);
 
 	PTexture GetTexture ()	{ return m_pTexture; };
 	PSurface GetSurface ()	{ return m_pSurface; };

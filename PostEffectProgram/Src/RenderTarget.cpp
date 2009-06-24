@@ -9,16 +9,6 @@ RenderTarget::RenderTarget(void)
 }
 
 //******************************************************************************************************************************
-RenderTarget::RenderTarget(u32 _width, u32 _height)
-{
-	m_pSurface = NULL;
-	m_pTexture = NULL;
-
-	m_width  = _width;
-	m_height = _height;
-}
-
-//******************************************************************************************************************************
 RenderTarget::~RenderTarget(void)
 {
 	Release();
@@ -41,18 +31,18 @@ void RenderTarget::Release ()
 }
 
 //******************************************************************************************************************************
-HRESULT RenderTarget::Create (PDevice _pDevice)
+HRESULT RenderTarget::Create (PDevice _pDevice, Vector2i _size, Format _format)
 {
 	assert (_pDevice);
 
 	Release ();
 
 	HRESULT result = D3DXCreateTexture(	_pDevice,
-										m_width,
-										m_height,
+										_size.x,
+										_size.y,
 										1,
 										D3DUSAGE_RENDERTARGET,
-										D3DFMT_A8R8G8B8,
+										_format,
 										D3DPOOL_DEFAULT,
 										&m_pTexture );
 
@@ -66,8 +56,7 @@ HRESULT RenderTarget::Create (PDevice _pDevice)
 //******************************************************************************************************************************
 void RenderTarget::operator = (const RenderTarget& _RenderTarget)
 {
-	m_width		= _RenderTarget.m_width;
-	m_height	= _RenderTarget.m_height;
+	m_Size = _RenderTarget.m_Size;
 
 	m_pSurface	= _RenderTarget.m_pSurface;
 	m_pTexture	= _RenderTarget.m_pTexture;
