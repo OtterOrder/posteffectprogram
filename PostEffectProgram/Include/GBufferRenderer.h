@@ -17,8 +17,8 @@ class GraphicEntity;
 
 struct GBuffer
 {
-	RenderTarget m_pRTSceneNormalMap;
 	RenderTarget m_pRTSceneDiffuseMap;
+	RenderTarget m_pRTSceneNormalMap;
 	RenderTarget m_pRTDepthMap;
 };
 
@@ -30,8 +30,9 @@ public:
 
 	CFirstPersonCamera  GetCamera() {return m_Camera;}
 	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
-	void				Init(PDevice _Device);
+	void				Init(PDevice _Device, int _width, int _height);
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames
+	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
@@ -48,6 +49,10 @@ private:
 	CFirstPersonCamera 				m_Camera;			 // Camera FPS
 	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
+	GBuffer							m_GBuffer;
+	int								m_iBackBufferWidth;
+	int								m_iBackBufferHeight;
 
-
+	PSurface						m_pShadowDepth;
+	PSurface						m_pOldDepthRT;
 };

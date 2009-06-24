@@ -8,6 +8,7 @@
 
 #include "Camera.h"
 #include "Time.h"
+#include "Types.h"
 #include "GBufferRenderer.h"
 #include "Scene.h"
 
@@ -16,6 +17,7 @@
 
 // Variables globales
 
+HWND					g_hWnd;
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 
@@ -39,15 +41,18 @@ HRESULT InitD3D( HWND hWnd )
 
     D3DPRESENT_PARAMETERS d3dpp;
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
-    d3dpp.Windowed = TRUE;
+	//d3dpp.BackBufferWidth=LARGEUR;
+	//d3dpp.BackBufferHeight=HAUTEUR;
+    d3dpp.Windowed = true;
     d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
-    d3dpp.EnableAutoDepthStencil = TRUE;
+    d3dpp.EnableAutoDepthStencil = true;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	//d3dpp.Flags = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
 
     if( FAILED( g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
-                                      D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+                                      D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
                                       &d3dpp, &g_pd3dDevice ) ) )
     {
         return E_FAIL;
@@ -82,13 +87,12 @@ HRESULT InitGeometry()
 VOID Cleanup()
 {
 	g_Scene.Destroy();
-	GBufferRenderer::GetSingleton()->Destroy();
 
-    if( g_pd3dDevice != NULL )
-        g_pd3dDevice->Release();
+	GBufferRenderer::GetSingleton()->Release();
 
-    if( g_pD3D != NULL )
-        g_pD3D->Release();
+    SAFE_RELEASE(g_pd3dDevice);
+
+    SAFE_RELEASE(g_pD3D);
 
 }
 
@@ -100,6 +104,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
         case WM_DESTROY:
             Cleanup();
             PostQuitMessage( 0 );
+			DestroyWindow(g_hWnd);
             return 0;
 
 		case WM_MOUSEMOVE:
@@ -120,6 +125,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
                 case VK_ESCAPE:
                 {
 					Cleanup();
+					DestroyWindow(g_hWnd);
 					PostQuitMessage( 0 );
 					return 0;
 				}
@@ -145,17 +151,17 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                       "PostEffectProgram", NULL };
     RegisterClassEx( &wc );
 
-    HWND hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
+    g_hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
                               WS_OVERLAPPEDWINDOW, 100, 100, HAUTEUR, LARGEUR,
                               NULL, NULL, wc.hInstance, NULL );
 
-    if( SUCCEEDED( InitD3D( hWnd ) ) )
+    if( SUCCEEDED( InitD3D( g_hWnd ) ) )
     {
-		g_GBRenderer->Init(g_pd3dDevice);
+		g_GBRenderer->Init(g_pd3dDevice,HAUTEUR, LARGEUR);
         if( SUCCEEDED( InitGeometry() ) )
         {
-            ShowWindow( hWnd, SW_SHOWDEFAULT );
-            UpdateWindow( hWnd );
+            ShowWindow( g_hWnd, SW_SHOWDEFAULT );
+            UpdateWindow( g_hWnd );
 
             MSG msg;
             ZeroMemory( &msg, sizeof(msg) );
@@ -174,6 +180,8 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
             }
         }
     }
+
+	GBufferRenderer::GetSingleton()->Destroy();
 
     UnregisterClass( "PostEffectProgram", wc.hInstance );
     return 0;
