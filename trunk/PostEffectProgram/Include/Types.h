@@ -1,3 +1,5 @@
+#pragma once
+
 #include <d3d9.h>
 #include <d3dx9.h>
 
@@ -31,6 +33,7 @@ typedef 	const char*				cStr;
 #define 	PTexture				LPDIRECT3DTEXTURE9
 #define 	PSurface				LPDIRECT3DSURFACE9
 #define 	ImageInfo				D3DXIMAGE_INFO
+typedef		D3DFORMAT				Format;
 
 //-------------------------------------------------------------
 typedef		D3DXMATRIX				Matrix;
@@ -40,3 +43,13 @@ typedef		D3DXMATRIX				Matrix;
 //-------------------------------------------------------------
 typedef		D3DXVECTOR3				Vector3f;
 typedef		D3DXVECTOR4				Vector4f;
+
+struct Vector2i
+{
+	u32 x;
+	u32 y;
+
+	Vector2i ()		{ x=0; y=0; };
+
+	Vector2i	operator = (const Vector2i& _v)		{ x = _v.x; y = _v.y; }
+};
