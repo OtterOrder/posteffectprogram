@@ -26,11 +26,11 @@ public:
 
 // Sampler
 public:
-	inline void SetVSSampler (PDevice _pDevice, cStr _name, const PTexture& _texture)	{ SetSampler (_pDevice, m_pVertexConstantTable, _name, _texture); };
-	inline void SetPSSampler (PDevice _pDevice, cStr _name, const PTexture& _texture)	{ SetSampler (_pDevice, m_pPixelConstantTable,  _name, _texture); };
+	inline void SetVSSampler (PDevice _pDevice, cStr _name, const PTexture _texture)	{ SetSampler (_pDevice, m_pVertexConstantTable, _name, _texture); };
+	inline void SetPSSampler (PDevice _pDevice, cStr _name, const PTexture _texture)	{ SetSampler (_pDevice, m_pPixelConstantTable,  _name, _texture); };
 
 private:
-	void SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture& _texture);
+	void SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture _texture);
 
 // u32
 public:

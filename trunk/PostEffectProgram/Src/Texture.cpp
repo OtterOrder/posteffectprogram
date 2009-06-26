@@ -19,7 +19,7 @@ void Texture::Release ()
 }
 
 //******************************************************************************************************************************
-HRESULT Texture::LoadFromDdsFile (PDevice _pDevice, cStr _pFileName)
+HRESULT Texture::Load (PDevice _pDevice, cStr _pFileName)
 {
 	Release();
 

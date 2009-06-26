@@ -15,5 +15,5 @@ public:
 
 	void Release ();
 
-	HRESULT LoadFromDdsFile (PDevice _pDevice, cStr _pFileName);
+	HRESULT Load (PDevice _pDevice, cStr _pFileName);
 };

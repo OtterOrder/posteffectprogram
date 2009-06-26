@@ -126,9 +126,9 @@ void Shader::Activate (PDevice _pDevice)
 }
 
 //******************************************************************************************************************************
-void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture& _texture)
+void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture _texture)
 {
-	if (!(_pDevice && _constTable && _texture))
+	if (!(_pDevice && _constTable))
 		return;
 
 	Handle textureHdl = _constTable->GetConstantByName(0, _name);

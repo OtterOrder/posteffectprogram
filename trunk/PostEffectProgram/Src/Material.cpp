@@ -34,12 +34,18 @@ void Material::Apply (PDevice _pDevice)
 
 	if (m_pDiffuseMap)
 		m_pShader->SetPSSampler(_pDevice, "DiffuseSampler", m_pDiffuseMap->m_pTexture);
+	else
+		m_pShader->SetPSSampler(_pDevice, "DiffuseSampler", NULL);
 
 	if (m_pNormalMap)
 		m_pShader->SetPSSampler(_pDevice, "NormalSampler", m_pNormalMap->m_pTexture);
+	else
+		m_pShader->SetPSSampler(_pDevice, "NormalSampler", NULL);
 
 	if (m_pSpecularMap)
 		m_pShader->SetPSSampler(_pDevice, "SpecularSampler", m_pSpecularMap->m_pTexture);
+	else
+		m_pShader->SetPSSampler(_pDevice, "SpecularSampler", NULL);
 }
 
 //******************************************************************************************************************************
@@ -48,19 +54,19 @@ HRESULT Material::SetTexture (PDevice _pDevice, cStr _fileName, TextureType _typ
 	if (_type == Diffuse)
 	{
 		SAFE_NEW(m_pDiffuseMap, Texture);
-		return m_pDiffuseMap->LoadFromDdsFile(_pDevice, _fileName);
+		return m_pDiffuseMap->Load(_pDevice, _fileName);
 	}
 	else
 	if (_type == Normal)
 	{
 		SAFE_NEW(m_pNormalMap, Texture);
-		return m_pNormalMap->LoadFromDdsFile(_pDevice, _fileName);
+		return m_pNormalMap->Load(_pDevice, _fileName);
 	}
 	else
 	if(_type == Specular)
 	{
 		SAFE_NEW(m_pSpecularMap, Texture);
-		return m_pSpecularMap->LoadFromDdsFile(_pDevice, _fileName);
+		return m_pSpecularMap->Load(_pDevice, _fileName);
 	}
 
 	return E_UNEXPECTED;
