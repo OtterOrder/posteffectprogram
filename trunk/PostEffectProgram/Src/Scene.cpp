@@ -7,7 +7,7 @@ Scene::~Scene ()
 }
 
 //******************************************************************************************************************************
-void Scene::Destroy ()
+void Scene::Clear ()
 {
 	GraphicEntity::Iterator GEntityIt;
 

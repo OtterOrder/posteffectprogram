@@ -16,17 +16,14 @@ GBufferRenderer::~GBufferRenderer()
 
 }
 
-void GBufferRenderer::SetScene(Scene *_scene)
-{
-	m_pScene=_scene;
-	m_pEntityList=m_pScene->GetGraphicEntityList();
-}
-
 void GBufferRenderer::Init(PDevice _Device, u32 _width, u32 _height)
 {
 	m_pDevice=_Device;
 	m_BackBufferWidth=_width;
 	m_BackBufferHeight=_height;
+
+	m_pScene = Scene::GetSingleton();
+	m_pEntityList=m_pScene->GetGraphicEntityList();
 
 	m_Camera.SetProjParams(D3DX_PI/4, (float)_width/_height, m_fZNear, m_fZFar);
 	m_Camera.SetViewParams(&D3DXVECTOR3(-100.f, 100.f, -100.f), &D3DXVECTOR3(0.f, 0.f, 0.f));

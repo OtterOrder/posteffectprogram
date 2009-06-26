@@ -167,18 +167,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Camera"
-			>
-			<File
-				RelativePath=".\Src\Camera.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Camera.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Misc"
 			>
 			<File
@@ -205,89 +193,53 @@
 		<Filter
 			Name="Entities"
 			>
-			<File
-				RelativePath=".\Src\GraphicEntity.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\GraphicEntity.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Src\Light.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Light.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Src\Material.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Material.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Src\Mesh.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Mesh.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Src\Scene.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Scene.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Src\Texture.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\Texture.h"
-				>
-			</File>
 			<Filter
-				Name="Shader"
+				Name="GraphicEntity"
 				>
 				<File
-					RelativePath=".\Src\Shader.cpp"
+					RelativePath=".\Src\GraphicEntity.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Include\Shader.h"
+					RelativePath=".\Include\GraphicEntity.h"
 					>
 				</File>
-				<Filter
-					Name="Files"
+			</Filter>
+			<Filter
+				Name="Light"
+				>
+				<File
+					RelativePath=".\Src\Light.cpp"
 					>
-					<File
-						RelativePath="..\Datas\Shaders\PSTest.psh"
-						>
-					</File>
-					<File
-						RelativePath="..\Datas\Shaders\VSTest.vsh"
-						>
-					</File>
-					<Filter
-						Name="Defaults"
-						>
-						<File
-							RelativePath="..\Datas\Shaders\Defaults\DefaultPS.psh"
-							>
-						</File>
-						<File
-							RelativePath="..\Datas\Shaders\Defaults\DefaultVS.vsh"
-							>
-						</File>
-					</Filter>
-				</Filter>
+				</File>
+				<File
+					RelativePath=".\Include\Light.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Material"
+				>
+				<File
+					RelativePath=".\Src\Material.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Material.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Camera"
+				>
+				<File
+					RelativePath=".\Src\Camera.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Camera.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -329,9 +281,21 @@
 				RelativePath=".\Include\RenderTarget.h"
 				>
 			</File>
+			<Filter
+				Name="DefferedLighting"
+				>
+				<File
+					RelativePath=".\Src\DefferedLighting.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\DefferedLighting.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
-			Name="Deferred shading"
+			Name="GRenderer"
 			>
 			<File
 				RelativePath=".\Src\GBufferRenderer.cpp"
@@ -339,6 +303,82 @@
 			</File>
 			<File
 				RelativePath=".\Include\GBufferRenderer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resources"
+			>
+			<Filter
+				Name="Shader"
+				>
+				<File
+					RelativePath=".\Src\Shader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Shader.h"
+					>
+				</File>
+				<Filter
+					Name="Files"
+					>
+					<File
+						RelativePath="..\Datas\Shaders\PSTest.psh"
+						>
+					</File>
+					<File
+						RelativePath="..\Datas\Shaders\VSTest.vsh"
+						>
+					</File>
+					<Filter
+						Name="Defaults"
+						>
+						<File
+							RelativePath="..\Datas\Shaders\Defaults\DefaultPS.psh"
+							>
+						</File>
+						<File
+							RelativePath="..\Datas\Shaders\Defaults\DefaultVS.vsh"
+							>
+						</File>
+					</Filter>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Texture"
+				>
+				<File
+					RelativePath=".\Src\Texture.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Texture.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Mesh"
+				>
+				<File
+					RelativePath=".\Src\Mesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\Mesh.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Scene"
+			>
+			<File
+				RelativePath=".\Src\Scene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Scene.h"
 				>
 			</File>
 		</Filter>
