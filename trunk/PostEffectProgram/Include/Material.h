@@ -12,11 +12,13 @@ public:
 	enum TextureType
 	{
 		Diffuse,
-		Normal
+		Normal,
+		Specular
 	};
 
 	Texture*	m_pDiffuseMap;
 	Texture*	m_pNormalMap;
+	Texture*    m_pSpecularMap;
 
 	Shader*		m_pShader;
 

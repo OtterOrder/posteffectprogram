@@ -90,7 +90,7 @@ HRESULT InitGeometry()
 
 	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_diffuse.jpg", Material::Diffuse);
 	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
-
+	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_specular.jpg", Material::Specular);
 
 	g_GBRenderer->SetScene(&g_Scene);
 

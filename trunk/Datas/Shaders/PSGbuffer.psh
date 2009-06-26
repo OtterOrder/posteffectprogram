@@ -18,6 +18,16 @@ sampler_state
     MagFilter = LINEAR;
 };
 
+sampler SpecularSampler = 
+sampler_state
+{
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
 struct VS_OUTPUT
 {
 	float2 UV		: TEXCOORD0;
@@ -41,9 +51,17 @@ PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 	
 	float4 diffuseColor = tex2D(DiffuseSampler, Input.UV);
 	float4 normalColor = tex2D(NormalSampler, Input.UV);
+	float4 specularColor = tex2D(SpecularSampler, Input.UV);
 	
+	// RT 1 Diffuse + Spec intensity
 	Output.vDiffuse=diffuseColor;
+	Output.vDiffuse.a=specularColor.r;
+	
+	// RT 2 Normal + Spec power
 	Output.vNormale=normalColor* 0.5 + 0.5;
+	Output.vNormale.a=specularColor.g;
+	
+	// RT 3 Depth
 	float Depth=(Input.WorldPos.z-g_fZNear)/(g_fZFar-g_fZNear);
 	Output.vDepth=Depth;
 	

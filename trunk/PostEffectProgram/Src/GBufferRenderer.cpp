@@ -37,7 +37,7 @@ void GBufferRenderer::Init(PDevice _Device, u32 _width, u32 _height)
 	// Initialisation Render target
 	m_GBuffer.m_pRTSceneDiffuseMap.Create(m_pDevice, Vector2i(_width, _height));
 	m_GBuffer.m_pRTSceneNormalMap.Create(m_pDevice, Vector2i(_width, _height));
-	m_GBuffer.m_pRTDepthMap.Create(m_pDevice, Vector2i(_width, _height));
+	m_GBuffer.m_pRTDepthMap.Create(m_pDevice, Vector2i(_width, _height), D3DFMT_R32F);
 	m_pDevice->CreateDepthStencilSurface( _width, _height, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowDepth, NULL );
 
 }
@@ -68,7 +68,6 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	Matrix viewProj, WorldViewProj;
 	MatrixMultiply(&viewProj, m_Camera.GetViewMatrix(), m_Camera.GetProjMatrix());
 	MatrixMultiply(&WorldViewProj, &_world, &viewProj);
-	m_GRendererMaterial.m_pShader->SetVSMatrix(m_pDevice, "g_mWorld", _world);
 	m_GRendererMaterial.m_pShader->SetVSMatrix(m_pDevice, "g_mWorldViewProjection", WorldViewProj);
 	m_GRendererMaterial.m_pShader->SetPSFloat(m_pDevice, "g_fZNear", m_fZNear);
 	m_GRendererMaterial.m_pShader->SetPSFloat(m_pDevice, "g_fZFar", m_fZFar);
@@ -112,12 +111,14 @@ void GBufferRenderer::Render()
 	{
 		// Récupération des textures des matériaux respectifs à chaque entités
 		m_GRendererMaterial.m_pDiffuseMap=(*GEntityIt)->GetMaterial()->m_pDiffuseMap;
-		m_GRendererMaterial.m_pNormalMap=(*GEntityIt)->GetMaterial()->m_pNormalMap;;
+		m_GRendererMaterial.m_pNormalMap=(*GEntityIt)->GetMaterial()->m_pNormalMap;
+		m_GRendererMaterial.m_pSpecularMap=(*GEntityIt)->GetMaterial()->m_pSpecularMap;
 		m_GRendererMaterial.Apply(m_pDevice);
 		ComputeMatrices((*GEntityIt)->GetWorldMatrix());
 		(*GEntityIt)->DrawWithoutMaterial(m_pDevice);
 		m_GRendererMaterial.m_pDiffuseMap=NULL;
 		m_GRendererMaterial.m_pNormalMap=NULL;
+		m_GRendererMaterial.m_pSpecularMap=NULL;
 	}
 }
 
