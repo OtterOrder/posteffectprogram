@@ -11,10 +11,11 @@ public:
 	u32		m_NbVertices;
 	u32		m_NbFaces;
 
-	PVertexBuffer	m_pVB;
-	PIndexBuffer	m_pIB;
+	PVertexBuffer		m_pVB;
+	PIndexBuffer		m_pIB;
+	VertexElement		m_VertexElements[MaxDecLength];	
+	PVertexDeclaration  m_pVD;
 
-	u32 m_FVF;
 	u32 m_VertexSize;
 
 	Mesh(void);

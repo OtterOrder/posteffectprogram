@@ -25,6 +25,9 @@ typedef 	const char*				cStr;
 //-------------------------------------------------------------
 #define		PVertexShader			LPDIRECT3DVERTEXSHADER9
 #define 	PPixelShader			LPDIRECT3DPIXELSHADER9
+#define		PVertexDeclaration		LPDIRECT3DVERTEXDECLARATION9
+#define		MaxDecLength			MAXD3DDECLLENGTH
+#define		VertexElement			D3DVERTEXELEMENT9
 #define 	PConstantTable			LPD3DXCONSTANTTABLE
 #define 	ConstantDesc			D3DXCONSTANT_DESC
 #define 	Handle					D3DXHANDLE
