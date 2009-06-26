@@ -1,6 +1,5 @@
 
-float4x4 g_mWorldViewProjection;    // World * View * Projection matrix
-float4x4 g_mWorld;					// World projection		
+float4x4 g_mWorldViewProjection;    // World * View * Projection matrix	
 
 struct VS_OUTPUT
 {

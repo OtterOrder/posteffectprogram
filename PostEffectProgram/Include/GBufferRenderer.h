@@ -35,6 +35,10 @@ public:
 	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+	// Accesseurs
+	u32					GetBackbufferWidth(){ return m_BackBufferWidth; }
+	u32					GetBackbufferHeight(){ return m_BackBufferHeight; }
+
 
 private:
 

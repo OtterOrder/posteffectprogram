@@ -5,6 +5,7 @@ Material::Material(void)
 {
 	m_pDiffuseMap	= NULL;
 	m_pNormalMap	= NULL;
+	m_pSpecularMap	= NULL;
 	m_pShader		= NULL;
 }
 
@@ -19,6 +20,7 @@ void Material::Release ()
 {
 	SAFE_DELETE(m_pDiffuseMap);
 	SAFE_DELETE(m_pNormalMap);
+	SAFE_DELETE(m_pSpecularMap);
 	SAFE_DELETE(m_pShader);
 }
 
@@ -35,6 +37,9 @@ void Material::Apply (PDevice _pDevice)
 
 	if (m_pNormalMap)
 		m_pShader->SetPSSampler(_pDevice, "NormalSampler", m_pNormalMap->m_pTexture);
+
+	if (m_pSpecularMap)
+		m_pShader->SetPSSampler(_pDevice, "SpecularSampler", m_pSpecularMap->m_pTexture);
 }
 
 //******************************************************************************************************************************
@@ -50,6 +55,12 @@ HRESULT Material::SetTexture (PDevice _pDevice, cStr _fileName, TextureType _typ
 	{
 		SAFE_NEW(m_pNormalMap, Texture);
 		return m_pNormalMap->LoadFromDdsFile(_pDevice, _fileName);
+	}
+	else
+	if(_type == Specular)
+	{
+		SAFE_NEW(m_pSpecularMap, Texture);
+		return m_pSpecularMap->LoadFromDdsFile(_pDevice, _fileName);
 	}
 
 	return E_UNEXPECTED;
