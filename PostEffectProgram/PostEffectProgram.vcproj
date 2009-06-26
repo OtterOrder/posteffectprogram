@@ -306,6 +306,22 @@
 			Name="PostProcesses"
 			>
 			<File
+				RelativePath=".\Src\PostEffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\PostEffect.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Src\PostRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\PostRenderer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Src\RenderTarget.cpp"
 				>
 			</File>

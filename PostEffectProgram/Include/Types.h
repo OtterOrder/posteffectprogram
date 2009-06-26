@@ -21,13 +21,13 @@ typedef 	const char*				cStr;
 //-------------------------------------------------------------
 #define 	PVertexBuffer			LPDIRECT3DVERTEXBUFFER9
 #define 	PIndexBuffer			LPDIRECT3DINDEXBUFFER9
+#define		PVertexDeclaration		LPDIRECT3DVERTEXDECLARATION9
+#define		MaxDecLength			MAXD3DDECLLENGTH
+#define		VertexElement			D3DVERTEXELEMENT9
 
 //-------------------------------------------------------------
 #define		PVertexShader			LPDIRECT3DVERTEXSHADER9
 #define 	PPixelShader			LPDIRECT3DPIXELSHADER9
-#define		PVertexDeclaration		LPDIRECT3DVERTEXDECLARATION9
-#define		MaxDecLength			MAXD3DDECLLENGTH
-#define		VertexElement			D3DVERTEXELEMENT9
 #define 	PConstantTable			LPD3DXCONSTANTTABLE
 #define 	ConstantDesc			D3DXCONSTANT_DESC
 #define 	Handle					D3DXHANDLE
@@ -53,7 +53,7 @@ struct Vector2i
 	s32 y;
 
 	Vector2i ()		{ x=0; y=0; };
-	Vector2i (s32 _x, s32 _y) {x=_x; y=_y;}
+	Vector2i (s32 _x, s32 _y) { x=_x; y=_y; };
 
-	void	 operator = (const Vector2i& _v)		{ x = _v.x; y = _v.y; }
+	void	 operator = (const Vector2i& _v)		{ x = _v.x; y = _v.y; };
 };
