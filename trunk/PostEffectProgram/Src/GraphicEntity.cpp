@@ -52,7 +52,7 @@ void GraphicEntity::Draw (PDevice _pDevice)
 		m_pMaterial->Apply(_pDevice);
 	}
 
-	_pDevice->SetFVF(m_pMesh->m_FVF);
+	_pDevice->SetVertexDeclaration(m_pMesh->m_pVD);
 
 	_pDevice->SetStreamSource(0, m_pMesh->m_pVB, 0, m_pMesh->m_VertexSize);
 	_pDevice->SetIndices(m_pMesh->m_pIB);
@@ -63,7 +63,7 @@ void GraphicEntity::Draw (PDevice _pDevice)
 //******************************************************************************************************************************
 void GraphicEntity::DrawWithoutMaterial (PDevice _pDevice)
 {
-	_pDevice->SetFVF(m_pMesh->m_FVF);
+	_pDevice->SetVertexDeclaration(m_pMesh->m_pVD);
 
 	_pDevice->SetStreamSource(0, m_pMesh->m_pVB, 0, m_pMesh->m_VertexSize);
 	_pDevice->SetIndices(m_pMesh->m_pIB);

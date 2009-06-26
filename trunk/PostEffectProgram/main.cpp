@@ -21,8 +21,8 @@ HWND					g_hWnd;
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 
-Scene	g_Scene;
-GBufferRenderer * g_GBRenderer;
+Scene					g_Scene;
+GBufferRenderer*		g_GBRenderer;
 
 
 struct DEFAULT_VERTEX
@@ -78,12 +78,14 @@ HRESULT InitGeometry()
 
 	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_diffuse.jpg", Material::Diffuse);
 	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_normal.jpg", Material::Normal);
+	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_specular.jpg", Material::Specular);
 
 	GraphicEntity* pGE2 = g_Scene.CreateGraphicEntity();
 	pGE2->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\mur.X");
 
 	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_diffuse.jpg", Material::Diffuse);
 	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_normal.jpg", Material::Normal);
+	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_specular.jpg", Material::Specular);
 
 	GraphicEntity* pGE3 = g_Scene.CreateGraphicEntity();
 	pGE3->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\boite.X");
