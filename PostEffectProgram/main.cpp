@@ -10,6 +10,7 @@
 #include "Time.h"
 #include "Types.h"
 #include "GBufferRenderer.h"
+#include "PostRenderer.h"
 #include "Scene.h"
 
 #define HAUTEUR 800
@@ -21,7 +22,6 @@ HWND					g_hWnd;
 LPDIRECT3D9             g_pD3D       = NULL; 
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL; 
 
-Scene					g_Scene;
 GBufferRenderer*		g_GBRenderer;
 
 
@@ -73,35 +73,35 @@ HRESULT InitGeometry()
 
 	// Création de la scène 
 
-	GraphicEntity* pGE1 = g_Scene.CreateGraphicEntity();
+	Scene* pScene = Scene::GetSingleton();
+
+	GraphicEntity* pGE1 = pScene->CreateGraphicEntity();
 	pGE1->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\sol.x");
 
 	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_diffuse.jpg", Material::Diffuse);
 	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_normal.jpg", Material::Normal);
 	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_specular.jpg", Material::Specular);
 
-	GraphicEntity* pGE2 = g_Scene.CreateGraphicEntity();
+	GraphicEntity* pGE2 = pScene->CreateGraphicEntity();
 	pGE2->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\mur.X");
 
 	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_diffuse.jpg", Material::Diffuse);
 	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_normal.jpg", Material::Normal);
 	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_specular.jpg", Material::Specular);
 
-	GraphicEntity* pGE3 = g_Scene.CreateGraphicEntity();
+	GraphicEntity* pGE3 = pScene->CreateGraphicEntity();
 	pGE3->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\boite.X");
 
 	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_diffuse.jpg", Material::Diffuse);
 	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
 	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_specular.jpg", Material::Specular);
 
-	g_GBRenderer->SetScene(&g_Scene);
-
     return S_OK;
 }
 
 VOID Cleanup()
 {
-	g_Scene.Destroy();
+	Scene::GetSingleton()->Clear();
 
 	GBufferRenderer::GetSingleton()->Release();
 
@@ -196,7 +196,9 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
         }
     }
 
+	Scene::GetSingleton()->Destroy();
 	GBufferRenderer::GetSingleton()->Destroy();
+	PostRenderer::GetSingleton()->Destroy();
 
     UnregisterClass( "PostEffectProgram", wc.hInstance );
     return 0;

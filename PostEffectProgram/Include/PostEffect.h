@@ -3,16 +3,14 @@
 #include	"Shader.h"
 #include	"RenderTarget.h"
 
-using namespace std;
-
 class PostEffect
 {
 protected:
 	Shader*	m_pShader;
 
 public:
-	PostEffect(void);
-	virtual ~PostEffect(void);
+	PostEffect ();
+	virtual ~PostEffect ();
 
 	virtual void Create (PDevice _pDevice, Vector2i _size) =0;
 	virtual void Release () =0;

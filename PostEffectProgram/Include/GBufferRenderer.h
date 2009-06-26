@@ -29,7 +29,6 @@ public:
 	~GBufferRenderer();
 
 	CFirstPersonCamera  GetCamera() {return m_Camera;}
-	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
 	void				Init(PDevice _Device, u32 _width, u32 _height);
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames
 	void				Release();

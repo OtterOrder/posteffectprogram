@@ -1,16 +1,16 @@
 #pragma once
 
-#include <d3d9.h>
-#include <d3dx9.h>
-
 #include "Types.h"
+
+#include "Singleton.h"
+
 #include "GraphicEntity.h"
 #include "Light.h"
 
 #include <vector>
 using namespace std;
 
-class Scene
+class Scene: public Singleton <Scene>
 {
 	vector<GraphicEntity*>	m_pEntitiesList;
 	vector<Light*>			m_pLightsList;
@@ -19,7 +19,7 @@ public:
 	Scene ()	{};
 	~Scene ();
 
-	void	Destroy ();
+	void			Clear ();
 
 	GraphicEntity*	CreateGraphicEntity ();
 	Light*			CreateLight (Light::Type _type);
