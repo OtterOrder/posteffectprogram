@@ -41,15 +41,14 @@ HRESULT InitD3D( HWND hWnd )
 
     D3DPRESENT_PARAMETERS d3dpp;
     ZeroMemory( &d3dpp, sizeof(d3dpp) );
-	//d3dpp.BackBufferWidth=LARGEUR;
-	//d3dpp.BackBufferHeight=HAUTEUR;
+	d3dpp.BackBufferWidth=LARGEUR;
+	d3dpp.BackBufferHeight=HAUTEUR;
     d3dpp.Windowed = true;
     d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
     d3dpp.EnableAutoDepthStencil = true;
     d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-	//d3dpp.Flags = D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
 
     if( FAILED( g_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
                                       D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
@@ -71,13 +70,27 @@ HRESULT InitD3D( HWND hWnd )
 
 HRESULT InitGeometry()
 {
-	GraphicEntity* pGE = g_Scene.CreateGraphicEntity();
-	pGE->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\bat.x");
 
-	pGE->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\batalbedo.dds", Material::Diffuse);
-	pGE->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\normal.jpg", Material::Normal);
+	// Création de la scène 
 
-	pGE->GetMaterial()->SetShader(g_pd3dDevice, "..\\Datas\\Shaders\\VSTest.vsh", "VSTest", "..\\Datas\\Shaders\\PSTest.psh", "PSTextureDisplay");
+	GraphicEntity* pGE1 = g_Scene.CreateGraphicEntity();
+	pGE1->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\sol.x");
+
+	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_diffuse.jpg", Material::Diffuse);
+	pGE1->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\sol_normal.jpg", Material::Normal);
+
+	GraphicEntity* pGE2 = g_Scene.CreateGraphicEntity();
+	pGE2->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\mur.X");
+
+	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_diffuse.jpg", Material::Diffuse);
+	pGE2->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\wall_normal.jpg", Material::Normal);
+
+	GraphicEntity* pGE3 = g_Scene.CreateGraphicEntity();
+	pGE3->Initialize(g_pd3dDevice, "..\\Datas\\Meshes\\boite.X");
+
+	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_diffuse.jpg", Material::Diffuse);
+	pGE3->GetMaterial()->SetTexture(g_pd3dDevice, "..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
+
 
 	g_GBRenderer->SetScene(&g_Scene);
 

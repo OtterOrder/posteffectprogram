@@ -31,6 +31,9 @@ struct PS_OUTPUT_GBUFFER
 	float4	vDepth 			: COLOR2;
 };
 
+float g_fZNear;
+float g_fZFar;
+
 
 PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 {
@@ -40,8 +43,9 @@ PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 	float4 normalColor = tex2D(NormalSampler, Input.UV);
 	
 	Output.vDiffuse=diffuseColor;
-	Output.vNormale=normalColor;
-	Output.vDepth=Input.WorldPos.z;
+	Output.vNormale=normalColor* 0.5 + 0.5;
+	float Depth=(Input.WorldPos.z-g_fZNear)/(g_fZFar-g_fZNear);
+	Output.vDepth=Depth;
 	
 	return Output;
 	

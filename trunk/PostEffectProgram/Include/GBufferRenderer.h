@@ -30,7 +30,7 @@ public:
 
 	CFirstPersonCamera  GetCamera() {return m_Camera;}
 	void				SetScene(Scene * _scene);		// Pour assigner une scène au GBufferRenderer
-	void				Init(PDevice _Device, int _width, int _height);
+	void				Init(PDevice _Device, u32 _width, u32 _height);
 	void				RenderScene();					// Rendu de la scène appelé à chaque frames
 	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -50,8 +50,10 @@ private:
 	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
 	GBuffer							m_GBuffer;
-	int								m_iBackBufferWidth;
-	int								m_iBackBufferHeight;
+	u32								m_BackBufferWidth;
+	u32								m_BackBufferHeight;
+	float							m_fZNear;
+	float							m_fZFar;
 
 	PSurface						m_pShadowDepth;
 	PSurface						m_pOldDepthRT;

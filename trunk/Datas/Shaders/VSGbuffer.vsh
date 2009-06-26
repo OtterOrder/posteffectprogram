@@ -15,7 +15,7 @@ VS_OUTPUT VSTest (	float4 vPos : POSITION,
     VS_OUTPUT Output;
 
 	Output.Position = mul(vPos, g_mWorldViewProjection);
-	Output.WorldPos = mul(vPos, g_mWorld);
+	Output.WorldPos = mul(vPos, g_mWorldViewProjection);
 	Output.UV = vUV;
 
 	return Output;
