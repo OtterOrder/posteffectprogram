@@ -3,14 +3,14 @@
 #include	"Shader.h"
 #include	"RenderTarget.h"
 
-class PostEffect
+class PostProcess
 {
 protected:
 	Shader*	m_pShader;
 
 public:
-	PostEffect ();
-	virtual ~PostEffect ();
+	PostProcess ();
+	virtual ~PostProcess ();
 
 	virtual void Create (Vector2i _size) =0;
 	virtual void Release () =0;

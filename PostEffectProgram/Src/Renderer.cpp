@@ -5,8 +5,7 @@ PDevice Renderer::m_pd3dDevice = NULL;
 
 Renderer::Renderer()
 {
-	m_BackBufferWidth = 800;
-	m_BackBufferHeight = 600;
+	m_BackBufferSize = Vector2i(800, 600);
 
 	m_pD3D = NULL;
 }
@@ -25,8 +24,8 @@ HRESULT Renderer::Initialize(HWND Hwnd)
 
 	D3DPRESENT_PARAMETERS d3dpp;
 	ZeroMemory( &d3dpp, sizeof(d3dpp) );
-	d3dpp.BackBufferWidth=m_BackBufferWidth;
-	d3dpp.BackBufferHeight=m_BackBufferHeight;
+	d3dpp.BackBufferWidth  = m_BackBufferSize.x;
+	d3dpp.BackBufferHeight = m_BackBufferSize.y;
 	d3dpp.Windowed = true;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.EnableAutoDepthStencil = true;

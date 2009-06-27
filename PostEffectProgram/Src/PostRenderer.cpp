@@ -8,12 +8,9 @@ PostRenderer::PostRenderer(void)
 	m_pFrontRenderTarget		= NULL;
 	m_pBackRenderTarget			= NULL;
 
-	/*
-	MotionBlur* pMotionBlur = new MotionBlur();
-	m_pPostEffects.push_back(pMotionBlur);
-	*/
+	m_pPostProcesses.push_back(new DefferedLighting());
 
-	m_PostEffects = 0;
+	m_PostProcesses = 0;
 
 	m_GBuffer = NULL;
 }
@@ -21,72 +18,20 @@ PostRenderer::PostRenderer(void)
 //----------------------------------------------------------------------------------------------
 PostRenderer::~PostRenderer(void)
 {
-	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
+	for (u32 postEffect = 0; postEffect < m_pPostProcesses.size(); postEffect++)
 	{
-		if (m_pPostEffects[postEffect])
-			delete m_pPostEffects[postEffect];
-	}
-}
-
-//----------------------------------------------------------------------------------------------
-void PostRenderer::DestroyPostPorcesses ()
-{
-	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
-	{
-		if (m_pPostEffects[postEffect])
-			m_pPostEffects[postEffect]->Destroy();
+		if (m_pPostProcesses[postEffect])
+			delete m_pPostProcesses[postEffect];
 	}
 }
 
 //----------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------
-void PostRenderer::SetBackBuffer (PSurface _pBackBuffer)
+HRESULT PostRenderer::Initialize (Vector2i _size)
 {
-	assert(_pBackBuffer);
-	m_pBackBuffer = _pBackBuffer;
-}
+	m_ScreenSize = _size;
 
-//----------------------------------------------------------------------------------------------
-void PostRenderer::RenderPostEffects ()
-{
-	m_pDevice->BeginScene();
-
-	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
-	{
-		if (m_pPostEffects[postEffect] && ((m_PostEffects & (1<<postEffect)) == 1<<postEffect))
-			m_pPostEffects[postEffect]->Apply();
-	}
-
-	if (! (m_pFrontRenderTarget && m_pBackBuffer))
-		return;
-
-	m_pDevice->StretchRect(m_pFrontRenderTarget->GetSurface(), NULL, m_pBackBuffer, &m_ScreenRect, D3DTEXF_NONE);
-
-	m_pDevice->EndScene();
-}
-
-//----------------------------------------------------------------------------------------------
-void PostRenderer::Release ()
-{
-	SAFE_DELETE(m_pFrontRenderTarget);
-
-	SAFE_DELETE(m_pBackRenderTarget);
-
-	SAFE_RELEASE(m_pBackBuffer);
-
-	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
-	{
-		if (m_pPostEffects[postEffect])
-			m_pPostEffects[postEffect]->Release();
-	}
-}
-
-//----------------------------------------------------------------------------------------------
-HRESULT PostRenderer::Create (PDevice _pDevice, u32 _width, u32 _height)
-{
-	assert (_pDevice);
-	m_pDevice = _pDevice;
-	m_ScreenSize = Vector2i(_width, _height);
+	m_ScreenQuad.Create(m_ScreenSize);
 
 	m_ScreenRect.left		= 0;
 	m_ScreenRect.top		= 0;
@@ -101,13 +46,63 @@ HRESULT PostRenderer::Create (PDevice _pDevice, u32 _width, u32 _height)
 	if (FAILED(m_pBackRenderTarget->Create(m_ScreenSize) ))
 		return E_FAIL;
 
-	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
+	for (u32 postEffect = 0; postEffect < m_pPostProcesses.size(); postEffect++)
 	{
-		if (m_pPostEffects[postEffect])
-			m_pPostEffects[postEffect]->Create(m_ScreenSize);
+		if (m_pPostProcesses[postEffect])
+			m_pPostProcesses[postEffect]->Create(m_ScreenSize);
 	}
 
+	getDevice->GetRenderTarget(0 , &m_pBackBuffer);
+
 	return S_OK;
+}
+
+//----------------------------------------------------------------------------------------------
+void PostRenderer::Release ()
+{
+	SAFE_DELETE(m_pFrontRenderTarget);
+
+	SAFE_DELETE(m_pBackRenderTarget);
+
+	SAFE_RELEASE(m_pBackBuffer);
+
+	for (u32 postEffect = 0; postEffect < m_pPostProcesses.size(); postEffect++)
+	{
+		if (m_pPostProcesses[postEffect])
+			m_pPostProcesses[postEffect]->Release();
+	}
+
+	m_ScreenQuad.Release ();
+}
+
+//----------------------------------------------------------------------------------------------
+void PostRenderer::Destroy ()
+{
+	for (u32 postEffect = 0; postEffect < m_pPostProcesses.size(); postEffect++)
+	{
+		if (m_pPostProcesses[postEffect])
+			m_pPostProcesses[postEffect]->Destroy();
+	}
+}
+
+//----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
+void PostRenderer::RenderPostProcesses ()
+{
+	getDevice->BeginScene();
+
+	for (u32 postProcess = 0; postProcess < m_pPostProcesses.size(); postProcess++)
+	{
+		if (m_pPostProcesses[postProcess] && ((m_PostProcesses & (1<<postProcess)) == 1<<postProcess))
+			m_pPostProcesses[postProcess]->Apply();
+	}
+
+	if (! (m_pFrontRenderTarget && m_pBackBuffer))
+		return;
+
+	getDevice->StretchRect(m_pFrontRenderTarget->GetSurface(), NULL, m_pBackBuffer, &m_ScreenRect, D3DTEXF_NONE);
+
+	getDevice->EndScene();
 }
 
 //----------------------------------------------------------------------------------------------
@@ -125,14 +120,14 @@ void PostRenderer::SetRenderTarget (PSurface _pRenderTarget)
 	if (!_pRenderTarget)
 		return;
 
-	m_pDevice->SetRenderTarget(0, _pRenderTarget);
+	getDevice->SetRenderTarget(0, _pRenderTarget);
 }
 
 //----------------------------------------------------------------------------------------------
 PSurface PostRenderer::GetRenderTarget ()
 {
 	PSurface pRenderTarget = NULL;
-	m_pDevice->GetRenderTarget(0, &pRenderTarget);
+	getDevice->GetRenderTarget(0, &pRenderTarget);
 	return pRenderTarget;
 }
 
@@ -142,13 +137,13 @@ void PostRenderer::SetRenderTarget (u32 _level, PSurface _pRenderTarget)
 	if (!_pRenderTarget)
 		return;
 
-	m_pDevice->SetRenderTarget(_level, _pRenderTarget);
+	getDevice->SetRenderTarget(_level, _pRenderTarget);
 }
 
 //----------------------------------------------------------------------------------------------
 PSurface PostRenderer::GetRenderTarget (u32 _level)
 {
 	PSurface pRenderTarget = NULL;
-	m_pDevice->GetRenderTarget(_level, &pRenderTarget);
+	getDevice->GetRenderTarget(_level, &pRenderTarget);
 	return pRenderTarget;
 }

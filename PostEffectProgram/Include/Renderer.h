@@ -14,10 +14,11 @@ public:
 	HRESULT Initialize(HWND Hwnd);
 	HRESULT Destroy();
 
-	u32	 GetBackbufferWidth(){ return m_BackBufferWidth; }
-	u32	 GetBackbufferHeight(){ return m_BackBufferHeight; }
+	Vector2i	GetBackbufferSize ()	{ return m_BackBufferSize; };
+	u32			GetBackbufferWidth()	{ return m_BackBufferSize.x; };
+	u32			GetBackbufferHeight()	{ return m_BackBufferSize.y; };
 
-	static inline PDevice GetDevice() { return m_pd3dDevice; }
+	static inline PDevice GetDevice() { return m_pd3dDevice; };
 
 protected:
 
@@ -28,6 +29,5 @@ protected:
 	LPDIRECT3D9             m_pD3D; 
 	static PDevice			m_pd3dDevice;
 
-	u32						m_BackBufferWidth;
-	u32						m_BackBufferHeight;
+	Vector2i				m_BackBufferSize;
 };

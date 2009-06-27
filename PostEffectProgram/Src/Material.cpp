@@ -1,5 +1,11 @@
 #include "Material.h"
 
+#define		DEFAULT_VS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultVS.vsh"
+#define		DEFAULT_PS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultPS.psh"
+
+#define		DEFAULT_VS_ENTRY	"VSMain"
+#define		DEFAULT_PS_ENTRY	"PSMain"
+
 //------------------------------------------------------------------------------------------------------------------------------
 Material::Material(void)
 {
@@ -27,6 +33,15 @@ void Material::Release ()
 
 //------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------
+void Material::SetTextureSampler (cStr _name, const Texture* _pTexture)
+{
+	if (_pTexture)
+		m_pShader->SetPSSampler("DiffuseSampler", _pTexture->m_pTexture);
+	else
+		m_pShader->SetPSSampler("DiffuseSampler", NULL);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
 void Material::Apply ()
 {
 	if (!m_pShader)
@@ -34,20 +49,9 @@ void Material::Apply ()
 
 	m_pShader->Activate();
 
-	if (m_pDiffuseMap)
-		m_pShader->SetPSSampler("DiffuseSampler", m_pDiffuseMap->m_pTexture);
-	else
-		m_pShader->SetPSSampler("DiffuseSampler", NULL);
-
-	if (m_pNormalMap)
-		m_pShader->SetPSSampler("NormalSampler", m_pNormalMap->m_pTexture);
-	else
-		m_pShader->SetPSSampler("NormalSampler", NULL);
-
-	if (m_pSpecularMap)
-		m_pShader->SetPSSampler("SpecularSampler", m_pSpecularMap->m_pTexture);
-	else
-		m_pShader->SetPSSampler("SpecularSampler", NULL);
+	SetTextureSampler ("DiffuseSampler", m_pDiffuseMap);
+	SetTextureSampler ("NormalSampler", m_pNormalMap);
+	SetTextureSampler ("SpecularSampler", m_pSpecularMap);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

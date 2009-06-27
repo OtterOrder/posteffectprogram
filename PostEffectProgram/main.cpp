@@ -53,7 +53,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
     {
         case WM_DESTROY:
             GBufferRenderer::GetSingleton()->Destroy();
-			Scene::GetSingleton()->Clear();
+			Scene::GetSingleton()->Destroy();
             PostQuitMessage( 0 );
 			DestroyWindow(g_hWnd);
             return 0;
@@ -76,7 +76,7 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
                 case VK_ESCAPE:
                 {
 					GBufferRenderer::GetSingleton()->Destroy();
-					Scene::GetSingleton()->Clear();
+					Scene::GetSingleton()->Destroy();
 					DestroyWindow(g_hWnd);
 					PostQuitMessage( 0 );
 					return 0;
@@ -96,7 +96,8 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
 	// Initialisation GBufferRenderer
 
-	GBufferRenderer* GBRenderer=GBufferRenderer::GetSingleton();
+	GBufferRenderer* pGBRenderer = GBufferRenderer::GetSingleton();
+	PostRenderer*	 pPostRenderer = PostRenderer::GetSingleton();
 
 
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
@@ -109,11 +110,16 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                               NULL, NULL, wc.hInstance, NULL );
 
    
-	GBRenderer->Initialize(g_hWnd);
+	pGBRenderer->Initialize(g_hWnd);
+
+	pPostRenderer->Initialize(GBufferRenderer::GetSingleton()->GetBackbufferSize());
+	pPostRenderer->EnablePostProcess(PostRenderer::PE_DefferedLighting);
+
 
     if( SUCCEEDED( InitGeometry() ) )
     {
         ShowWindow( g_hWnd, SW_SHOWDEFAULT );
+        UpdateWindow( g_hWnd );
         UpdateWindow( g_hWnd );
 
         MSG msg;
@@ -126,9 +132,13 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
             {
                 TranslateMessage( &msg );
                 DispatchMessage( &msg );
-            }
-            else
-                GBRenderer->RenderScene();
+
+			}
+			else
+			{
+				pGBRenderer->RenderScene();
+				PostRenderer::GetSingleton()->RenderPostProcesses();
+			}
 
         }
     }
