@@ -27,73 +27,73 @@ void Material::Release ()
 
 //------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------
-void Material::Apply (PDevice _pDevice)
+void Material::Apply ()
 {
 	if (!m_pShader)
 		return;
 
-	m_pShader->Activate(_pDevice);
+	m_pShader->Activate();
 
 	if (m_pDiffuseMap)
-		m_pShader->SetPSSampler(_pDevice, "DiffuseSampler", m_pDiffuseMap->m_pTexture);
+		m_pShader->SetPSSampler("DiffuseSampler", m_pDiffuseMap->m_pTexture);
 	else
-		m_pShader->SetPSSampler(_pDevice, "DiffuseSampler", NULL);
+		m_pShader->SetPSSampler("DiffuseSampler", NULL);
 
 	if (m_pNormalMap)
-		m_pShader->SetPSSampler(_pDevice, "NormalSampler", m_pNormalMap->m_pTexture);
+		m_pShader->SetPSSampler("NormalSampler", m_pNormalMap->m_pTexture);
 	else
-		m_pShader->SetPSSampler(_pDevice, "NormalSampler", NULL);
+		m_pShader->SetPSSampler("NormalSampler", NULL);
 
 	if (m_pSpecularMap)
-		m_pShader->SetPSSampler(_pDevice, "SpecularSampler", m_pSpecularMap->m_pTexture);
+		m_pShader->SetPSSampler("SpecularSampler", m_pSpecularMap->m_pTexture);
 	else
-		m_pShader->SetPSSampler(_pDevice, "SpecularSampler", NULL);
+		m_pShader->SetPSSampler("SpecularSampler", NULL);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-HRESULT Material::SetTexture (PDevice _pDevice, cStr _fileName, TextureType _type)
+HRESULT Material::SetTexture (cStr _fileName, TextureType _type)
 {
 	if (_type == Diffuse)
 	{
 		SAFE_NEW(m_pDiffuseMap, Texture);
-		return m_pDiffuseMap->Load(_pDevice, _fileName);
+		return m_pDiffuseMap->Load(_fileName);
 	}
 	else
 	if (_type == Normal)
 	{
 		SAFE_NEW(m_pNormalMap, Texture);
-		return m_pNormalMap->Load(_pDevice, _fileName);
+		return m_pNormalMap->Load(_fileName);
 	}
 	else
 	if(_type == Specular)
 	{
 		SAFE_NEW(m_pSpecularMap, Texture);
-		return m_pSpecularMap->Load(_pDevice, _fileName);
+		return m_pSpecularMap->Load(_fileName);
 	}
 
 	return E_UNEXPECTED;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-HRESULT Material::SetShader(PDevice _pDevice, cStr _vertexShaderFileName, cStr _vertexEntryPoint, cStr _pixelShaderFileName, cStr _pixelEntryPoint)
+HRESULT Material::SetShader(cStr _vertexShaderFileName, cStr _vertexEntryPoint, cStr _pixelShaderFileName, cStr _pixelEntryPoint)
 {
 	SAFE_NEW(m_pShader, Shader);
 
-	return m_pShader->Load(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
+	return m_pShader->Load(_vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-HRESULT Material::SetVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint)
+HRESULT Material::SetVertexShader	(cStr _fileName, cStr _entryPoint)
 {
 	SAFE_NEW(m_pShader, Shader);
 
-	return m_pShader->LoadVertexShader(_pDevice, _fileName, _entryPoint);
+	return m_pShader->LoadVertexShader(_fileName, _entryPoint);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-HRESULT Material::SetPixelShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint)
+HRESULT Material::SetPixelShader	(cStr _fileName, cStr _entryPoint)
 {
 	SAFE_NEW(m_pShader, Shader);
 
-	return m_pShader->LoadPixelShader(_pDevice, _fileName, _entryPoint);
+	return m_pShader->LoadPixelShader(_fileName, _entryPoint);
 }

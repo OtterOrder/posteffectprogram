@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.h"
+#include "Renderer.h"
 #include "Misc.h"
 #include "Time.h"
 
@@ -22,21 +23,17 @@ struct GBuffer
 	RenderTarget m_pRTDepthMap;
 };
 
-class GBufferRenderer : public Singleton < GBufferRenderer >
+class GBufferRenderer : public Renderer, public Singleton < GBufferRenderer >
 {
 public:
 	GBufferRenderer();
 	~GBufferRenderer();
 
-	CFirstPersonCamera  GetCamera() {return m_Camera;}
-	void				Init(PDevice _Device, u32 _width, u32 _height);
-	void				RenderScene();					// Rendu de la scène appelé à chaque frames
+	void				Setup();
+	void				RenderScene();	
 	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-	// Accesseurs
-	u32					GetBackbufferWidth(){ return m_BackBufferWidth; }
-	u32					GetBackbufferHeight(){ return m_BackBufferHeight; }
+	CFirstPersonCamera  GetCamera() {return m_Camera;}
 
 
 private:
@@ -45,7 +42,6 @@ private:
 	void ComputeMatrices(Matrix _world);
 	void Render();
 
-	PDevice							m_pDevice;
 	Scene*							m_pScene;			 // Scene 3d courante
 	Material						m_GRendererMaterial; // Matériau de rendu pour le GBuffer
 	std::vector<GraphicEntity*>*	m_pEntityList;		 // Liste des objets de la scène courante
@@ -53,8 +49,6 @@ private:
 	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
 	GBuffer							m_GBuffer;
-	u32								m_BackBufferWidth;
-	u32								m_BackBufferHeight;
 	float							m_fZNear;
 	float							m_fZFar;
 

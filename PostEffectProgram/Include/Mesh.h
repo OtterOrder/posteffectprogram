@@ -23,5 +23,5 @@ public:
 
 	void Release ();
 
-	HRESULT LoadFromXFile (PDevice _pDevice, cStr _pFileName);
+	HRESULT LoadFromXFile (cStr _pFileName);
 };

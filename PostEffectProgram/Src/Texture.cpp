@@ -19,11 +19,11 @@ void Texture::Release ()
 }
 
 //******************************************************************************************************************************
-HRESULT Texture::Load (PDevice _pDevice, cStr _pFileName)
+HRESULT Texture::Load (cStr _pFileName)
 {
 	Release();
 
-	if( FAILED( D3DXCreateTextureFromFileEx(_pDevice,
+	if( FAILED( D3DXCreateTextureFromFileEx(getDevice,
 											_pFileName,
 											D3DX_DEFAULT,
 											D3DX_DEFAULT,

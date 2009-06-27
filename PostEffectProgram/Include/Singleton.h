@@ -16,7 +16,7 @@ public:
 		return m_Instance;
 	}
 
-	static void Destroy( void )
+	static void DestroySingleton( void )
 	{
 		if( m_Instance )
 		{

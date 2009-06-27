@@ -94,17 +94,17 @@ HRESULT PostRenderer::Create (PDevice _pDevice, u32 _width, u32 _height)
 	m_ScreenRect.bottom		= m_ScreenSize.y;
 
 	SAFE_NEW(m_pFrontRenderTarget, RenderTarget);
-	if (FAILED(m_pFrontRenderTarget->Create(m_pDevice, m_ScreenSize) ))
+	if (FAILED(m_pFrontRenderTarget->Create(m_ScreenSize) ))
 		return E_FAIL;
 
 	SAFE_NEW(m_pBackRenderTarget, RenderTarget);
-	if (FAILED(m_pBackRenderTarget->Create(m_pDevice, m_ScreenSize) ))
+	if (FAILED(m_pBackRenderTarget->Create(m_ScreenSize) ))
 		return E_FAIL;
 
 	for (u32 postEffect = 0; postEffect < m_pPostEffects.size(); postEffect++)
 	{
 		if (m_pPostEffects[postEffect])
-			m_pPostEffects[postEffect]->Create(m_pDevice, m_ScreenSize);
+			m_pPostEffects[postEffect]->Create(m_ScreenSize);
 	}
 
 	return S_OK;

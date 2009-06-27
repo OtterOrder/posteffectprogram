@@ -9,7 +9,7 @@ public:
 	DefferedLighting ();
 	virtual ~DefferedLighting ();
 
-	virtual void Create (PDevice _pDevice, Vector2i _size);
+	virtual void Create (Vector2i _size);
 	virtual void Release ();
 	virtual void Destroy ();
 

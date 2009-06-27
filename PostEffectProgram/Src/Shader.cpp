@@ -1,4 +1,5 @@
 #include	"Shader.h"
+#include	<assert.h>
 
 #define		DEFAULT_VS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultVS.vsh"
 #define		DEFAULT_PS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultPS.psh"
@@ -26,29 +27,28 @@ Shader::~Shader(void)
 }
 
 //******************************************************************************************************************************
-HRESULT Shader::Load (PDevice _pDevice,
-					  cStr _vertexShaderFileName, cStr _vertexEntryPoint,
+HRESULT Shader::Load (cStr _vertexShaderFileName, cStr _vertexEntryPoint,
 					  cStr _pixelShaderFileName , cStr _pixelEntryPoint )
 {
 	if(_vertexShaderFileName)
 	{
-		if ( FAILED(LoadVertexShader(_pDevice, _vertexShaderFileName, _vertexEntryPoint)) )
+		if ( FAILED(LoadVertexShader(_vertexShaderFileName, _vertexEntryPoint)) )
 			return E_FAIL;
 	}
 	else
 	{
-		if ( FAILED(LoadVertexShader(_pDevice, DEFAULT_VS_PATH, DEFAULT_VS_ENTRY)) )
+		if ( FAILED(LoadVertexShader(DEFAULT_VS_PATH, DEFAULT_VS_ENTRY)) )
 			return E_FAIL;
 	}
 
 	if(_pixelShaderFileName)
 	{
-		if ( FAILED(LoadPixelShader(_pDevice, _pixelShaderFileName, _pixelEntryPoint)) )
+		if ( FAILED(LoadPixelShader(_pixelShaderFileName, _pixelEntryPoint)) )
 			return E_FAIL;
 	}
 	else
 	{
-		if ( FAILED(LoadPixelShader(_pDevice, DEFAULT_PS_PATH, DEFAULT_PS_ENTRY)) )
+		if ( FAILED(LoadPixelShader(DEFAULT_PS_PATH, DEFAULT_PS_ENTRY)) )
 			return E_FAIL;
 	}
 
@@ -56,7 +56,7 @@ HRESULT Shader::Load (PDevice _pDevice,
 }
 
 //******************************************************************************************************************************
-HRESULT Shader::LoadVertexShader (PDevice _pDevice, cStr _fileName, cStr _entryPoint)
+HRESULT Shader::LoadVertexShader (cStr _fileName, cStr _entryPoint)
 {
 	LPD3DXBUFFER pErrorBuffer = NULL;
 	LPD3DXBUFFER pShaderCode = NULL;
@@ -73,7 +73,7 @@ HRESULT Shader::LoadVertexShader (PDevice _pDevice, cStr _fileName, cStr _entryP
 		MessageBox (NULL, "Vertex Shader compilation Error", "Shader Error", MB_OK);
 	}
 
-	if (FAILED(_pDevice->CreateVertexShader( (DWORD*)pShaderCode->GetBufferPointer(), &m_pVertexShader )))
+	if (FAILED(getDevice->CreateVertexShader( (DWORD*)pShaderCode->GetBufferPointer(), &m_pVertexShader )))
 	{
 		res = E_FAIL;
 		OutputDebugString(reinterpret_cast <char*> (pErrorBuffer->GetBufferPointer()));
@@ -86,7 +86,7 @@ HRESULT Shader::LoadVertexShader (PDevice _pDevice, cStr _fileName, cStr _entryP
 }
 
 //******************************************************************************************************************************
-HRESULT Shader::LoadPixelShader (PDevice _pDevice, cStr _fileName, cStr _entryPoint)
+HRESULT Shader::LoadPixelShader (cStr _fileName, cStr _entryPoint)
 {
 	LPD3DXBUFFER pErrorBuffer = NULL;
 	LPD3DXBUFFER pShaderCode = NULL;
@@ -103,7 +103,7 @@ HRESULT Shader::LoadPixelShader (PDevice _pDevice, cStr _fileName, cStr _entryPo
 		MessageBox (NULL, "Pixel Shader compilation Error", "Shader Error", MB_OK);
 	}
 
-	if (FAILED(_pDevice->CreatePixelShader( (DWORD*)pShaderCode->GetBufferPointer(), &m_pPixelShader )))
+	if (FAILED(getDevice->CreatePixelShader( (DWORD*)pShaderCode->GetBufferPointer(), &m_pPixelShader )))
 	{
 		res = E_FAIL;
 		OutputDebugString(reinterpret_cast <char*> (pErrorBuffer->GetBufferPointer()));
@@ -117,19 +117,18 @@ HRESULT Shader::LoadPixelShader (PDevice _pDevice, cStr _fileName, cStr _entryPo
 }
 
 //******************************************************************************************************************************
-void Shader::Activate (PDevice _pDevice)
+void Shader::Activate ()
 {
 	if (m_pVertexShader)
-        _pDevice->SetVertexShader(m_pVertexShader);
+        getDevice->SetVertexShader(m_pVertexShader);
 	if (m_pPixelShader)
-		_pDevice->SetPixelShader (m_pPixelShader );
+		getDevice->SetPixelShader (m_pPixelShader );
 }
 
 //******************************************************************************************************************************
-void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture _texture)
+void Shader::SetSampler (PConstantTable& _constTable, cStr _name, const PTexture _texture)
 {
-	if (!(_pDevice && _constTable))
-		return;
+	assert(_constTable);
 
 	Handle textureHdl = _constTable->GetConstantByName(0, _name);
 	WarningReturn(textureHdl != NULL, "Pixel Constant Table. Variable handle not found.");
@@ -138,41 +137,38 @@ void Shader::SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _na
 	u32 count;
 
 	_constTable->GetConstantDesc(textureHdl, &textureDesc, &count);
-	_pDevice->SetTexture(textureDesc.RegisterIndex, _texture);
+	getDevice->SetTexture(textureDesc.RegisterIndex, _texture);
 }
 
 //******************************************************************************************************************************
-void Shader::SetInt (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const u32& _value)
+void Shader::SetInt (PConstantTable& _constTable, cStr _name, const u32& _value)
 {
-	if (!(_pDevice && _constTable ))
-		return;
+	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
 	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
-	_constTable->SetInt(_pDevice, varHdl, _value);
+	_constTable->SetInt(getDevice, varHdl, _value);
 }
 
 //******************************************************************************************************************************
-void Shader::SetFloat (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const float& _value)
+void Shader::SetFloat (PConstantTable& _constTable, cStr _name, const float& _value)
 {
-	if (!(_pDevice && _constTable ))
-		return;
+	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
 	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
-	_constTable->SetFloat(_pDevice, varHdl, _value);
+	_constTable->SetFloat(getDevice, varHdl, _value);
 }
 
 //******************************************************************************************************************************
-void Shader::SetMatrix (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const Matrix& _matrix)
+void Shader::SetMatrix (PConstantTable& _constTable, cStr _name, const Matrix& _matrix)
 {
-	if (!(_pDevice && _constTable ))
-		return;
+	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
 	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
 
-	_constTable->SetMatrix(_pDevice, varHdl, &_matrix);
+	_constTable->SetMatrix(getDevice, varHdl, &_matrix);
 }

@@ -27,11 +27,11 @@ public:
 
 	void Release ();
 
-	void Apply (PDevice _pDevice);
+	void Apply ();
 
-	HRESULT SetTexture (PDevice _pDevice, cStr _fileName, TextureType _type);
+	HRESULT SetTexture (cStr _fileName, TextureType _type);
 
-	HRESULT SetShader(PDevice _pDevice, cStr _vertexShaderFileName = NULL, cStr _vertexEntryPoint = NULL, cStr _pixelShaderFileName = NULL, cStr _pixelEntryPoint = NULL);
-	HRESULT SetVertexShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
-	HRESULT SetPixelShader	(PDevice _pDevice, cStr _fileName, cStr _entryPoint);
+	HRESULT SetShader(cStr _vertexShaderFileName = NULL, cStr _vertexEntryPoint = NULL, cStr _pixelShaderFileName = NULL, cStr _pixelEntryPoint = NULL);
+	HRESULT SetVertexShader	(cStr _fileName, cStr _entryPoint);
+	HRESULT SetPixelShader	(cStr _fileName, cStr _entryPoint);
 };

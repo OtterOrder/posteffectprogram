@@ -31,13 +31,11 @@ void RenderTarget::Release ()
 }
 
 //******************************************************************************************************************************
-HRESULT RenderTarget::Create (PDevice _pDevice, Vector2i _size, Format _format)
+HRESULT RenderTarget::Create (Vector2i _size, Format _format)
 {
-	assert (_pDevice);
-
 	Release ();
 
-	HRESULT result = D3DXCreateTexture(	_pDevice,
+	HRESULT result = D3DXCreateTexture(	getDevice,
 										_size.x,
 										_size.y,
 										1,

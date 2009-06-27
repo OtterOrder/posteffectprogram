@@ -47,3 +47,5 @@ bool Warning(bool _test, cStr _str);
 		return;						\
 	}								\
 }
+
+#define getDevice Renderer::GetDevice()

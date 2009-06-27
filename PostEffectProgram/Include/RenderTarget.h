@@ -3,7 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "Types.h"
+#include "Misc.h"
 
 class RenderTarget
 {
@@ -17,7 +17,7 @@ public:
 	virtual ~RenderTarget(void);
 
 	void Release ();
-	HRESULT Create (PDevice _pDevice, Vector2i _size, Format _format = D3DFMT_A8R8G8B8);
+	HRESULT Create (Vector2i _size, Format _format = D3DFMT_A8R8G8B8);
 
 	PTexture GetTexture ()	{ return m_pTexture; };
 	PSurface GetSurface ()	{ return m_pSurface; };
