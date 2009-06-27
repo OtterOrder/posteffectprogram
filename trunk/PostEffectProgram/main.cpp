@@ -112,9 +112,9 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
    
 	pGBRenderer->Initialize(g_hWnd, 800, 600);
 
-	pPostRenderer->Initialize(GBufferRenderer::GetSingleton()->GetBackbufferSize());
+	pPostRenderer->Initialize(pGBRenderer->GetBackbufferSize());
+	pPostRenderer->SetGBuffer(pGBRenderer->GetGBuffer());
 	pPostRenderer->EnablePostProcess(PostRenderer::PE_DefferedLighting);
-
 
     if( SUCCEEDED( InitGeometry() ) )
     {
@@ -137,7 +137,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 			else
 			{
 				pGBRenderer->RenderScene();
-				PostRenderer::GetSingleton()->RenderPostProcesses();
+				pPostRenderer->RenderPostProcesses();
 			}
 
         }
@@ -145,8 +145,8 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 
 
 	Scene::GetSingleton()->DestroySingleton();
-	GBufferRenderer::GetSingleton()->DestroySingleton();
-	PostRenderer::GetSingleton()->DestroySingleton();
+	pGBRenderer->DestroySingleton();
+	pPostRenderer->DestroySingleton();
 
     UnregisterClass( "PostEffectProgram", wc.hInstance );
     return 0;
