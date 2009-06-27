@@ -15,5 +15,5 @@ public:
 
 	void Release ();
 
-	HRESULT Load (PDevice _pDevice, cStr _pFileName);
+	HRESULT Load (cStr _pFileName);
 };

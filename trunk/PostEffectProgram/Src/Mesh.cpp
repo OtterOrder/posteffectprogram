@@ -31,7 +31,7 @@ void Mesh::Release ()
 
 //------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------
-HRESULT Mesh::LoadFromXFile (PDevice _pDevice, cStr _pFileName)
+HRESULT Mesh::LoadFromXFile (cStr _pFileName)
 {
 	HRESULT result;
 
@@ -39,7 +39,7 @@ HRESULT Mesh::LoadFromXFile (PDevice _pDevice, cStr _pFileName)
 
 	result = D3DXLoadMeshFromX( _pFileName,
 								D3DXMESH_MANAGED,
-								_pDevice,
+								getDevice,
 								NULL,				// Adjacency
 								NULL,				// Materials
 								NULL,				// EffectInstances
@@ -60,7 +60,7 @@ HRESULT Mesh::LoadFromXFile (PDevice _pDevice, cStr _pFileName)
 
 
 		pMesh->GetDeclaration(m_VertexElements);
-		_pDevice->CreateVertexDeclaration(m_VertexElements, &m_pVD);
+		getDevice->CreateVertexDeclaration(m_VertexElements, &m_pVD);
 
 	}
 

@@ -307,7 +307,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="GRenderer"
+			Name="Renderer"
 			>
 			<File
 				RelativePath=".\Src\GBufferRenderer.cpp"
@@ -315,6 +315,14 @@
 			</File>
 			<File
 				RelativePath=".\Include\GBufferRenderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Src\Renderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\Renderer.h"
 				>
 			</File>
 		</Filter>

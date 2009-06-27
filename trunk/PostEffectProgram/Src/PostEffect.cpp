@@ -15,10 +15,9 @@ PostEffect::~PostEffect(void)
 
 //----------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------
-void PostEffect::SetShader (PDevice _pDevice,
-							cStr _vertexShaderFileName, cStr _vertexEntryPoint,
+void PostEffect::SetShader (cStr _vertexShaderFileName, cStr _vertexEntryPoint,
 							cStr _pixelShaderFileName,  cStr _pixelEntryPoint)
 {
 	SAFE_NEW(m_pShader, Shader);
-	m_pShader->Load(_pDevice, _vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
+	m_pShader->Load(_vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
 }

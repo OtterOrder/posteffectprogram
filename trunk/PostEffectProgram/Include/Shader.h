@@ -15,44 +15,43 @@ public:
 	Shader(void);
 	virtual ~Shader(void);
 
-	HRESULT Load (PDevice _pDevice,
-				  cStr _vertexShaderFileName = NULL, cStr _vertexEntryPoint = NULL,
+	HRESULT Load (cStr _vertexShaderFileName = NULL, cStr _vertexEntryPoint = NULL,
 				  cStr _pixelShaderFileName  = NULL, cStr _pixelEntryPoint  = NULL);
 
-	HRESULT LoadVertexShader (PDevice _pDevice, cStr _fileName, cStr _entryPoint);
-	HRESULT LoadPixelShader (PDevice _pDevice, cStr _fileName, cStr _entryPoint);
+	HRESULT LoadVertexShader (cStr _fileName, cStr _entryPoint);
+	HRESULT LoadPixelShader (cStr _fileName, cStr _entryPoint);
 
-	void Activate (PDevice _pDevice);
+	void Activate ();
 
 // Sampler
 public:
-	inline void SetVSSampler (PDevice _pDevice, cStr _name, const PTexture _texture)	{ SetSampler (_pDevice, m_pVertexConstantTable, _name, _texture); };
-	inline void SetPSSampler (PDevice _pDevice, cStr _name, const PTexture _texture)	{ SetSampler (_pDevice, m_pPixelConstantTable,  _name, _texture); };
+	inline void SetVSSampler (cStr _name, const PTexture _texture)	{ SetSampler (m_pVertexConstantTable, _name, _texture); };
+	inline void SetPSSampler (cStr _name, const PTexture _texture)	{ SetSampler (m_pPixelConstantTable,  _name, _texture); };
 
 private:
-	void SetSampler (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const PTexture _texture);
+	void SetSampler (PConstantTable& _constTable, cStr _name, const PTexture _texture);
 
 // u32
 public:
-	inline void SetVSInt (PDevice _pDevice, cStr _name, const u32& _value)	{ SetInt (_pDevice, m_pVertexConstantTable, _name, _value); };
-	inline void SetPSInt (PDevice _pDevice, cStr _name, const u32& _value)	{ SetInt (_pDevice, m_pPixelConstantTable,  _name, _value); };
+	inline void SetVSInt (cStr _name, const u32& _value)	{ SetInt (m_pVertexConstantTable, _name, _value); };
+	inline void SetPSInt (cStr _name, const u32& _value)	{ SetInt (m_pPixelConstantTable,  _name, _value); };
 
 private:
-	void SetInt (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const u32& _value);
+	void SetInt (PConstantTable& _constTable, cStr _name, const u32& _value);
 
 // Float
 public:
-	inline void SetVSFloat (PDevice _pDevice, cStr _name, const float& _value)	{ SetFloat (_pDevice, m_pVertexConstantTable, _name, _value); };
-	inline void SetPSFloat (PDevice _pDevice, cStr _name, const float& _value)	{ SetFloat (_pDevice, m_pPixelConstantTable,  _name, _value); };
+	inline void SetVSFloat (cStr _name, const float& _value)	{ SetFloat (m_pVertexConstantTable, _name, _value); };
+	inline void SetPSFloat (cStr _name, const float& _value)	{ SetFloat (m_pPixelConstantTable,  _name, _value); };
 
 private:
-	void SetFloat (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const float& _value);
+	void SetFloat (PConstantTable& _constTable, cStr _name, const float& _value);
 
 // Matrix
 public:
-	inline void SetVSMatrix (PDevice _pDevice, cStr _name, const Matrix& _matrix)	{ SetMatrix (_pDevice, m_pVertexConstantTable, _name, _matrix); };
-	inline void SetPSMatrix (PDevice _pDevice, cStr _name, const Matrix& _matrix)	{ SetMatrix (_pDevice, m_pPixelConstantTable,  _name, _matrix); };
+	inline void SetVSMatrix (cStr _name, const Matrix& _matrix)	{ SetMatrix (m_pVertexConstantTable, _name, _matrix); };
+	inline void SetPSMatrix (cStr _name, const Matrix& _matrix)	{ SetMatrix (m_pPixelConstantTable,  _name, _matrix); };
 
 private:
-	void SetMatrix (PDevice _pDevice, PConstantTable& _constTable, cStr _name, const Matrix& _matrix);
+	void SetMatrix (PConstantTable& _constTable, cStr _name, const Matrix& _matrix);
 };
