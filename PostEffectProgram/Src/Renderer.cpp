@@ -15,9 +15,12 @@ Renderer::~Renderer()
 
 }
 
-HRESULT Renderer::Initialize(HWND Hwnd)
+HRESULT Renderer::Initialize(HWND Hwnd,  u32 _width, u32 _height)
 {
 	m_hWnd=Hwnd;
+
+	m_BackBufferSize.x = _width;
+	m_BackBufferSize.y = _height;
 
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
 		return E_FAIL;
