@@ -9,7 +9,7 @@ public:
 	Quad();
 	~Quad();
 
-	void Create(PDevice _pDevice);
+	void Create(Vector2i _size);
 	void Draw();
 	void Release();
 
@@ -24,10 +24,8 @@ protected:
 		void operator=	(const QUADVERT& quad){ pos=quad.pos; texcoord=quad.texcoord;}
 	};
 
-	u32		m_width;
-	u32		m_height;
+	Vector2i	m_Size;
 
-	PDevice				m_pDevice;
 	PVertexDeclaration  m_pVertDeclPP;
 	QUADVERT			m_VBQuad[4];
 

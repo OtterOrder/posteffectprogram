@@ -1,12 +1,6 @@
 #include	"Shader.h"
 #include	<assert.h>
 
-#define		DEFAULT_VS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultVS.vsh"
-#define		DEFAULT_PS_PATH		"..\\Datas\\Shaders\\Defaults\\DefaultPS.psh"
-
-#define		DEFAULT_VS_ENTRY	"VSMain"
-#define		DEFAULT_PS_ENTRY	"PSMain"
-
 //******************************************************************************************************************************
 Shader::Shader(void)
 {
@@ -35,20 +29,10 @@ HRESULT Shader::Load (cStr _vertexShaderFileName, cStr _vertexEntryPoint,
 		if ( FAILED(LoadVertexShader(_vertexShaderFileName, _vertexEntryPoint)) )
 			return E_FAIL;
 	}
-	else
-	{
-		if ( FAILED(LoadVertexShader(DEFAULT_VS_PATH, DEFAULT_VS_ENTRY)) )
-			return E_FAIL;
-	}
 
 	if(_pixelShaderFileName)
 	{
 		if ( FAILED(LoadPixelShader(_pixelShaderFileName, _pixelEntryPoint)) )
-			return E_FAIL;
-	}
-	else
-	{
-		if ( FAILED(LoadPixelShader(DEFAULT_PS_PATH, DEFAULT_PS_ENTRY)) )
 			return E_FAIL;
 	}
 
@@ -119,10 +103,8 @@ HRESULT Shader::LoadPixelShader (cStr _fileName, cStr _entryPoint)
 //******************************************************************************************************************************
 void Shader::Activate ()
 {
-	if (m_pVertexShader)
-        getDevice->SetVertexShader(m_pVertexShader);
-	if (m_pPixelShader)
-		getDevice->SetPixelShader (m_pPixelShader );
+	getDevice->SetVertexShader(m_pVertexShader);
+	getDevice->SetPixelShader (m_pPixelShader );
 }
 
 //******************************************************************************************************************************

@@ -19,7 +19,7 @@ public:
 	Scene ()	{};
 	~Scene ();
 
-	void			Clear ();
+	void			Destroy ();
 
 	GraphicEntity*	CreateGraphicEntity ();
 	Light*			CreateLight (Light::Type _type);

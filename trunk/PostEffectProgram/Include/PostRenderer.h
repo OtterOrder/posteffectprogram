@@ -1,25 +1,29 @@
 #pragma once
 
-#include "Types.h"
-#include "Singleton.h"
+#include	"Types.h"
+#include	"Singleton.h"
 
-#include "RenderTarget.h"
-#include	"PostEffect.h"
+#include	"RenderTarget.h"
+#include	"PostProcess.h"
+#include	"Quad.h"
 
 #include	"GBufferRenderer.h"
+
+
+#include	"DefferedLighting.h"
 
 
 #include	<assert.h>
 #include	<vector>
 using namespace std;
 
-class PostRenderer: public Singleton< PostRenderer >
+class PostRenderer: public Singleton <PostRenderer>
 {
 public:
-	typedef enum
+	enum PostProcessType
 	{
-		//PE_MotionBlur = 1 << 0
-	} PostEffectType;
+		PE_DefferedLighting = 1 << 0
+	};
 
 public:
 	PostRenderer(void);
@@ -30,20 +34,24 @@ private:
 	RECT		m_ScreenRect;
 
 	PSurface	m_pBackBuffer;
-	PDevice		m_pDevice;
 
 	RenderTarget*		m_pFrontRenderTarget;
 	RenderTarget*		m_pBackRenderTarget;
 
-	u32		m_PostEffects;
-	vector <PostEffect*> m_pPostEffects;
+	u32		m_PostProcesses;
+	vector <PostProcess*> m_pPostProcesses;
 
 	GBuffer*	m_GBuffer;
 
-public:
-	void RenderPostEffects ();
+	Quad		m_ScreenQuad;
 
-	void SetBackBuffer (PSurface _pBackBuffer);
+public:
+	HRESULT Initialize (Vector2i _size);
+	void Release ();
+	void Destroy ();
+
+	void RenderPostProcesses ();
+
 	inline PSurface GetBackBuffer () { return m_pBackBuffer; };
 
 	inline PTexture GetFrontRenderTexture ()	{ return m_pFrontRenderTarget->GetTexture(); };
@@ -51,10 +59,6 @@ public:
 
 	inline PTexture GetBackRenderTexture ()		{ return m_pBackRenderTarget->GetTexture(); };
 	inline PSurface GetBackRenderSurface ()		{ return m_pBackRenderTarget->GetSurface(); };
-
-	HRESULT Create (PDevice _pDevice, u32 _width, u32 _height);
-	void Release ();
-	void DestroyPostPorcesses ();
 
 	void SwapSceneRender ();
 
@@ -67,6 +71,8 @@ public:
 	void SetGBuffer (GBuffer* _GBuffer)		{ assert(_GBuffer), m_GBuffer = _GBuffer; };
 	inline GBuffer* GetGBuffer ()			{ return m_GBuffer; };
 
-	void EnablePostEffect	(PostEffectType _postEffect)	{ m_PostEffects = m_PostEffects | (1 << _postEffect); };
-	void DisablePostEffect	(PostEffectType _postEffect)	{ m_PostEffects = !(!m_PostEffects | (1 << _postEffect)); };
+	void EnablePostProcess	(PostProcessType _postProcess)	{ m_PostProcesses = m_PostProcesses | _postProcess; };
+	void DisablePostProcess	(PostProcessType _postProcess)	{ m_PostProcesses = (m_PostProcesses & ~_postProcess); };
+
+	inline void DrawScreenQuad ()	{ m_ScreenQuad.Draw(); };
 };

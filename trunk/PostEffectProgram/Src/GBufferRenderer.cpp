@@ -21,18 +21,17 @@ void GBufferRenderer::Setup()
 	m_pScene = Scene::GetSingleton();
 	m_pEntityList=m_pScene->GetGraphicEntityList();
 
-	m_Camera.SetProjParams(D3DX_PI/4, (float)m_BackBufferWidth/m_BackBufferHeight, m_fZNear, m_fZFar);
+	m_Camera.SetProjParams(D3DX_PI/4, (float)m_BackBufferSize.x/m_BackBufferSize.y, m_fZNear, m_fZFar);
 	m_Camera.SetViewParams(&D3DXVECTOR3(-100.f, 100.f, -100.f), &D3DXVECTOR3(0.f, 0.f, 0.f));
 
 	// Initialisation shader
 	m_GRendererMaterial.SetShader("..\\Datas\\Shaders\\VSGbuffer.vsh", "VSTest", "..\\Datas\\Shaders\\PSGbuffer.psh", "PSTextureDisplay");
 
 	// Initialisation Render target
-	m_GBuffer.m_pRTSceneDiffuseMap.Create(Vector2i(m_BackBufferWidth, m_BackBufferHeight));
-	m_GBuffer.m_pRTSceneNormalMap.Create(Vector2i(m_BackBufferWidth, m_BackBufferHeight));
-	m_GBuffer.m_pRTDepthMap.Create(Vector2i(m_BackBufferWidth, m_BackBufferHeight), D3DFMT_R32F);
-	m_pd3dDevice->CreateDepthStencilSurface( m_BackBufferWidth, m_BackBufferHeight, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowDepth, NULL );
-
+	m_GBuffer.m_pRTSceneDiffuseMap.Create(m_BackBufferSize);
+	m_GBuffer.m_pRTSceneNormalMap.Create(m_BackBufferSize);
+	m_GBuffer.m_pRTDepthMap.Create(m_BackBufferSize, D3DFMT_R32F);
+	m_pd3dDevice->CreateDepthStencilSurface( m_BackBufferSize.x, m_BackBufferSize.y, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowDepth, NULL );
 }
 
 
@@ -64,7 +63,6 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	m_GRendererMaterial.m_pShader->SetVSMatrix("g_mWorldViewProjection", WorldViewProj);
 	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZNear", m_fZNear);
 	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZFar", m_fZFar);
-	
 }
 
 void GBufferRenderer::RenderGBufferPass()
@@ -94,7 +92,6 @@ void GBufferRenderer::RenderGBufferPass()
 	m_pd3dDevice->SetRenderTarget(2, NULL);
 	m_pd3dDevice->SetDepthStencilSurface( m_pOldDepthRT );
 	SAFE_RELEASE( m_pOldDepthRT );
-
 }
 
 void GBufferRenderer::Render()

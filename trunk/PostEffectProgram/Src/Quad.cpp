@@ -17,32 +17,28 @@ Quad::QUADVERT::QUADVERT(Vector4f _pos, Vector2f _texcoord)
 
 Quad::Quad()
 {
-	m_width = 800;
-	m_height = 600;
 }
 
 Quad::~Quad()
 {
 }
 
-void Quad::Create(PDevice _pDevice)
+void Quad::Create(Vector2i _size)
 {
-	m_width = GBufferRenderer::GetSingleton()->GetBackbufferWidth();
-	m_height = GBufferRenderer::GetSingleton()->GetBackbufferWidth();
+	m_Size = _size;
 
-	m_pDevice=_pDevice;
-	m_pDevice->CreateVertexDeclaration(QUADVERT::Decl, &m_pVertDeclPP);
+	getDevice->CreateVertexDeclaration(QUADVERT::Decl, &m_pVertDeclPP);
 
 	m_VBQuad[0]=QUADVERT(Vector4f(0.0f,			   0.0f,		   0.0f, 1.0f), Vector2f(0.0f, 0.0f));
-	m_VBQuad[1]=QUADVERT(Vector4f((float)m_width,  0.0f,		   0.0f, 1.0f), Vector2f(1.0f, 0.0f));
-	m_VBQuad[2]=QUADVERT(Vector4f(0.0f,			  (float)m_height, 0.0f, 1.0f), Vector2f(0.0f, 1.0f));
-	m_VBQuad[3]=QUADVERT(Vector4f((float)m_width, (float)m_height, 0.0f, 1.0f), Vector2f(1.0f, 1.0f));
+	m_VBQuad[1]=QUADVERT(Vector4f((float)m_Size.x, 0.0f,		   0.0f, 1.0f), Vector2f(1.0f, 0.0f));
+	m_VBQuad[2]=QUADVERT(Vector4f(0.0f,			  (float)m_Size.y, 0.0f, 1.0f), Vector2f(0.0f, 1.0f));
+	m_VBQuad[3]=QUADVERT(Vector4f((float)m_Size.x,(float)m_Size.y, 0.0f, 1.0f), Vector2f(1.0f, 1.0f));
 }
 
 void Quad::Draw()
 {
-	m_pDevice->SetVertexDeclaration( m_pVertDeclPP );
-	m_pDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, m_VBQuad, sizeof(QUADVERT) );
+	getDevice->SetVertexDeclaration( m_pVertDeclPP );
+	getDevice->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, m_VBQuad, sizeof(QUADVERT) );
 }
 
 void Quad::Release()

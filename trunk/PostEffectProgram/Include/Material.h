@@ -27,6 +27,11 @@ public:
 
 	void Release ();
 
+private:
+	void SetTextureSampler (cStr _name, const Texture* _pTexture = NULL);
+
+
+public:
 	void Apply ();
 
 	HRESULT SetTexture (cStr _fileName, TextureType _type);

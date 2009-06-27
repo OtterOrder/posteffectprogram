@@ -1,8 +1,8 @@
 #pragma once
 
-#include	"PostEffect.h"
+#include	"PostProcess.h"
 
-class DefferedLighting : public PostEffect
+class DefferedLighting : public PostProcess
 {
 
 public:

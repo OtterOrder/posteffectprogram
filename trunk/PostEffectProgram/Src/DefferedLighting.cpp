@@ -1,5 +1,7 @@
 #include	"DefferedLighting.h"
 
+#include	"PostRenderer.h"
+
 //------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------
 DefferedLighting::DefferedLighting()
@@ -15,6 +17,7 @@ DefferedLighting::~DefferedLighting()
 //------------------------------------------------------------------------------------------------------------------------------
 void DefferedLighting::Create (Vector2i _size)
 {
+	SetShader(NULL, NULL, "..\\Datas\\Shaders\\PSDefferedLighting.psh", "PSMain");
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -31,4 +34,11 @@ void DefferedLighting::Destroy ()
 //------------------------------------------------------------------------------------------------------------------------------
 void DefferedLighting::Apply()
 {
+	PostRenderer::GetSingleton()->SetRenderTarget(PostRenderer::GetSingleton()->GetFrontRenderSurface());
+
+	//_pDevice->Clear(0, NULL, )
+
+	m_pShader->Activate();
+
+	PostRenderer::GetSingleton()->DrawScreenQuad();
 }

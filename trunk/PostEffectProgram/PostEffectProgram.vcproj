@@ -270,11 +270,11 @@
 			Name="PostProcesses"
 			>
 			<File
-				RelativePath=".\Src\PostEffect.cpp"
+				RelativePath=".\Src\PostProcess.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Include\PostEffect.h"
+				RelativePath=".\Include\PostProcess.h"
 				>
 			</File>
 			<File
