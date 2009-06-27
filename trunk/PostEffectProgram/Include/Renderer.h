@@ -11,7 +11,7 @@ public:
 	Renderer();
 	~Renderer();
 
-	HRESULT Initialize(HWND Hwnd);
+	HRESULT Initialize(HWND Hwnd, u32 _width, u32 _height);
 	HRESULT Destroy();
 
 	Vector2i	GetBackbufferSize ()	{ return m_BackBufferSize; };

@@ -110,7 +110,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                               NULL, NULL, wc.hInstance, NULL );
 
    
-	pGBRenderer->Initialize(g_hWnd);
+	pGBRenderer->Initialize(g_hWnd, 800, 600);
 
 	pPostRenderer->Initialize(GBufferRenderer::GetSingleton()->GetBackbufferSize());
 	pPostRenderer->EnablePostProcess(PostRenderer::PE_DefferedLighting);

@@ -402,6 +402,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Application"
+			>
+			<File
+				RelativePath=".\Src\BaseApplication.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Include\BaseApplication.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>
