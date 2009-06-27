@@ -36,9 +36,9 @@ void Material::Release ()
 void Material::SetTextureSampler (cStr _name, const Texture* _pTexture)
 {
 	if (_pTexture)
-		m_pShader->SetPSSampler("DiffuseSampler", _pTexture->m_pTexture);
+		m_pShader->SetPSSampler(_name, _pTexture->m_pTexture);
 	else
-		m_pShader->SetPSSampler("DiffuseSampler", NULL);
+		m_pShader->SetPSSampler(_name, NULL);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -82,6 +82,18 @@ HRESULT Material::SetTexture (cStr _fileName, TextureType _type)
 HRESULT Material::SetShader(cStr _vertexShaderFileName, cStr _vertexEntryPoint, cStr _pixelShaderFileName, cStr _pixelEntryPoint)
 {
 	SAFE_NEW(m_pShader, Shader);
+
+	if (!_vertexShaderFileName)
+	{
+		_vertexShaderFileName = DEFAULT_VS_PATH;
+		_vertexEntryPoint = DEFAULT_VS_ENTRY;
+	}
+
+	if (!_pixelShaderFileName)
+	{
+		_pixelShaderFileName = DEFAULT_PS_PATH;
+		_pixelEntryPoint = DEFAULT_PS_ENTRY;
+	}
 
 	return m_pShader->Load(_vertexShaderFileName, _vertexEntryPoint, _pixelShaderFileName, _pixelEntryPoint);
 }

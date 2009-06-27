@@ -78,11 +78,11 @@ void GBufferRenderer::RenderGBufferPass()
 
 	m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,125), 1.0f, 0 );
 	Render();
-
+/*
 	D3DXSaveTextureToFile("testdiff.bmp", D3DXIFF_BMP, m_GBuffer.m_pRTSceneDiffuseMap.GetTexture(), NULL);
 	D3DXSaveTextureToFile("testnormal.bmp", D3DXIFF_BMP, m_GBuffer.m_pRTSceneNormalMap.GetTexture(), NULL);
 	D3DXSaveTextureToFile("testz.bmp", D3DXIFF_BMP, m_GBuffer.m_pRTDepthMap.GetTexture(), NULL);
-
+*/
 	// Désactivation render target
 	PSurface pd3dBackBufferSurface;
 	m_pd3dDevice->GetBackBuffer(0,0,D3DBACKBUFFER_TYPE_MONO, &pd3dBackBufferSurface);

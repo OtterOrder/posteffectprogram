@@ -7,11 +7,11 @@ class DefferedLighting : public PostProcess
 
 public:
 	DefferedLighting ();
-	virtual ~DefferedLighting ();
+	~DefferedLighting ();
 
-	virtual void Create (Vector2i _size);
-	virtual void Release ();
-	virtual void Destroy ();
+	void Create (Vector2i _size);
+	void Release ();
+	void Destroy ();
 
-	virtual void Apply();
+	void Apply();
 };

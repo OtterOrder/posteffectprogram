@@ -33,11 +33,11 @@ public:
 	void				RenderScene();	
 	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	CFirstPersonCamera  GetCamera() {return m_Camera;}
+	CFirstPersonCamera  GetCamera() {return m_Camera;};
+	GBuffer*			GetGBuffer ()	{ return &m_GBuffer; };
 
 
 private:
-
 	void RenderGBufferPass();
 	void ComputeMatrices(Matrix _world);
 	void Render();
