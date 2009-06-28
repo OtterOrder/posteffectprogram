@@ -37,7 +37,25 @@ void DeferredLighting::Apply()
 	PostRenderer::GetSingleton()->SetRenderTarget(PostRenderer::GetSingleton()->GetFrontRenderSurface());
 
 	m_pShader->Activate();
+
+	Vector3f cameraPosition = *(GBufferRenderer::GetSingleton()->GetCamera().GetEyePt());
+	//m_pShader->SetPSVector3f("gCamPosition", cameraPosition);
+
+	Matrix ViewProjInv;
+	MatrixMultiply (&ViewProjInv, GBufferRenderer::GetSingleton()->GetCamera().GetViewMatrix(), GBufferRenderer::GetSingleton()->GetCamera().GetProjMatrix());
+	MatrixInverse(&ViewProjInv, NULL, &ViewProjInv);
+	m_pShader->SetPSMatrix("gViewProjInv", ViewProjInv);
+
 	m_pShader->SetPSSampler("DiffuseSampler", PostRenderer::GetSingleton()->GetGBuffer()->m_pDiffuseMap.GetTexture());
+	m_pShader->SetPSSampler("NormalSampler", PostRenderer::GetSingleton()->GetGBuffer()->m_pNormalMap.GetTexture());
+	m_pShader->SetPSSampler("DepthSampler", PostRenderer::GetSingleton()->GetGBuffer()->m_pDepthMap.GetTexture());
+
+	Vector3f lightPosition = Vector3f (0.f, 400.f, 0.f);
+	m_pShader->SetPSVector3f("gLightPosition", lightPosition);
+	Vector3f lightDirection = Vector3f (0.f, 0.f, 1.f);
+	m_pShader->SetPSVector3f("gLightDirection", lightDirection);
+	Vector3f lightDiffuse = Vector3f (0.8f, 0.8f, 0.8f);
+	m_pShader->SetPSVector3f("gLightDiffuse", lightDiffuse);
 
 	PostRenderer::GetSingleton()->DrawScreenQuad();
 }

@@ -31,7 +31,7 @@ sampler_state
 struct VS_OUTPUT
 {
 	float2 UV		: TEXCOORD0;
-	float3 WorldPos	: TEXCOORD1;
+	float4 WorldPos	: TEXCOORD1;
 };
 
 struct PS_OUTPUT_GBUFFER
@@ -40,10 +40,6 @@ struct PS_OUTPUT_GBUFFER
 	float4	vNormale		: COLOR1;
 	float4	vDepth 			: COLOR2;
 };
-
-float g_fZNear;
-float g_fZFar;
-
 
 PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 {
@@ -62,8 +58,8 @@ PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 	Output.vNormale.a=specularColor.g;
 	
 	// RT 3 Depth
-	float Depth=(Input.WorldPos.z-g_fZNear)/(g_fZFar-g_fZNear);
-	Output.vDepth=Depth;
+	float Depth = Input.WorldPos.z / Input.WorldPos.w;
+	Output.vDepth = Depth;
 	
 	return Output;
 	

@@ -47,6 +47,30 @@ public:
 private:
 	void SetFloat (PConstantTable& _constTable, cStr _name, const float& _value);
 
+// Vector2f
+public:
+	inline void SetVSVector2f (cStr _name, const Vector2f& _value)	{ SetVector2f (m_pVertexConstantTable, _name, _value); };
+	inline void SetPSVector2f (cStr _name, const Vector2f& _value)	{ SetVector2f (m_pPixelConstantTable,  _name, _value); };
+
+private:
+	void SetVector2f (PConstantTable& _constTable, cStr _name, const Vector2f& _value);
+
+// Vector3f
+public:
+	inline void SetVSVector3f (cStr _name, const Vector3f& _value)	{ SetVector3f (m_pVertexConstantTable, _name, _value); };
+	inline void SetPSVector3f (cStr _name, const Vector3f& _value)	{ SetVector3f (m_pPixelConstantTable,  _name, _value); };
+
+private:
+	void SetVector3f (PConstantTable& _constTable, cStr _name, const Vector3f& _value);
+
+// Vector4f
+public:
+	inline void SetVSVector4f (cStr _name, const Vector4f& _value)	{ SetVector4f (m_pVertexConstantTable, _name, _value); };
+	inline void SetPSVector4f (cStr _name, const Vector4f& _value)	{ SetVector4f (m_pPixelConstantTable,  _name, _value); };
+
+private:
+	void SetVector4f (PConstantTable& _constTable, cStr _name, const Vector4f& _value);
+
 // Matrix
 public:
 	inline void SetVSMatrix (cStr _name, const Matrix& _matrix)	{ SetMatrix (m_pVertexConstantTable, _name, _matrix); };

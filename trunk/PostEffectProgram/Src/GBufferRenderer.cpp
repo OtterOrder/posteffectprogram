@@ -3,17 +3,20 @@
 #include "Scene.h"
 #include "GraphicEntity.h"
 
-
-
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 GBufferRenderer::GBufferRenderer()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 GBufferRenderer::~GBufferRenderer()
 {
 
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::Setup()
 {
 	m_pScene = Scene::GetSingleton();
@@ -32,7 +35,8 @@ void GBufferRenderer::Setup()
 	m_pd3dDevice->CreateDepthStencilSurface( m_BackBufferSize.x, m_BackBufferSize.y, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowDepth, NULL );
 }
 
-
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::RenderScene()
 {
 	m_Camera.FrameMove(m_Timer.GetDeltaTime());
@@ -52,6 +56,7 @@ void GBufferRenderer::RenderScene()
 	m_Timer.EndE();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::ComputeMatrices(Matrix _world)
 {
 	GraphicEntity::Iterator GEntityIt;
@@ -59,10 +64,9 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	MatrixMultiply(&viewProj, m_Camera.GetViewMatrix(), m_Camera.GetProjMatrix());
 	MatrixMultiply(&WorldViewProj, &_world, &viewProj);
 	m_GRendererMaterial.m_pShader->SetVSMatrix("g_mWorldViewProjection", WorldViewProj);
-	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZNear", m_Camera.GetNearClip());
-	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZFar", m_Camera.GetFarClip());
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::RenderGBufferPass()
 {
 	// Assignation des render target
@@ -91,6 +95,7 @@ void GBufferRenderer::RenderGBufferPass()
 	SAFE_RELEASE( m_pOldDepthRT );
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::Render()
 {
 	GraphicEntity::Iterator GEntityIt;
@@ -109,11 +114,14 @@ void GBufferRenderer::Render()
 	}
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	m_Camera.HandleMessages(hWnd, msg, wParam, lParam);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::Release()
 {
 	m_GBuffer.m_pDiffuseMap.Release();
