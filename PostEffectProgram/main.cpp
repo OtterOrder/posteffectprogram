@@ -5,8 +5,6 @@
 #pragma warning( disable : 4996 )
 #pragma warning( default : 4996 )
 
-#include "Camera.h"
-#include "Time.h"
 #include "Types.h"
 #include "GBufferRenderer.h"
 #include "PostRenderer.h"
@@ -15,7 +13,7 @@
 HWND      g_hWnd;
 
 
-HRESULT InitGeometry()
+HRESULT CreateScene()
 {
 
 	// Création de la scène 
@@ -67,22 +65,13 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		case WM_DESTROY:
 			Scene::GetSingleton()->Destroy();
 			PostRenderer::GetSingleton()->Destroy();
-			Scene::GetSingleton()->Destroy();
-			PostRenderer::GetSingleton()->Destroy();
             GBufferRenderer::GetSingleton()->Destroy();
             PostQuitMessage( 0 );
 			DestroyWindow(g_hWnd);
             return 0;
 
-		case WM_MOUSEMOVE:
-			POINT ptCursor;
-            GetCursorPos( &ptCursor );
-			//g_pd3dDevice->SetCursorPosition( ptCursor.x, ptCursor.y, 0 );
-			break;
-
 		 case WM_SETCURSOR:
 			SetCursor(NULL);
-            //g_pd3dDevice->ShowCursor( true );
             break;
 
 		 case WM_KEYDOWN:
@@ -91,8 +80,6 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             {
                 case VK_ESCAPE:
 				{
-					Scene::GetSingleton()->Destroy();
-					PostRenderer::GetSingleton()->Destroy();
 					Scene::GetSingleton()->Destroy();
 					PostRenderer::GetSingleton()->Destroy();
 					GBufferRenderer::GetSingleton()->Destroy();
@@ -113,12 +100,8 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
-	// Initialisation GBufferRenderer
 
-	GBufferRenderer* pGBRenderer = GBufferRenderer::GetSingleton();
-	PostRenderer*	 pPostRenderer = PostRenderer::GetSingleton();
-
-
+	//Création de la fenêtre windows
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
                       "PostEffectProgram", NULL };
@@ -128,14 +111,19 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                               WS_OVERLAPPEDWINDOW, 100, 100, 800, 600,
                               NULL, NULL, wc.hInstance, NULL );
 
-   
-	pGBRenderer->Initialize(g_hWnd, 800, 600);
 
+	// Initialisation des modules
+	GBufferRenderer* pGBRenderer = GBufferRenderer::GetSingleton();
+	PostRenderer*	 pPostRenderer = PostRenderer::GetSingleton();
+	Scene*			 pScene = Scene::GetSingleton();
+
+	pGBRenderer->Initialize(g_hWnd, 800, 600);
 	pPostRenderer->Initialize(pGBRenderer->GetBackbufferSize());
 	pPostRenderer->SetGBuffer(pGBRenderer->GetGBuffer());
 	pPostRenderer->EnablePostProcess(PostRenderer::PE_DeferredLighting);
 
-    if( SUCCEEDED( InitGeometry() ) )
+
+    if( SUCCEEDED( CreateScene() ) )
     {
         ShowWindow( g_hWnd, SW_SHOWDEFAULT );
         UpdateWindow( g_hWnd );
@@ -161,8 +149,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
         }
     }
 
-
-	Scene::GetSingleton()->DestroySingleton();
+	pScene->DestroySingleton();
 	pGBRenderer->DestroySingleton();
 	pPostRenderer->DestroySingleton();
 
