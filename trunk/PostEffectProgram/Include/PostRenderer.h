@@ -10,7 +10,7 @@
 #include	"GBufferRenderer.h"
 
 
-#include	"DefferedLighting.h"
+#include	"DeferredLighting.h"
 
 
 #include	<assert.h>
@@ -22,7 +22,7 @@ class PostRenderer: public Singleton <PostRenderer>
 public:
 	enum PostProcessType
 	{
-		PE_DefferedLighting = 1 << 0
+		PE_DeferredLighting = 1 << 0
 	};
 
 public:
