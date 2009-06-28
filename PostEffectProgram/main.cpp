@@ -36,19 +36,25 @@ HRESULT InitGeometry()
 	pGE2->GetMaterial()->SetTexture("..\\Datas\\Textures\\wall_normal.jpg", Material::Normal);
 	pGE2->GetMaterial()->SetTexture("..\\Datas\\Textures\\wall_specular.jpg", Material::Specular);
 
-	GraphicEntity* pGE3 = pScene->CreateGraphicEntity();
-	pGE3->Initialize("..\\Datas\\Meshes\\boite.X");
-
-	pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_diffuse.jpg", Material::Diffuse);
-	pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
-	pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_specular.jpg", Material::Specular);
-
 	GraphicEntity* pGE4 = pScene->CreateGraphicEntity();
 	pGE4->Initialize("..\\Datas\\Meshes\\plafond.X");
 
 	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_diffuse.jpg", Material::Diffuse);
 	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_normal.jpg", Material::Normal);
 	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_specular.jpg", Material::Specular);
+
+	char _name[32];
+	for(int i=0; i<7; i++)
+	{
+		sprintf(_name, "..\\Datas\\Meshes\\boite0%d.X", i);
+
+		GraphicEntity* pGE3 = pScene->CreateGraphicEntity();
+		pGE3->Initialize(_name);
+
+		pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_diffuse.jpg", Material::Diffuse);
+		pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
+		pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_specular.jpg", Material::Specular);
+	}
 
     return S_OK;
 }
