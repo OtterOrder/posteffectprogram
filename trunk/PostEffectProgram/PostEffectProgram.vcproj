@@ -304,6 +304,10 @@
 					RelativePath=".\Include\DefferedLighting.h"
 					>
 				</File>
+				<File
+					RelativePath="..\Datas\Shaders\PSDefferedLighting.psh"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
