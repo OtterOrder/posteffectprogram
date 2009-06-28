@@ -28,9 +28,9 @@ void GBufferRenderer::Setup()
 	m_GRendererMaterial.SetShader("..\\Datas\\Shaders\\VSGbuffer.vsh", "VSTest", "..\\Datas\\Shaders\\PSGbuffer.psh", "PSTextureDisplay");
 
 	// Initialisation Render target
-	m_GBuffer.m_pRTSceneDiffuseMap.Create(m_BackBufferSize);
-	m_GBuffer.m_pRTSceneNormalMap.Create(m_BackBufferSize);
-	m_GBuffer.m_pRTDepthMap.Create(m_BackBufferSize, D3DFMT_R32F);
+	m_GBuffer.m_pDiffuseMap.Create(m_BackBufferSize);
+	m_GBuffer.m_pNormalMap.Create(m_BackBufferSize);
+	m_GBuffer.m_pDepthMap.Create(m_BackBufferSize, D3DFMT_R32F);
 	m_pd3dDevice->CreateDepthStencilSurface( m_BackBufferSize.x, m_BackBufferSize.y, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowDepth, NULL );
 }
 
@@ -69,9 +69,9 @@ void GBufferRenderer::RenderGBufferPass()
 {
 
 	// Assignation des render target
-	m_pd3dDevice->SetRenderTarget(0, m_GBuffer.m_pRTSceneDiffuseMap.GetSurface());
-	m_pd3dDevice->SetRenderTarget(1, m_GBuffer.m_pRTSceneNormalMap.GetSurface());
-	m_pd3dDevice->SetRenderTarget(2, m_GBuffer.m_pRTDepthMap.GetSurface());
+	m_pd3dDevice->SetRenderTarget(0, m_GBuffer.m_pDiffuseMap.GetSurface());
+	m_pd3dDevice->SetRenderTarget(1, m_GBuffer.m_pNormalMap.GetSurface());
+	m_pd3dDevice->SetRenderTarget(2, m_GBuffer.m_pDepthMap.GetSurface());
 
 	m_pd3dDevice->GetDepthStencilSurface( &m_pOldDepthRT );
 	m_pd3dDevice->SetDepthStencilSurface( m_pShadowDepth );
@@ -119,9 +119,9 @@ void GBufferRenderer::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
 
 void GBufferRenderer::Release()
 {
-	m_GBuffer.m_pRTSceneDiffuseMap.Release();
-	m_GBuffer.m_pRTSceneNormalMap.Release();
-	m_GBuffer.m_pRTDepthMap.Release();
+	m_GBuffer.m_pDiffuseMap.Release();
+	m_GBuffer.m_pNormalMap.Release();
+	m_GBuffer.m_pDepthMap.Release();
 	SAFE_RELEASE(m_pShadowDepth);
 }
 

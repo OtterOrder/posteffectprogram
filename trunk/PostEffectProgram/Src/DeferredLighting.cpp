@@ -37,7 +37,7 @@ void DeferredLighting::Apply()
 	PostRenderer::GetSingleton()->SetRenderTarget(PostRenderer::GetSingleton()->GetFrontRenderSurface());
 
 	m_pShader->Activate();
-	m_pShader->SetPSSampler("DiffuseSampler", PostRenderer::GetSingleton()->GetGBuffer()->m_pRTSceneDiffuseMap.GetTexture());
+	m_pShader->SetPSSampler("DiffuseSampler", PostRenderer::GetSingleton()->GetGBuffer()->m_pDiffuseMap.GetTexture());
 
 	PostRenderer::GetSingleton()->DrawScreenQuad();
 }

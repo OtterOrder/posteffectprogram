@@ -18,9 +18,9 @@ class GraphicEntity;
 
 struct GBuffer
 {
-	RenderTarget m_pRTSceneDiffuseMap;
-	RenderTarget m_pRTSceneNormalMap;
-	RenderTarget m_pRTDepthMap;
+	RenderTarget m_pDiffuseMap;
+	RenderTarget m_pNormalMap;
+	RenderTarget m_pDepthMap;
 };
 
 class GBufferRenderer : public Renderer, public Singleton < GBufferRenderer >
