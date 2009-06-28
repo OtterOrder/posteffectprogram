@@ -1,12 +1,19 @@
-float4x4	ViewProjInv;
 
-float ZNear;
-float ZFar;
+float3	gCamPosition;
+float	gZNear;
+float	gZFar;
+
+float4x4	gViewProjInv;
+
+float3	gLightPosition		= float3(0.f, 0.f, 0.f);
+float3	gLightDirection		= float3(0.f, 0.f, 1.f);
+float3	gLightDiffuse		= float3(0.5f, 0.5f, 0.5f);
+float3	gLightSpecular		= float3(1.0f, 1.0f, 1.0f);
 
 sampler DiffuseSampler = 
 sampler_state
 {
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
 	AddressV  = WRAP;
     MipFilter = LINEAR;
     MinFilter = LINEAR;
@@ -16,7 +23,7 @@ sampler_state
 sampler NormalSampler = 
 sampler_state
 {
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
 	AddressV  = WRAP;
     MipFilter = LINEAR;
     MinFilter = LINEAR;
@@ -26,7 +33,7 @@ sampler_state
 sampler DepthSampler = 
 sampler_state
 {
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
 	AddressV  = WRAP;
     MipFilter = LINEAR;
     MinFilter = LINEAR;
@@ -35,32 +42,52 @@ sampler_state
 
 float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 {
-	float3 vDiffuseMaterial = tex2D(DiffuseSampler, _uv).rgb;
-	return float4(vDiffuseMaterial, 1.f);
+	float4 GBDiffuse = tex2D(DiffuseSampler, _uv);
+	float3 DiffuseColor = GBDiffuse.rgb;
+
+	float4 GBNormal = tex2D(NormalSampler, _uv);
+	float3 WorldNormal = GBNormal.xyz * 2.f - 1.f;
+
+	float Depth = tex2D(DepthSampler, _uv).x;
+
+	float3 SpecularColor = float3 (1.f, 1.f, 1.f);
+	float  SpecularGlossiness = GBDiffuse.a;
+	float  SpecularPower = GBNormal.a;
+
+	float3 ScreenPosition;
+	ScreenPosition.xy = float2(_uv.x, 1.f - _uv.y)*2.f -1.f;
+	ScreenPosition.z = Depth;
+	float4 NHWorldPosition = mul(float4(ScreenPosition, 1.f), gViewProjInv);
+	float3 WorldPosition = NHWorldPosition.xyz / NHWorldPosition.w;
+
 /*
-	float3 vSpecularMaterial = tex2D(DiffuseSampler, _uv).a;
+	float3 LightDir = normalize(gLightPosition - WorldPosition);
+	float  DiffuseIntensity = dot(LightDir, WorldNormal);
 
-	// normals are stored in texture space [0,1] -> convert them back to [-1,+1] range
-	float3 vWorldNrm = (tex2D(NormalSampler, _uv) - 0.5) * 2;
-
-	float3 vWorldPos;
-	vWorldPos.xy = float2(_uv.x, 1.f - _uv.y)*2.f -1.f;
-	vWorldPos.z = tex2D(DepthSampler, _uv).x * (ZFar - ZNear) + ZNear;
-	vWorldPos = mul(vWorldPos, ViewProjInv);
-
-	float3 vLightDir = normalize(c_vLightPos - vWorldPos);
-	float3 vEyeVec = normalize(c_mViewInverse[3].xyz - vWorldPos);	
-	float3 vDiffuseIntensity = dot(vLightDir, vWorldNrm);
-	float3 vSpecularIntensity = pow(max(0, dot(vEyeVec, reflect(-vLightDir, vWorldNrm))), c_fSpecularPower);
-
-	float4 color;
-	color.rgb = vDiffuseIntensity * c_vLightDiffuse.xyz * vDiffuseMaterial + 
-				vSpecularIntensity * c_vLightSpecular.xyz * vSpecularMaterial;
-	color.a = 1.0;
-	
-	// here we add color to show how lighting pass affects the scene
-	color.rgb += i.vTex0.rgr * 0.5;
-	
-	return color;
+	float3 CamDir = normalize(gCamPosition - WorldPosition);
+	float3 Reflect = normalize(2 * DiffuseIntensity * WorldNormal - LightDir);
+	float  SpecularIntensity = min(pow(saturate(dot(Reflect, CamDir)), SpecularGlossiness), SpecularPower);
 */
+
+	//----------------------------------------------------------------
+	float3 Nw = WorldNormal;
+	float3 Lw = normalize(gLightPosition - WorldPosition);
+	float3 Vw = normalize(gCamPosition - WorldPosition);
+	float3 Hw = normalize(Lw + Vw);
+
+	float N_dot_L = dot(Nw, Lw);
+
+	float4 coefLight = lit(N_dot_L , dot(Nw, Hw), SpecularGlossiness);
+
+	float4 FinalColor;
+
+	FinalColor.rgb = coefLight.y * gLightDiffuse * DiffuseColor + coefLight.z * gLightSpecular * float3(1.f, 1.f, 1.f);
+	//FinalColor.rgb = float3(coefLight.y, coefLight.y, coefLight.y);
+	FinalColor.rgb = WorldPosition;
+	FinalColor.a = 1.0;
+
+	// here we add color to show how lighting pass affects the scene
+	//FinalColor.rgb += i.vTex0.rgr * 0.5;
+
+	return FinalColor;
 }

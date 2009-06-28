@@ -1,7 +1,8 @@
 #include	"Shader.h"
 #include	<assert.h>
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 Shader::Shader(void)
 {
 	m_pVertexShader	= NULL;
@@ -11,7 +12,7 @@ Shader::Shader(void)
 	m_pPixelConstantTable	= NULL;
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 Shader::~Shader(void)
 {
     SAFE_RELEASE(m_pVertexShader);
@@ -20,7 +21,8 @@ Shader::~Shader(void)
 	SAFE_RELEASE(m_pPixelConstantTable);
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 HRESULT Shader::Load (cStr _vertexShaderFileName, cStr _vertexEntryPoint,
 					  cStr _pixelShaderFileName , cStr _pixelEntryPoint )
 {
@@ -39,7 +41,7 @@ HRESULT Shader::Load (cStr _vertexShaderFileName, cStr _vertexEntryPoint,
 	return S_OK;
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 HRESULT Shader::LoadVertexShader (cStr _fileName, cStr _entryPoint)
 {
 	LPD3DXBUFFER pErrorBuffer = NULL;
@@ -69,7 +71,7 @@ HRESULT Shader::LoadVertexShader (cStr _fileName, cStr _entryPoint)
 	return res;
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 HRESULT Shader::LoadPixelShader (cStr _fileName, cStr _entryPoint)
 {
 	LPD3DXBUFFER pErrorBuffer = NULL;
@@ -100,20 +102,21 @@ HRESULT Shader::LoadPixelShader (cStr _fileName, cStr _entryPoint)
 	return res;
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
 void Shader::Activate ()
 {
 	getDevice->SetVertexShader(m_pVertexShader);
 	getDevice->SetPixelShader (m_pPixelShader );
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 void Shader::SetSampler (PConstantTable& _constTable, cStr _name, const PTexture _texture)
 {
 	assert(_constTable);
 
 	Handle textureHdl = _constTable->GetConstantByName(0, _name);
-	WarningReturn(textureHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(textureHdl != NULL, "Set Sampler. Variable handle not found.");
 
 	ConstantDesc textureDesc;
 	u32 count;
@@ -122,35 +125,68 @@ void Shader::SetSampler (PConstantTable& _constTable, cStr _name, const PTexture
 	getDevice->SetTexture(textureDesc.RegisterIndex, _texture);
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 void Shader::SetInt (PConstantTable& _constTable, cStr _name, const u32& _value)
 {
 	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Set Int. Variable handle not found.");
 
 	_constTable->SetInt(getDevice, varHdl, _value);
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
 void Shader::SetFloat (PConstantTable& _constTable, cStr _name, const float& _value)
 {
 	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Set Float. Variable handle not found.");
 
 	_constTable->SetFloat(getDevice, varHdl, _value);
 }
 
-//******************************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------------------
+void Shader::SetVector2f (PConstantTable& _constTable, cStr _name, const Vector2f& _value)
+{
+	assert(_constTable);
+
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	WarningReturn(varHdl != NULL, "Set Vector2f. Variable handle not found.");
+
+	_constTable->SetFloatArray(getDevice, varHdl, &(_value.x), 2);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+void Shader::SetVector3f (PConstantTable& _constTable, cStr _name, const Vector3f& _value)
+{
+	assert(_constTable);
+
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	WarningReturn(varHdl != NULL, "Set Vector3f. Variable handle not found.");
+
+	_constTable->SetFloatArray(getDevice, varHdl, &(_value.x), 3);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+void Shader::SetVector4f (PConstantTable& _constTable, cStr _name, const Vector4f& _value)
+{
+	assert(_constTable);
+
+	Handle varHdl = _constTable->GetConstantByName(0, _name);
+	WarningReturn(varHdl != NULL, "Set Vector4f. Variable handle not found.");
+
+	_constTable->SetFloatArray(getDevice, varHdl, &(_value.x), 4);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
 void Shader::SetMatrix (PConstantTable& _constTable, cStr _name, const Matrix& _matrix)
 {
 	assert(_constTable);
 
 	Handle varHdl = _constTable->GetConstantByName(0, _name);
-	WarningReturn(varHdl != NULL, "Pixel Constant Table. Variable handle not found.");
+	WarningReturn(varHdl != NULL, "Set Matrix. Variable handle not found.");
 
 	_constTable->SetMatrix(getDevice, varHdl, &_matrix);
 }

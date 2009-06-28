@@ -5,7 +5,7 @@ struct VS_OUTPUT
 {
 	float4 Position	: POSITION;
 	float2 UV		: TEXCOORD0;
-	float3 WorldPos	: TEXCOORD1;
+	float4 WorldPos	: TEXCOORD1;
 };
 
 VS_OUTPUT VSTest (	float4 vPos : POSITION,
@@ -14,7 +14,7 @@ VS_OUTPUT VSTest (	float4 vPos : POSITION,
     VS_OUTPUT Output;
 
 	Output.Position = mul(vPos, g_mWorldViewProjection);
-	Output.WorldPos = mul(vPos, g_mWorldViewProjection);
+	Output.WorldPos = Output.Position;
 	Output.UV = vUV;
 
 	return Output;

@@ -40,8 +40,9 @@ typedef		D3DFORMAT				Format;
 
 //--------------------------------------------------------------
 typedef		D3DXMATRIX				Matrix;
-#define 	MatrixMultiply			D3DXMatrixMultiply
 #define 	MatrixIdentity			D3DXMatrixIdentity
+#define 	MatrixMultiply			D3DXMatrixMultiply
+#define		MatrixInverse			D3DXMatrixInverse
 
 //--------------------------------------------------------------
 typedef		D3DXVECTOR2				Vector2f;

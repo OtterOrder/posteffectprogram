@@ -50,6 +50,32 @@ HRESULT Mesh::LoadFromXFile (cStr _pFileName)
 	{
 		Release ();
 
+		//create a new vert decleration
+		VertexElement vertDecl[] = 
+		{
+			{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+			{ 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
+			{ 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },
+			{ 0, 32, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,  0 },
+			{ 0, 44, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL, 0 },
+			D3DDECL_END()
+		};
+
+		LPD3DXMESH pMeshTemp = pMesh;
+		pMesh = NULL;
+		pMeshTemp->CloneMesh(D3DXMESH_VB_MANAGED, vertDecl, getDevice, &pMesh);
+
+		SAFE_RELEASE(pMeshTemp);
+		pMeshTemp = pMesh;
+		pMesh = NULL;
+
+		D3DXComputeTangentFrameEx(	pMeshTemp, D3DDECLUSAGE_TEXCOORD, 0, D3DDECLUSAGE_TANGENT, 0,
+									D3DX_DEFAULT, 0, D3DDECLUSAGE_NORMAL, 0,
+									D3DXTANGENT_CALCULATE_NORMALS,
+									NULL, -1, 0, -1, &pMesh, NULL );
+
+		SAFE_RELEASE(pMeshTemp);
+
 		pMesh->GetVertexBuffer(&m_pVB);
 		m_NbVertices = pMesh->GetNumVertices();
 
@@ -58,10 +84,8 @@ HRESULT Mesh::LoadFromXFile (cStr _pFileName)
 
 		m_VertexSize = pMesh->GetNumBytesPerVertex();
 
-
 		pMesh->GetDeclaration(m_VertexElements);
 		getDevice->CreateVertexDeclaration(m_VertexElements, &m_pVD);
-
 	}
 
 	SAFE_RELEASE(pMesh);
