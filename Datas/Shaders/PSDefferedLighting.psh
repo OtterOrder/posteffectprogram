@@ -1,5 +1,67 @@
+float4x4	ViewProjInv;
 
-float4 PSMain ()	: COLOR0
+float ZNear;
+float ZFar;
+
+sampler DiffuseSampler = 
+sampler_state
 {
-	return float4(1.f, 0.f, 0.f, 1.f);
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+sampler NormalSampler = 
+sampler_state
+{
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+sampler DepthSampler = 
+sampler_state
+{
+    AddressU  = WRAP;        
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
+{
+	float3 vDiffuseMaterial = tex2D(DiffuseSampler, _uv).rgb;
+	return float4(vDiffuseMaterial, 1.f);
+	
+/*
+	float3 vSpecularMaterial = tex2D(DiffuseSampler, _uv).a;
+
+	// normals are stored in texture space [0,1] -> convert them back to [-1,+1] range
+	float3 vWorldNrm = (tex2D(NormalSampler, _uv) - 0.5) * 2;
+
+	float3 vWorldPos;
+	vWorldPos.xy = float2(_uv.x, 1.f - _uv.y)*2.f -1.f;
+	vWorldPos.z = tex2D(DepthSampler, _uv).x * (ZFar - ZNear) + ZNear;
+	vWorldPos = mul(vWorldPos, ViewProjInv);
+
+	float3 vLightDir = normalize(c_vLightPos - vWorldPos);
+	float3 vEyeVec = normalize(c_mViewInverse[3].xyz - vWorldPos);	
+	float3 vDiffuseIntensity = dot(vLightDir, vWorldNrm);
+	float3 vSpecularIntensity = pow(max(0, dot(vEyeVec, reflect(-vLightDir, vWorldNrm))), c_fSpecularPower);
+
+	float4 color;
+	color.rgb = vDiffuseIntensity * c_vLightDiffuse.xyz * vDiffuseMaterial + 
+				vSpecularIntensity * c_vLightSpecular.xyz * vSpecularMaterial;
+	color.a = 1.0;
+	
+	// here we add color to show how lighting pass affects the scene
+	color.rgb += i.vTex0.rgr * 0.5;
+	
+	return color;
+*/
 }
