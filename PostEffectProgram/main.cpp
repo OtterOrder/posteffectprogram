@@ -43,6 +43,13 @@ HRESULT InitGeometry()
 	pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_normal.jpg", Material::Normal);
 	pGE3->GetMaterial()->SetTexture("..\\Datas\\Textures\\box_specular.jpg", Material::Specular);
 
+	GraphicEntity* pGE4 = pScene->CreateGraphicEntity();
+	pGE4->Initialize("..\\Datas\\Meshes\\plafond.X");
+
+	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_diffuse.jpg", Material::Diffuse);
+	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_normal.jpg", Material::Normal);
+	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_specular.jpg", Material::Specular);
+
     return S_OK;
 }
 
@@ -54,8 +61,9 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 		case WM_DESTROY:
 			Scene::GetSingleton()->Destroy();
 			PostRenderer::GetSingleton()->Destroy();
-            GBufferRenderer::GetSingleton()->Destroy();
 			Scene::GetSingleton()->Destroy();
+			PostRenderer::GetSingleton()->Destroy();
+            GBufferRenderer::GetSingleton()->Destroy();
             PostQuitMessage( 0 );
 			DestroyWindow(g_hWnd);
             return 0;
@@ -77,6 +85,8 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             {
                 case VK_ESCAPE:
 				{
+					Scene::GetSingleton()->Destroy();
+					PostRenderer::GetSingleton()->Destroy();
 					Scene::GetSingleton()->Destroy();
 					PostRenderer::GetSingleton()->Destroy();
 					GBufferRenderer::GetSingleton()->Destroy();
@@ -122,7 +132,6 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
     if( SUCCEEDED( InitGeometry() ) )
     {
         ShowWindow( g_hWnd, SW_SHOWDEFAULT );
-        UpdateWindow( g_hWnd );
         UpdateWindow( g_hWnd );
 
         MSG msg;
