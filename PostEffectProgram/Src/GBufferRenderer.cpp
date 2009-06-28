@@ -65,7 +65,6 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 
 void GBufferRenderer::RenderGBufferPass()
 {
-
 	// Assignation des render target
 	m_pd3dDevice->SetRenderTarget(0, m_GBuffer.m_pDiffuseMap.GetSurface());
 	m_pd3dDevice->SetRenderTarget(1, m_GBuffer.m_pNormalMap.GetSurface());
