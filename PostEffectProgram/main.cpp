@@ -51,7 +51,9 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
     switch( msg )
     {
-        case WM_DESTROY:
+		case WM_DESTROY:
+			Scene::GetSingleton()->Destroy();
+			PostRenderer::GetSingleton()->Destroy();
             GBufferRenderer::GetSingleton()->Destroy();
 			Scene::GetSingleton()->Destroy();
             PostQuitMessage( 0 );
@@ -74,9 +76,10 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             switch( wParam )
             {
                 case VK_ESCAPE:
-                {
-					GBufferRenderer::GetSingleton()->Destroy();
+				{
 					Scene::GetSingleton()->Destroy();
+					PostRenderer::GetSingleton()->Destroy();
+					GBufferRenderer::GetSingleton()->Destroy();
 					DestroyWindow(g_hWnd);
 					PostQuitMessage( 0 );
 					return 0;
@@ -114,7 +117,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 
 	pPostRenderer->Initialize(pGBRenderer->GetBackbufferSize());
 	pPostRenderer->SetGBuffer(pGBRenderer->GetGBuffer());
-	pPostRenderer->EnablePostProcess(PostRenderer::PE_DefferedLighting);
+	pPostRenderer->EnablePostProcess(PostRenderer::PE_DeferredLighting);
 
     if( SUCCEEDED( InitGeometry() ) )
     {

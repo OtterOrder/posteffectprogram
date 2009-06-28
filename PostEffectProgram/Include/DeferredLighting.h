@@ -2,12 +2,12 @@
 
 #include	"PostProcess.h"
 
-class DefferedLighting : public PostProcess
+class DeferredLighting : public PostProcess
 {
 
 public:
-	DefferedLighting ();
-	~DefferedLighting ();
+	DeferredLighting ();
+	~DeferredLighting ();
 
 	void Create (Vector2i _size);
 	void Release ();

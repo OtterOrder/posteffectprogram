@@ -294,18 +294,18 @@
 				>
 			</File>
 			<Filter
-				Name="DefferedLighting"
+				Name="DeferredLighting"
 				>
 				<File
-					RelativePath=".\Src\DefferedLighting.cpp"
+					RelativePath=".\Src\DeferredLighting.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Include\DefferedLighting.h"
+					RelativePath=".\Include\DeferredLighting.h"
 					>
 				</File>
 				<File
-					RelativePath="..\Datas\Shaders\PSDefferedLighting.psh"
+					RelativePath="..\Datas\Shaders\PSDeferredLighting.psh"
 					>
 				</File>
 			</Filter>

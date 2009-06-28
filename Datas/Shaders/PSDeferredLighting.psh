@@ -37,7 +37,6 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 {
 	float3 vDiffuseMaterial = tex2D(DiffuseSampler, _uv).rgb;
 	return float4(vDiffuseMaterial, 1.f);
-	
 /*
 	float3 vSpecularMaterial = tex2D(DiffuseSampler, _uv).a;
 

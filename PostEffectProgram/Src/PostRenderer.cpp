@@ -9,7 +9,7 @@ PostRenderer::PostRenderer(void)
 	m_pFrontRenderTarget		= NULL;
 	m_pBackRenderTarget			= NULL;
 
-	m_pPostProcesses.push_back(new DefferedLighting());
+	m_pPostProcesses.push_back(new DeferredLighting());
 
 	m_PostProcesses = 0;
 
@@ -79,6 +79,8 @@ void PostRenderer::Release ()
 //----------------------------------------------------------------------------------------------
 void PostRenderer::Destroy ()
 {
+	Release();
+
 	for (u32 postEffect = 0; postEffect < m_pPostProcesses.size(); postEffect++)
 	{
 		if (m_pPostProcesses[postEffect])
