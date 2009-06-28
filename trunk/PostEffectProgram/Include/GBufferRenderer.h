@@ -49,8 +49,6 @@ private:
 	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
 	GBuffer							m_GBuffer;
-	float							m_fZNear;
-	float							m_fZFar;
 
 	PSurface						m_pShadowDepth;
 	PSurface						m_pOldDepthRT;

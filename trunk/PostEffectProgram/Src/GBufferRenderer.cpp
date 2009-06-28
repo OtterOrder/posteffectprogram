@@ -7,8 +7,6 @@
 
 GBufferRenderer::GBufferRenderer()
 {
-	m_fZNear=0.5f;
-	m_fZFar=300.f;
 }
 
 GBufferRenderer::~GBufferRenderer()
@@ -21,7 +19,7 @@ void GBufferRenderer::Setup()
 	m_pScene = Scene::GetSingleton();
 	m_pEntityList=m_pScene->GetGraphicEntityList();
 
-	m_Camera.SetProjParams(D3DX_PI/4, (float)m_BackBufferSize.x/m_BackBufferSize.y, m_fZNear, m_fZFar);
+	m_Camera.SetProjParams(D3DX_PI/4, (float)m_BackBufferSize.x/m_BackBufferSize.y, 0.5f, 300.f);
 	m_Camera.SetViewParams(&D3DXVECTOR3(-100.f, 100.f, -100.f), &D3DXVECTOR3(0.f, 0.f, 0.f));
 
 	// Initialisation shader
@@ -61,8 +59,8 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	MatrixMultiply(&viewProj, m_Camera.GetViewMatrix(), m_Camera.GetProjMatrix());
 	MatrixMultiply(&WorldViewProj, &_world, &viewProj);
 	m_GRendererMaterial.m_pShader->SetVSMatrix("g_mWorldViewProjection", WorldViewProj);
-	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZNear", m_fZNear);
-	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZFar", m_fZFar);
+	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZNear", m_Camera.GetNearClip());
+	m_GRendererMaterial.m_pShader->SetPSFloat("g_fZFar", m_Camera.GetFarClip());
 }
 
 void GBufferRenderer::RenderGBufferPass()
