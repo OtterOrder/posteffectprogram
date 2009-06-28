@@ -60,30 +60,18 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 	float4 NHWorldPosition = mul(float4(ScreenPosition, 1.f), gViewProjInv);
 	float3 WorldPosition = NHWorldPosition.xyz / NHWorldPosition.w;
 
-/*
+
 	float3 LightDir = normalize(gLightPosition - WorldPosition);
 	float  DiffuseIntensity = dot(LightDir, WorldNormal);
 
 	float3 CamDir = normalize(gCamPosition - WorldPosition);
-	float3 Reflect = normalize(2 * DiffuseIntensity * WorldNormal - LightDir);
+	float3 Reflect = normalize(2.f * WorldNormal - LightDir);
 	float  SpecularIntensity = min(pow(saturate(dot(Reflect, CamDir)), SpecularGlossiness), SpecularPower);
-*/
-
-	//----------------------------------------------------------------
-	float3 Nw = WorldNormal;
-	float3 Lw = normalize(gLightPosition - WorldPosition);
-	float3 Vw = normalize(gCamPosition - WorldPosition);
-	float3 Hw = normalize(Lw + Vw);
-
-	float N_dot_L = dot(Nw, Lw);
-
-	float4 coefLight = lit(N_dot_L , dot(Nw, Hw), SpecularGlossiness);
 
 	float4 FinalColor;
 
-	FinalColor.rgb = coefLight.y * gLightDiffuse * DiffuseColor + coefLight.z * gLightSpecular * float3(1.f, 1.f, 1.f);
-	//FinalColor.rgb = float3(coefLight.y, coefLight.y, coefLight.y);
-	FinalColor.rgb = WorldPosition;
+	FinalColor.rgb = DiffuseIntensity * gLightDiffuse * DiffuseColor /*+ SpecularIntensity * gLightSpecular * float3(1.f, 1.f, 1.f)*/;
+	//FinalColor.rgb = float3(SpecularIntensity, SpecularIntensity, SpecularIntensity);
 	FinalColor.a = 1.0;
 
 	// here we add color to show how lighting pass affects the scene

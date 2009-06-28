@@ -20,6 +20,8 @@ public:
 	Texture*	m_pNormalMap;
 	Texture*    m_pSpecularMap;
 
+	float		m_BumpCoefficient;
+
 	Shader*		m_pShader;
 
 	Material(void);

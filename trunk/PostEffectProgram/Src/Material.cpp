@@ -13,6 +13,8 @@ Material::Material(void)
 	m_pNormalMap	= NULL;
 	m_pSpecularMap	= NULL;
 	m_pShader		= NULL;
+
+	m_BumpCoefficient = 1.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -52,6 +54,8 @@ void Material::Apply ()
 	SetTextureSampler ("DiffuseSampler", m_pDiffuseMap);
 	SetTextureSampler ("NormalSampler", m_pNormalMap);
 	SetTextureSampler ("SpecularSampler", m_pSpecularMap);
+
+	m_pShader->SetPSFloat("gBumpCoef", m_BumpCoefficient);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
