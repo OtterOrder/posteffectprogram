@@ -43,6 +43,7 @@ typedef		D3DXMATRIX				Matrix;
 #define 	MatrixIdentity			D3DXMatrixIdentity
 #define 	MatrixMultiply			D3DXMatrixMultiply
 #define		MatrixInverse			D3DXMatrixInverse
+#define		MatrixTranspose			D3DXMatrixTranspose
 
 //--------------------------------------------------------------
 typedef		D3DXVECTOR2				Vector2f;

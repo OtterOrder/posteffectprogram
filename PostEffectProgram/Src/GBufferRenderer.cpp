@@ -64,6 +64,11 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	MatrixMultiply(&viewProj, m_Camera.GetViewMatrix(), m_Camera.GetProjMatrix());
 	MatrixMultiply(&WorldViewProj, &_world, &viewProj);
 	m_GRendererMaterial.m_pShader->SetVSMatrix("g_mWorldViewProjection", WorldViewProj);
+
+	Matrix worldInvTrans;
+	MatrixInverse(&worldInvTrans, NULL, &_world);
+	MatrixTranspose(&worldInvTrans, &worldInvTrans);
+	m_GRendererMaterial.m_pShader->SetPSMatrix("g_mWorldIT", worldInvTrans);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
