@@ -51,7 +51,7 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 	float Depth = tex2D(DepthSampler, _uv).x;
 
 	float3 SpecularColor = float3 (1.f, 1.f, 1.f);
-	float  SpecularGlossiness = GBDiffuse.a;
+	float  SpecularIntensity = GBDiffuse.a;
 	float  SpecularPower = GBNormal.a;
 
 	float3 ScreenPosition;
@@ -66,11 +66,12 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 
 	float3 CamDir = normalize(gCamPosition - WorldPosition);
 	float3 Reflect = normalize(2.f * WorldNormal - LightDir);
-	float  SpecularIntensity = min(pow(saturate(dot(Reflect, CamDir)), SpecularGlossiness), SpecularPower);
+	float  SpecularFactor = min(pow(saturate(dot(Reflect, CamDir)), SpecularIntensity), SpecularPower);
+	SpecularFactor = pow(saturate(dot(Reflect, CamDir)), 8);
 
 	float4 FinalColor;
 
-	FinalColor.rgb = DiffuseIntensity * gLightDiffuse * DiffuseColor /*+ SpecularIntensity * gLightSpecular * float3(1.f, 1.f, 1.f)*/;
+	FinalColor.rgb = DiffuseIntensity * gLightDiffuse * DiffuseColor + SpecularFactor * gLightSpecular;
 	//FinalColor.rgb = float3(SpecularIntensity, SpecularIntensity, SpecularIntensity);
 	FinalColor.a = 1.0;
 
