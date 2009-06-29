@@ -39,7 +39,9 @@ void GBufferRenderer::Setup()
 //------------------------------------------------------------------------------------------------------------------------------
 void GBufferRenderer::RenderScene()
 {
-	m_Camera.FrameMove(m_Timer.GetDeltaTime());
+	m_Camera.FrameMove(0.05f);
+
+	UpdateStat();
 
 	if(SUCCEEDED(m_pd3dDevice->BeginScene()))
 	{
@@ -54,6 +56,26 @@ void GBufferRenderer::RenderScene()
 
 	m_Timer.EndF();
 	m_Timer.EndE();
+}
+//------------------------------------------------------------------------------------------------------------------------------
+void GBufferRenderer::UpdateStat()
+{
+	static FLOAT fLastTime = 0.0f;
+	static DWORD dwFrames  = 0;
+	FLOAT fTime = m_Timer.GetTime();
+	++dwFrames;
+
+	if( fTime - fLastTime > 1.0f )
+	{
+		m_FPS    = dwFrames / (fTime - fLastTime);
+		fLastTime = fTime;
+		dwFrames  = 0;
+	}
+
+	char stats[32];
+	sprintf(stats, "FPS : %f\n", m_FPS);
+	OutputDebugString(stats);
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

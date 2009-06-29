@@ -33,6 +33,7 @@ public:
 	void				RenderScene();	
 	void				Release();
 	void				HandleMessage( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	void				UpdateStat();
 	CFirstPersonCamera  GetCamera() {return m_Camera;};
 	GBuffer*			GetGBuffer ()	{ return &m_GBuffer; };
 
@@ -49,6 +50,7 @@ private:
 	Matrix							m_mProjection;		 // Matrice de projection	
 	Time							m_Timer;
 	GBuffer							m_GBuffer;
+	float							m_FPS;
 
 	PSurface						m_pShadowDepth;
 	PSurface						m_pOldDepthRT;
