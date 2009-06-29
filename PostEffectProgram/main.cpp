@@ -108,7 +108,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
     RegisterClassEx( &wc );
 
     g_hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
-                              WS_OVERLAPPEDWINDOW, 100, 100, 800, 600,
+                              WS_OVERLAPPEDWINDOW, 100, 100, 1024, 768,
                               NULL, NULL, wc.hInstance, NULL );
 
 
@@ -117,7 +117,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 	PostRenderer*	 pPostRenderer = PostRenderer::GetSingleton();
 	Scene*			 pScene = Scene::GetSingleton();
 
-	pGBRenderer->Initialize(g_hWnd, 800, 600);
+	pGBRenderer->Initialize(g_hWnd, 1024, 768);
 	pPostRenderer->Initialize(pGBRenderer->GetBackbufferSize());
 	pPostRenderer->SetGBuffer(pGBRenderer->GetGBuffer());
 	pPostRenderer->EnablePostProcess(PostRenderer::PE_DeferredLighting);

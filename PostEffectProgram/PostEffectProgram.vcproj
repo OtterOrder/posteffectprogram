@@ -322,11 +322,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Datas\Shaders\PSGbuffer.psh"
+				>
+			</File>
+			<File
 				RelativePath=".\Src\Renderer.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Include\Renderer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Datas\Shaders\VSGbuffer.vsh"
 				>
 			</File>
 		</Filter>
