@@ -314,18 +314,6 @@
 			Name="Renderer"
 			>
 			<File
-				RelativePath=".\Src\GBufferRenderer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Include\GBufferRenderer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Datas\Shaders\PSGbuffer.psh"
-				>
-			</File>
-			<File
 				RelativePath=".\Src\Renderer.cpp"
 				>
 			</File>
@@ -333,10 +321,26 @@
 				RelativePath=".\Include\Renderer.h"
 				>
 			</File>
-			<File
-				RelativePath="..\Datas\Shaders\VSGbuffer.vsh"
+			<Filter
+				Name="GBufferRenderer"
 				>
-			</File>
+				<File
+					RelativePath=".\Src\GBufferRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Include\GBufferRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Datas\Shaders\PSGbuffer.psh"
+					>
+				</File>
+				<File
+					RelativePath="..\Datas\Shaders\VSGbuffer.vsh"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resources"
