@@ -10,7 +10,7 @@ float3	gLightDirection		= float3(0.f, 0.f, 1.f);
 float3	gLightDiffuse		= float3(0.5f, 0.5f, 0.5f);
 float3	gLightSpecular		= float3(1.0f, 1.0f, 1.0f);
 
-sampler DiffuseSampler = 
+sampler DiffuseSampler =
 sampler_state
 {
     AddressU  = WRAP;
@@ -20,7 +20,7 @@ sampler_state
     MagFilter = LINEAR;
 };
 
-sampler NormalSampler = 
+sampler NormalSampler =
 sampler_state
 {
     AddressU  = WRAP;
@@ -30,7 +30,17 @@ sampler_state
     MagFilter = LINEAR;
 };
 
-sampler DepthSampler = 
+sampler DepthSampler =
+sampler_state
+{
+    AddressU  = WRAP;
+	AddressV  = WRAP;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+sampler RenderSampler =
 sampler_state
 {
     AddressU  = WRAP;
@@ -48,7 +58,7 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 	float4 GBNormal = tex2D(NormalSampler, _uv);
 	float3 WorldNormal = GBNormal.xyz * 2.f - 1.f;
 
-	float Depth = tex2D(DepthSampler, _uv).x;
+	float Depth = tex2D(DepthSampler, _uv).x * (gZFar - gZNear) + gZNear;
 
 	float3 SpecularColor = float3 (1.f, 1.f, 1.f);
 	float  SpecularIntensity = GBDiffuse.a;
@@ -71,11 +81,10 @@ float4 PSMain (float2 _uv : TEXCOORD0)	: COLOR0
 	float4 FinalColor;
 
 	FinalColor.rgb = DiffuseFactor * gLightDiffuse * DiffuseColor + SpecularFactor * gLightSpecular;
-	//FinalColor.rgb = float3(SpecularFactor, SpecularFactor, SpecularFactor);
 	FinalColor.a = 1.0;
 
-	// here we add color to show how lighting pass affects the scene
-	//FinalColor.rgb += i.vTex0.rgr * 0.5;
+
+	FinalColor.rgb += tex2D(RenderSampler, _uv).rgb;
 
 	return FinalColor;
 }

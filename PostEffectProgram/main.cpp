@@ -41,10 +41,42 @@ HRESULT CreateScene()
 	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_normal.jpg", Material::Normal);
 	pGE4->GetMaterial()->SetTexture("..\\Datas\\Textures\\celling_specular.jpg", Material::Specular);
 
+	Light* pLight = NULL;
+
+	pLight = pScene->CreateLight(Light::Point);
+	pLight->SetPosition( Vector3f(-20.f, 20.f, -30.f) );
+	pLight->SetDiffuse( Vector3f(0.6f, 0.5f, 0.5f) );
+	pLight->SetSpecular( Vector3f(1.f, 0.8f, 0.8f) );
+
+/*
+	pLight = pScene->CreateLight(Light::Point);
+	pLight->SetPosition( Vector3f(-20.f, 20.f, 30.f) );
+	pLight->SetDiffuse( Vector3f(0.8f, 0.8f, 0.8f) );
+	pLight->SetSpecular( Vector3f(1.f, 1.f, 1.f) );
+
+
+	pLight = pScene->CreateLight(Light::Point);
+	pLight->SetPosition( Vector3f(-20.f, 20.f, 30.f) );
+	pLight->SetDiffuse( Vector3f(0.8f, 0.8f, 0.8f) );
+	pLight->SetSpecular( Vector3f(1.f, 1.f, 1.f) );
+*/
+
+
+	pLight = pScene->CreateLight(Light::Point);
+	pLight->SetPosition( Vector3f(0.f, 20.f, 30.f) );
+	pLight->SetDiffuse( Vector3f(0.8f, 0.8f, 0.8f) );
+	pLight->SetSpecular( Vector3f(1.f, 1.f, 1.f) );
+
+
+	pLight = pScene->CreateLight(Light::Point);
+	pLight->SetPosition( Vector3f(40.f, 20.f, 0.f) );
+	pLight->SetDiffuse( Vector3f(0.2f, 0.2f, 0.8f) );
+	pLight->SetSpecular( Vector3f(1.f, 1.f, 1.f) );
+
 	char _name[32];
 	for(int i=0; i<7; i++)
 	{
-		sprintf(_name, "..\\Datas\\Meshes\\boite0%d.X", i);
+		sprintf_s(_name, 32, "..\\Datas\\Meshes\\boite0%d.X", i);
 
 		GraphicEntity* pGE3 = pScene->CreateGraphicEntity();
 		pGE3->Initialize(_name);
@@ -107,8 +139,10 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
                       "PostEffectProgram", NULL };
     RegisterClassEx( &wc );
 
+	Vector2i screenSize (1024, 1024);
+
     g_hWnd = CreateWindow( "PostEffectProgram", "PostEffectProgram",
-                              WS_OVERLAPPEDWINDOW, 100, 100, 1024, 768,
+                              WS_OVERLAPPEDWINDOW, 0, 0, screenSize.x, screenSize.y,
                               NULL, NULL, wc.hInstance, NULL );
 
 
@@ -117,7 +151,7 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 	PostRenderer*	 pPostRenderer = PostRenderer::GetSingleton();
 	Scene*			 pScene = Scene::GetSingleton();
 
-	pGBRenderer->Initialize(g_hWnd, 1024, 768);
+	pGBRenderer->Initialize(g_hWnd, screenSize.x, screenSize.y);
 	pPostRenderer->Initialize(pGBRenderer->GetBackbufferSize());
 	pPostRenderer->SetGBuffer(pGBRenderer->GetGBuffer());
 	pPostRenderer->EnablePostProcess(PostRenderer::PE_DeferredLighting);

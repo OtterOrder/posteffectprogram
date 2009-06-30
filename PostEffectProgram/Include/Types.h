@@ -50,6 +50,8 @@ typedef		D3DXVECTOR2				Vector2f;
 typedef		D3DXVECTOR3				Vector3f;
 typedef		D3DXVECTOR4				Vector4f;
 
+#define		Vector3fToColor(vect)	D3DCOLOR_RGBA( (int)(vect.x*255.f), (int)(vect.y*255.f), (int)(vect.z*255.f), 255 )
+
 struct Vector2i
 {
 	s32 x;

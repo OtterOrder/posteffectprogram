@@ -73,9 +73,8 @@ void GBufferRenderer::UpdateStat()
 	}
 
 	char stats[32];
-	sprintf(stats, "FPS : %f\n", m_FPS);
+	sprintf_s(stats, 32, "FPS : %f\n", m_FPS);
 	OutputDebugString(stats);
-
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -90,7 +89,7 @@ void GBufferRenderer::ComputeMatrices(Matrix _world)
 	Matrix worldInvTrans;
 	MatrixInverse(&worldInvTrans, NULL, &_world);
 	MatrixTranspose(&worldInvTrans, &worldInvTrans);
-	m_GRendererMaterial.m_pShader->SetPSMatrix("g_mWorldIT", worldInvTrans);
+	m_GRendererMaterial.m_pShader->SetPSMatrix("gmWorldIT", worldInvTrans);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -100,6 +99,9 @@ void GBufferRenderer::RenderGBufferPass()
 	m_pd3dDevice->SetRenderTarget(0, m_GBuffer.m_pDiffuseMap.GetSurface());
 	m_pd3dDevice->SetRenderTarget(1, m_GBuffer.m_pNormalMap.GetSurface());
 	m_pd3dDevice->SetRenderTarget(2, m_GBuffer.m_pDepthMap.GetSurface());
+
+	m_GRendererMaterial.m_pShader->SetPSFloat("gZNear", m_Camera.GetNearClip());
+	m_GRendererMaterial.m_pShader->SetPSFloat("gZFar", m_Camera.GetFarClip());
 
 	m_pd3dDevice->GetDepthStencilSurface( &m_pOldDepthRT );
 	m_pd3dDevice->SetDepthStencilSurface( m_pShadowDepth );

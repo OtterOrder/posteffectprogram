@@ -29,7 +29,7 @@ sampler_state
 };
 
 float gBumpCoef = 1.f;
-float4x4 g_mWorldIT;	//WorldInverseTranspose;
+float4x4 gmWorldIT;	//WorldInverseTranspose;
 
 struct VS_OUTPUT
 {
@@ -47,6 +47,9 @@ struct PS_OUTPUT_GBUFFER
 	float4	vDepth 			: COLOR2;
 };
 
+float gZNear;
+float gZFar;
+
 PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 {
 	PS_OUTPUT_GBUFFER Output;
@@ -60,7 +63,7 @@ PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 	Output.vDiffuse.a=specularColor.r;
 	
 	// RT 2 Normal + Spec power
-	float3 Nw = normalize(mul(Input.Normal.xyz, g_mWorldIT));
+	float3 Nw = normalize(mul(Input.Normal.xyz, gmWorldIT));
 
 	float3 bumps = gBumpCoef * (normalColor.xyz - (0.5f).xxx);
 	Nw = normalize( Nw + (bumps.x * Input.Tangent + bumps.y * Input.Binormal));
@@ -69,9 +72,8 @@ PS_OUTPUT_GBUFFER PSTextureDisplay (VS_OUTPUT Input)	: COLOR0
 	Output.vNormal.a=specularColor.g;
 	
 	// RT 3 Depth
-	float Depth = Input.WorldPos.z / Input.WorldPos.w;
-	Output.vDepth = Depth;
-	
+	Output.vDepth = ((Input.WorldPos.z / Input.WorldPos.w) - gZNear) / (gZFar - gZNear);
+
 	return Output;
 	
 }
